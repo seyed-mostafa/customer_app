@@ -1,8 +1,8 @@
-
+import 'package:customer_app/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'main_panel_customer_app.dart';
 import 'Rigestering.dart';
+import 'main_panel_customer_app.dart';
 
 class Entering extends StatefulWidget {
   @override
@@ -11,87 +11,137 @@ class Entering extends StatefulWidget {
 
 class _EnteringState extends State<Entering> {
 
+  ///fake Dates
   String password = "123";
   String phoneNumber = "456";
+
+  ///input Variable
   String inputPhoneNumberEnter = '', inputPasswordEnter = '';
+
   String errorMessage = "Phone number Or Password is wrong";
   bool validUser = false;
-  bool flag = true;
-
-
-  final _formKey = GlobalKey<FormState>();
-
-  String inputPhoneNumber = '', inputPassword = '',
-      inputName = '', inputAddress = '';
+  bool flag = true;///for first time don't show error of input
   bool hidden = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Center(child: Text("Entering page")),
+          title: Center(child: Text("Entering page", style: TextStyle(color: theme.yellow),)),
+          backgroundColor: theme.black,
         ),
         body: SingleChildScrollView(
           child: Container(
+            height: MediaQuery.of(context).size.height,
+            color: theme.yellow,
             padding: EdgeInsets.all(50),
             child: Column(
               children: [
                 validUser||flag ?
-                Container():
+                Container(height: 40,):
                 Container(
-                  child: Text(errorMessage,
-                    style: TextStyle(color: Colors.white,
-                        backgroundColor: Colors.red),),
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  height: 40,
+                  child: Center(
+                    child: Text(errorMessage,
+                      style: TextStyle(color: Colors.white,),),
+                  ),
                 ),
                 SizedBox(height: 20,),
-                TextField(
+                TextFormField(
+                  autofocus: true,
+                  style: TextStyle(color: Colors.white),
                   onChanged: (String value){
                     inputPhoneNumberEnter = value;
                   },
+                  cursorColor: theme.black,
                   decoration: InputDecoration(
+                      border: new OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(10),
+                        ),
+                        borderSide: new BorderSide(
+                          color: theme.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      fillColor: theme.yellow,
+                      filled: true,
                       icon: Icon(Icons.phone),
                       labelText: "phone number",
                       labelStyle: TextStyle(fontSize: 18,)
                   ),
                 ),
+                SizedBox(height: 20,),
                 TextField(
+                  autofocus: true,
                   onChanged: (String value){
                     inputPasswordEnter = value;
                   },
                   decoration: InputDecoration(
+                      border: new OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(10),
+                        ),
+                        borderSide: new BorderSide(
+                          color: theme.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      fillColor: theme.yellow,
+                      filled: true,
                       icon: Icon(Icons.vpn_key_sharp),
-                      labelText: "password",
-                      labelStyle: TextStyle(fontSize: 18,)
+                      labelText: "phone number",
+                      labelStyle: TextStyle(fontSize: 18)
                   ),
                 ),
                 SizedBox(height: 20,),
-                ElevatedButton(
-                  onPressed: (){
-                    flag = false;
-                    print(inputPhoneNumberEnter);
-                    print(inputPasswordEnter);
-                    if(inputPhoneNumberEnter == phoneNumber && inputPasswordEnter == password){
-                      validUser=true;
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MainPanel()),
-                      );
-                    }else{
-                      validUser=false;
-                    }
-                    setState(() {});
-                  },
-                  child: Text("Sign in"),
-                ),
-                SizedBox(height: 20,),
-                ElevatedButton(
-                    onPressed: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Rigestring()),
-                      );
-                    },
-                    child: Text("Sign up")
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(width: 30,),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          onPrimary: theme.yellow,
+                          primary: theme.black,
+                          padding: EdgeInsets.all(20)
+                      ),
+                      onPressed: (){
+                        flag = false;
+                        print(inputPhoneNumberEnter);
+                        print(inputPasswordEnter);
+                        if(inputPhoneNumberEnter == phoneNumber && inputPasswordEnter == password){
+                          validUser=true;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MainPanel()),
+                          );
+                        }else{
+                          validUser=false;
+                        }
+                        setState(() {});
+                      },
+                      child: Text("Sign in", style: TextStyle(fontSize: 18),),
+                    ),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            onPrimary: theme.yellow,
+                            primary: theme.black,
+                            padding: EdgeInsets.all(20)
+                        ),
+                        onPressed: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Rigestring()),
+                          );
+                        },
+                        child: Text("Sign up", style: TextStyle(fontSize: 18),)
+                    ),
+                    SizedBox(width: 30,)
+                  ],
                 ),
               ],
             ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'theme.dart';
 
 
-
 AppBar app_bar(){
     return  AppBar(
         backgroundColor:Colors.white ,
@@ -11,7 +10,7 @@ AppBar app_bar(){
         centerTitle: true,
         elevation: 10,
         actions: [
-          IconButton(icon:Icon( Icons.map,color: Colors.black45))
+          IconButton(onPressed:(){},icon:Icon(Icons.map,color: Colors.black45))
         ],
       );
 

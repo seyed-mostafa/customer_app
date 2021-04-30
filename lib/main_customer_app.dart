@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'entering_customer_app.dart';
+import 'theme.dart';
 
 void main() => runApp(Store());
 
@@ -15,6 +16,10 @@ class _StoreState extends State<Store> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        backgroundColor: theme.yellow,
+        primaryColor: Colors.white
+      ),
       routes: {
         "/": (context) => Entering(),
       },
