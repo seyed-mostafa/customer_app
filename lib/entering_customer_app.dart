@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Rigestering.dart';
 import 'main_panel_customer_app.dart';
+import 'theme.dart';
 
 class Entering extends StatefulWidget {
   @override
@@ -53,7 +54,7 @@ class _EnteringState extends State<Entering> {
                 SizedBox(height: 20,),
                 TextFormField(
                   autofocus: true,
-                  style: TextStyle(color: Colors.white),
+                  //style: TextStyle(color: Colors.white),
                   onChanged: (String value){
                     inputPhoneNumberEnter = value;
                   },
@@ -77,6 +78,8 @@ class _EnteringState extends State<Entering> {
                 ),
                 SizedBox(height: 20,),
                 TextField(
+                  //style: TextStyle(color: Colors.white),
+                  cursorColor: theme.black,
                   autofocus: true,
                   onChanged: (String value){
                     inputPasswordEnter = value;

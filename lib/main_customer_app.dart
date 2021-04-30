@@ -1,5 +1,6 @@
 // main of the app
 
+import 'package:customer_app/SplashScreen.dart';
 import 'package:flutter/material.dart';
 import 'entering_customer_app.dart';
 import 'theme.dart';
@@ -21,7 +22,7 @@ class _StoreState extends State<Store> {
         primaryColor: Colors.white
       ),
       routes: {
-        "/": (context) => Entering(),
+        "/": (context) => SplashScreen(),
       },
     );
   }
