@@ -11,12 +11,14 @@ import 'Food.dart';
 // List<Food> _menu =>                    منو رستوران به صورت لیستی از جنس غذا
 
 class restaurent {
+  static int _id=99243000;
   String _name, _phoneNumber, _password, _days, _hour;
   num _sendingRangeRadius;
   Address _address;
   List<Food> _menu = List.empty(growable: true);
 
   restaurent(String name, Address address, String phoneNumber, String password) {
+    _id++;
     this._name = name;
     this._address = address;
     this._password = password;
@@ -30,6 +32,9 @@ class restaurent {
   void addMenu(Food food){
     _menu.add(food);
   }
+ int getId(){
+    return _id;
+ }
 
 
 
