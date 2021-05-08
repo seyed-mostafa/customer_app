@@ -10,14 +10,15 @@ import 'Food.dart';
 // _address =>                       آدرس رستوران (به صورت مختصات )در کلاس خودش
 // List<Food> _menu =>                    منو رستوران به صورت لیستی از جنس غذا
 
-class restaurent {
+class Restaurant {
+
   static int _id=99243000;
   String _name, _phoneNumber, _password, _days, _hour;
   num _sendingRangeRadius;
   Address _address;
   List<Food> _menu = List.empty(growable: true);
 
-  restaurent(String name, Address address, String phoneNumber, String password) {
+  Restaurant(String name, Address address, String phoneNumber, String password) {
     _id++;
     this._name = name;
     this._address = address;
@@ -32,9 +33,10 @@ class restaurent {
   void addMenu(Food food){
     _menu.add(food);
   }
- int getId(){
+
+  int getId(){
     return _id;
- }
+  }
 
 
 
@@ -98,4 +100,5 @@ class restaurent {
   String getHour() {
     return _hour;
   }
+
 }

@@ -1,31 +1,27 @@
+
+
 import 'package:flutter/material.dart';
-import 'package:customer_app/bottom_navigation.dart';
-import 'list_view.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
-import 'appBar.dart';
-import 'bottom_navigation.dart';
+import 'package:customer_app/appBar.dart';
+import 'package:customer_app/bottom_navigation.dart';
 
+class Orders extends StatefulWidget {
 
-class MainPanel extends StatefulWidget {
   List<Restaurant> restaurants = [];
   int currentRestaurant;
+
+  Orders(this.restaurants, this.currentRestaurant);
+
   @override
-  _MainPanelState createState() => _MainPanelState();
+  _OrdersState createState() => _OrdersState();
 }
 
-class _MainPanelState extends State<MainPanel> {
+class _OrdersState extends State<Orders> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: list_view(),
       appBar: appBar(),
       bottomNavigationBar: bottom_navigation(widget.restaurants, widget.currentRestaurant),
-
     );
   }
 }
-
-
-
-
-

@@ -1,14 +1,12 @@
 class Food{
   String _name, _description;
-  num _discount,_price;
-  bool _sizing,_available;
-  TypeFood _typeFood ;
-  List<String> _comment = List.empty(growable: true);
-  var _score={"behdasht":null,"soratPeik":null,"garmiGhaza":null,"gheimat":null,"keifiat":null};
+  num _discount, _price;
+  bool _sizing, _available;
+  TypeFood _typeFood;
+  List<String> _comments = List.empty(growable: true);
+  var _score = {"behdasht":null,"soratPeik":null,"garmiGhaza":null,"gheimat":null,"keifiat":null};
 
-
-
-  Food(String name, String description,num price,num discount,bool sizing,bool available,TypeFood typeFood) {
+  Food(String name, String description,num price,num discount,bool sizing,bool available,TypeFood typeFood, String path) {
     this._name = name;
     this._description = description;
     this._price = price;
@@ -17,7 +15,6 @@ class Food{
     this._available = available;
     this._typeFood = typeFood;
   }
-
 
 
   void setName(String name){
@@ -42,7 +39,7 @@ class Food{
     this._typeFood = typeFood;
   }
   void setComment(String comment){
-    this._comment.add(comment);
+    this._comments.add(comment);
   }
   void setScore(int behdasht,int soratPeik,int garmiGhaza,int gheimat,int keifiat){
     if (_score["behdasht"]==null) {
@@ -84,12 +81,12 @@ class Food{
     return _typeFood ;
   }
   List<String> getComment(){
-    return _comment;
+    return _comments;
   }
   double getScore(){
     double score=0;
     for(double i in _score.values){
-      score+=i;
+        score+=i;
     }
     return score/5;
   }

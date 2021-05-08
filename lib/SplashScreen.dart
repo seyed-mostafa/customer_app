@@ -1,8 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
-
-import 'entering_customer_app.dart';
-
+import 'package:customer_app/Pages/MenuPage.dart';
+import 'Objects/Restaurant.dart';
+import 'Pages/EnteringPage.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -10,13 +11,26 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
+  List<Restaurant> restaurants = [];
+
+  bool EnteredUser = true;
+  int currentRestaurant = 0;
+
   @override
   void initState() {
+    restaurants.add(Restaurant("name", null, "phoneNumber", "password"));
     super.initState();
     Timer(
         Duration(seconds: 2),
-            () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => Entering())));
+            () => Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder:  EnteredUser ?
+                    (BuildContext context) => FoodMenu(restaurants, currentRestaurant):
+                    (BuildContext context) => EnteringPage(restaurants)
+              )
+            )
+    );
   }
 
   @override
