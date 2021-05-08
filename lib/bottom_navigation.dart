@@ -2,14 +2,12 @@
 //BottomNavigationBar with change color and animation
 
 import 'package:flutter/material.dart';
-
-
 import 'Objects/Restaurant.dart';
-import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
-import 'package:customer_app/Pages/CommentsPage.dart';
-import 'package:customer_app/Pages/MenuPage.dart';
-import 'package:customer_app/Pages/OrdersPage.dart';
+import 'package:customer_app/Pages/FavoritePage.dart';
+import 'package:customer_app/Pages/HomePage.dart';
+import 'package:customer_app/Pages/ShoppingCartPage.dart';
+import 'package:customer_app/Pages/ProfilePage.dart';
 
 class bottom_navigation extends StatefulWidget {
 
@@ -29,28 +27,36 @@ class _bottom_navigationState extends State<bottom_navigation> {
     setState(() {
       _selectedIndex = index;
       print(index);
-      if(_selectedIndex == 0){//foodMenu
+      if(_selectedIndex == 0){//home
         Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => FoodMenu(
+            MaterialPageRoute(builder: (context) => Home(
                   widget.restaurants,
                   widget.currentRestaurant
                 )
             )
         );
-      }else if(_selectedIndex == 1){//Orders
+      }else if(_selectedIndex == 1){//fav
         Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => Orders(
+            MaterialPageRoute(builder: (context) => Favorite(
                 widget.restaurants,
                 widget.currentRestaurant
             )
             )
         );
-      }else if(_selectedIndex == 2){//Comments
+      }else if(_selectedIndex == 2){//shop
         Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => CommentsPage(
+            MaterialPageRoute(builder: (context) => ShoppingCart(
+                widget.restaurants,
+                widget.currentRestaurant
+            ))
+        );
+      }else if(_selectedIndex == 3){//profile
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Profile(
                 widget.restaurants,
                 widget.currentRestaurant
             ))

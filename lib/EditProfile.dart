@@ -1,31 +1,30 @@
 
 import 'package:flutter/material.dart';
-import 'package:seller_app/Objects/Food.dart';
-import 'package:seller_app/Objects/Restaurant.dart';
-import 'package:seller_app/Objects/theme.dart';
-import 'package:seller_app/Pages/MenuPage.dart';
-import 'package:seller_app/appBar.dart';
-import 'app_bar.dart';
-import 'package:customer_app/theme.dart';
+import 'package:customer_app/Objects/Food.dart';
+import 'package:customer_app/Objects/Restaurant.dart';
+import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/Pages/HomePage.dart';
+import 'package:customer_app/appBar.dart';
+import 'package:customer_app/Objects/theme.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'Rigestering.dart';
-import 'main_panel_customer_app.dart';
-import 'theme.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'Map.dart';
 
 
-class AddFood extends StatefulWidget {
+
+
+class EditProfile extends StatefulWidget {
 
   List<Restaurant> restaurants = [];
   int currentRestaurant;
 
-  AddFood(this.restaurants, this.currentRestaurant);
+  EditProfile(this.restaurants, this.currentRestaurant);
 
   @override
-  _AddFoodState createState() => _AddFoodState();
+  _EditProfileState createState() => _EditProfileState();
 }
 
-class _AddFoodState extends State<AddFood> {
+class _EditProfileState extends State<EditProfile> {
 
   String _inputName='', _inputDescription='',
       _inputPrice='', _inputDiscount='0', _inputPath='';
@@ -50,6 +49,7 @@ class _AddFoodState extends State<AddFood> {
 
     return true;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +198,7 @@ class _AddFoodState extends State<AddFood> {
                                   TypeFood.Appetizer,
                                   _inputPath
                               ));
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>FoodMenu(widget.restaurants, widget.currentRestaurant)));
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Home(widget.restaurants, widget.currentRestaurant)));
                             }
                             setState(() {});
                           },
@@ -212,6 +212,13 @@ class _AddFoodState extends State<AddFood> {
             ),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed:  (){
+          Navigator.push(context, MaterialPageRoute(builder:
+              (context) => Map()));
+
+        },
       ),
     );
   }

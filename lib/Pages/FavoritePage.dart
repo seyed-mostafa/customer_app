@@ -5,23 +5,31 @@ import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/appBar.dart';
 import 'package:customer_app/bottom_navigation.dart';
 
-class Orders extends StatefulWidget {
+class Favorite extends StatefulWidget {
 
   List<Restaurant> restaurants = [];
   int currentRestaurant;
 
-  Orders(this.restaurants, this.currentRestaurant);
+  Favorite(this.restaurants, this.currentRestaurant);
 
   @override
-  _OrdersState createState() => _OrdersState();
+  _FavoriteState createState() => _FavoriteState();
 }
 
-class _OrdersState extends State<Orders> {
+class _FavoriteState extends State<Favorite> {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: appBar(),
       bottomNavigationBar: bottom_navigation(widget.restaurants, widget.currentRestaurant),
+
+      body: Container(
+          child: ListView(
+            children: <Widget>[
+            ],
+          )
+      ),
     );
   }
 }
