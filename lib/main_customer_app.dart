@@ -1,9 +1,11 @@
 // main of the app
 
 import 'package:customer_app/SplashScreen.dart';
+import 'package:customer_app/test2.dart';
 import 'package:flutter/material.dart';
 import 'entering_customer_app.dart';
 import 'theme.dart';
+import 'Map.dart';
 
 void main() => runApp(Store());
 
@@ -16,13 +18,14 @@ class _StoreState extends State<Store> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         backgroundColor: theme.yellow,
         primaryColor: Colors.white
       ),
       routes: {
-        "/": (context) => SplashScreen(),
+        "/": (context) => Map(),
       },
     );
   }
