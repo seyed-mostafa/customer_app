@@ -1,16 +1,26 @@
 import 'Address.dart';
 import 'Food.dart';
+import 'Order.dart';
 
-class costomer{
+class customer{
 String _firstName,_lastName,_phoneNumber,_password;
 num _wallet=0;
-
+Order currentOrders;
 List<Address> _address = List.empty(growable: true);
 List<Food> _previosOrders = List.empty(growable: true); /////   احتمالا باید تغییر کنه
 List<String> _comment = List.empty(growable: true);    //        ///     باید علاوه بر نظر ، غذا هم ثبت بشه :|
 List<int> _favoriteRestaurentId = List.empty(growable: true);
 List<Food> _shoppingCart = List.empty(growable: true);
 
+
+customer(firstName,lastName,phoneNumber,password)
+{
+   this._firstName = firstName;
+   this._lastName=lastName;
+   this._phoneNumber=phoneNumber;
+   this._password=password;
+   currentOrders=new Order();
+}
 
 void setName(String fname) {
   this._firstName = fname;
