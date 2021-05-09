@@ -4,7 +4,7 @@ import 'Restaurant.dart';
 
 class Food extends Restaurant{
   String _name, _description;
-  num _discount, _price;
+  num _discount=1, _price;
   bool _sizing, _available;
   TypeFood _typeFood;
   List<String> _comments = List.empty(growable: true);
@@ -14,9 +14,11 @@ class Food extends Restaurant{
 
    Food(String name, String description,num price,num discount,bool sizing,bool available,TypeFood typeFood) : super('', null, '', '')  {
     this._name = name;
+    if (discount!=null) {
+      this._discount = discount;
+    }
     this._description = description;
     this._price = price;
-    this._discount = discount;
     this._sizing = sizing;
     this._available = available;
     this._typeFood = typeFood;
@@ -33,7 +35,9 @@ class Food extends Restaurant{
     this._price = price;
   }
   void setDiscount(num discount){
-    this._discount = discount;
+     if (discount!=null) {
+       this._discount = discount;
+     }
   }
   void setSizing(bool sizing){
     this._sizing = sizing;

@@ -1,6 +1,3 @@
-import 'dart:typed_data';
-
-import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:customer_app/Objects/Food.dart';
@@ -100,16 +97,38 @@ void main() {
 
 
 
+  customer1.addShoppingCart(food1, 2);
+  customer1.addShoppingCart(food10, 1);
+  customer1.addShoppingCart(food5, 1);
+   Order order1=new Order(customer1.getShoppingCart());
+  order1.setCustomerName(customer1.getName());
+  for(Food food in order1.getOrder().keys){
+    print(food.getName());
+  }
+  customer1.setShoppingCartClear();
+  print(order1.getPrice());
 
-  print(restaurant1.getId());
-  print(restaurant2.getId());
-  print(restaurant3.getId());
-  print(restaurant4.getId());
-  print(restaurant5.getId());
-  print(restaurant6.getId());
-  print(restaurant7.getId());
-  print(restaurant8.getId());
-  print(restaurant9.getId());
-  print(restaurant10.getId());
+  // print(restaurant1.getId());
+  // print(restaurant2.getId());
+  // print(restaurant3.getId());
+  // print(restaurant4.getId());
+  // print(restaurant5.getId());
+  // print(restaurant6.getId());
+  // print(restaurant7.getId());
+  // print(restaurant8.getId());
+  // print(restaurant9.getId());
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

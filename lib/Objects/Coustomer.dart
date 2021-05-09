@@ -7,11 +7,11 @@ import 'Restaurant.dart';
 class Customer{
 String _firstName,_lastName,_phoneNumber,_password;
 num _wallet=0;
-Map <Food,int> _shoppingCart;
+Map <Food,int> _shoppingCart =new Map();
 List<LatLng> _address = List.empty(growable: true);
 List<Food> _previosOrders = List.empty(growable: true); /////   احتمالا باید تغییر کنه
 List<String> _comment = List.empty(growable: true);    //        ///     باید علاوه بر نظر ، غذا هم ثبت بشه :|
-List<Restaurant> _favoriteRestaurentId = List.empty(growable: true);
+List<Restaurant> _favoriteRestaurent = List.empty(growable: true);
 
 
 
@@ -51,8 +51,8 @@ void addPreviosOrders(Food food) {
 void addComment(String comment) {
   this._comment.add(comment);
 }
-void addFavoriteRestaurentId(Restaurant favoriteRestaurentId) {
-  this._favoriteRestaurentId.add(favoriteRestaurentId);
+void addFavoriteRestaurent(Restaurant favoriteRestaurent) {
+  this._favoriteRestaurent.add(favoriteRestaurent);
 }
 void addShoppingCart(Food food,int count) {
   _shoppingCart[food]=count;
@@ -87,8 +87,8 @@ List<Food> getPreviosOrders() {
 List<String> getComment() {
   return _comment;
 }
-List<Restaurant> getFavoriteRestaurentId() {
-  return _favoriteRestaurentId;
+List<Restaurant> getFavoriteRestaurent() {
+  return _favoriteRestaurent;
 }
 Map<Food,int> getShoppingCart() {
   return _shoppingCart;
