@@ -1,4 +1,8 @@
-class Food{
+
+
+import 'Restaurant.dart';
+
+class Food extends Restaurant{
   String _name, _description;
   num _discount, _price;
   bool _sizing, _available;
@@ -6,7 +10,9 @@ class Food{
   List<String> _comments = List.empty(growable: true);
   var _score = {"behdasht":null,"soratPeik":null,"garmiGhaza":null,"gheimat":null,"keifiat":null};
 
-  Food(String name, String description,num price,num discount,bool sizing,bool available,TypeFood typeFood, String path) {
+
+
+   Food(String name, String description,num price,num discount,bool sizing,bool available,TypeFood typeFood) : super('', null, '', '')  {
     this._name = name;
     this._description = description;
     this._price = price;
@@ -96,6 +102,15 @@ class Food{
 
 
 enum TypeFood{
-  Pizza,Sandwich,Drinks,PersianFood,Dessert,Appetizer,Fried,Steaks,Breakfast,International
+   Pizza
+  ,Sandwich
+  ,Drinks
+  ,PersianFood
+  ,Dessert          //دسر
+  ,Appetizer       //پیش غذا
+  ,Fried           //سوخاری
+  ,Steaks
+  ,Breakfast
+  ,International
 
 }
