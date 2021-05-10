@@ -60,7 +60,7 @@ void main() {
   Food food19=Food('ghorme kharegy', 'description19', 25000,50 , false, true, TypeFood.International);
   Food food20=Food('ghorme kharegy', 'description20', 8000,null , false, true, TypeFood.International);
 
-
+  food1.setComment('comment');
 
 
 
@@ -118,7 +118,7 @@ void main() {
   // print(restaurant8.getId());
   // print(restaurant9.getId());
 
-
+print(restaurant1.getMenu()[0].getComment()[0]);
 
 
 
