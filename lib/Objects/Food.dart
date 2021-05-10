@@ -4,7 +4,7 @@ import 'Restaurant.dart';
 
 class Food extends Restaurant{
   String _name, _description;
-  num _discount=1, _price;
+  num _discount, _price;
   bool _sizing, _available;
   TypeFood _typeFood;
   List<String> _comments = List.empty(growable: true);

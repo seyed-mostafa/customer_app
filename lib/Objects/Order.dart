@@ -18,7 +18,10 @@ class Order{
     _count++;
     _id=_count;
     for(Food food in _order.keys){
-     _price+= (food.getPrice()*(100-food.getDiscount()))/100*_order[food];
+      if(food.getDiscount()!=null)
+        _price+= (food.getPrice()*(100-food.getDiscount()))/100*_order[food];
+      else
+        _price+= (food.getPrice()*_order[food]);
     }
 
   }

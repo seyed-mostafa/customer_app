@@ -141,41 +141,65 @@ class _FoodPageState extends State<FoodPage> {
 
       return Container(
         child: Column(
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height / 3,
-              width: MediaQuery.of(context).size.width,
-              child: Image.asset(
-                'assets/images/1.jpg',
-                fit: BoxFit.cover,
-              ),
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height / 3,
+            width: MediaQuery.of(context).size.width,
+            child: Image.asset(
+              'assets/images/1.jpg',
+              fit: BoxFit.cover,
             ),
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Row(children: [
-                Spacer(),
-                Text(
-                  //name
-                  widget.restaurants[widget.currentRestaurant]
-                      .getMenu()[widget.currentFood]
-                      .getName(),
+          ),
+          Container(
 
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/100,vertical: 15),
+            child: Column(
+              children: [
+                Row(children: [
+                  Spacer(),
+                  Text(
+                    //name
+                    widget.restaurants[widget.currentRestaurant]
+                        .getMenu()[widget.currentFood]
+                        .getName(),
+
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                  Spacer(
+                    flex: 10,
+                  ),
+                  Text(
+                    widget.restaurants[widget.currentRestaurant]
+                        .getMenu()[widget.currentFood]
+                        .getPrice()
+                        .toString() +
+                        ' T',
+                    style: TextStyle(fontSize: 28),
+                  ),
+                  Spacer(),
+                ]),
+                SizedBox(
+                  height: 5,
                 ),
-                Spacer(
-                  flex: 10,
+
+                Row(
+                  children: [
+                    Spacer(),
+                    Text('by ',style: TextStyle(fontSize: 12,color: Colors.grey),),
+                    Text(widget.restaurants[widget.currentRestaurant]
+                        .getName(),
+
+                      style: TextStyle(fontSize:12,fontWeight: FontWeight.bold),
+                    ),
+                    Spacer(flex: 10,),
+                    Text(''),
+                    Spacer(),
+                  ],
                 ),
-                Text(
-                  widget.restaurants[widget.currentRestaurant]
-                      .getMenu()[widget.currentFood]
-                      .getPrice()
-                      .toString() +
-                      ' T',
-                  style: TextStyle(fontSize: 28),
-                ),
-                Spacer(),
-              ]),
+
+              ],
             ),
+          ),
             bag(),
             Padding(padding:EdgeInsets.all(20)),
             Row(
