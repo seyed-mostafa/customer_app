@@ -1,9 +1,16 @@
 
+import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:flutter/material.dart';
 
 import 'entering_customer_app.dart';
 
 class Rigestring extends StatefulWidget {
+
+  List<Restaurant> restaurants = [];
+  int currentRestaurant;
+
+  Rigestring(this.restaurants, this.currentRestaurant);
+
   @override
   _RigestringState createState() => _RigestringState();
 }
@@ -159,7 +166,7 @@ class _RigestringState extends State<Rigestring> {
                         print(inputPassword);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Entering()),
+                          MaterialPageRoute(builder: (context) => Entering(widget.restaurants, widget.currentRestaurant)),
                         );
                       }
                       setState(() {});

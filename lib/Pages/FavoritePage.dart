@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
-import 'package:customer_app/appBar.dart';
-import 'package:customer_app/bottom_navigation.dart';
 
 class Favorite extends StatefulWidget {
 
@@ -19,17 +17,11 @@ class Favorite extends StatefulWidget {
 class _FavoriteState extends State<Favorite> {
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-      appBar: appBar(),
-      bottomNavigationBar: bottom_navigation(widget.restaurants, widget.currentRestaurant),
-
-      body: Container(
-          child: ListView(
-            children: <Widget>[
-            ],
-          )
-      ),
+    return Container(
+      child: ListView(
+        children: <Widget>[
+        ],
+      )
     );
   }
 }

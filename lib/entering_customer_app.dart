@@ -1,11 +1,18 @@
+import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/Pages/Nav.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Rigestering.dart';
-import 'main_panel_customer_app.dart';
 
 
 class Entering extends StatefulWidget {
+
+  List<Restaurant> restaurants = [];
+  int currentRestaurant;
+
+  Entering(this.restaurants, this.currentRestaurant);
+
   @override
   _EnteringState createState() => _EnteringState();
 }
@@ -120,7 +127,7 @@ class _EnteringState extends State<Entering> {
                           validUser=true;
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => MainPanel()),
+                            MaterialPageRoute(builder: (context) => Nav(widget.restaurants, widget.currentRestaurant)),
                           );
                         }else{
                           validUser=false;
@@ -138,7 +145,7 @@ class _EnteringState extends State<Entering> {
                         onPressed: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Rigestring()),
+                            MaterialPageRoute(builder: (context) => Rigestring(widget.restaurants, widget.currentRestaurant)),
                           );
                         },
                         child: Text("Sign up", style: TextStyle(fontSize: 18),)

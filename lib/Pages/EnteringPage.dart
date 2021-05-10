@@ -1,5 +1,6 @@
 
 import 'dart:io';
+import 'package:customer_app/Pages/Nav.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/Objects/theme.dart';
@@ -148,7 +149,7 @@ class _EnteringPageState extends State<EnteringPage> {
                           file.writeAsString("Registered\nthis is the index of restaurant");
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => Home(widget.restaurants, currentRestaurant)),
+                            MaterialPageRoute(builder: (context) => Nav(widget.restaurants, currentRestaurant)),
                           );
                         }else{
                           validUser=false;

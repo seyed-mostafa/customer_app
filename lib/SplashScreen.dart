@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:customer_app/Pages/Nav.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Pages/HomePage.dart';
 import 'Objects/Restaurant.dart';
@@ -26,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
             () => Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder:  EnteredUser ?
-                    (BuildContext context) => Home (restaurants, currentRestaurant):
+                    (BuildContext context) => Nav (restaurants, currentRestaurant):
                     (BuildContext context) => EnteringPage(restaurants)
               )
             )

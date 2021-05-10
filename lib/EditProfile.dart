@@ -27,7 +27,7 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
 
   String _inputName='', _inputDescription='',
-      _inputPrice='', _inputDiscount='0';
+      _inputPrice='', _inputDiscount='0', _inputPath='';
   bool _inputSizing=false,_inputAvailable=false,_inputIsDiscount=false;
   var _formKey = GlobalKey<FormState>();
 
@@ -196,7 +196,6 @@ class _EditProfileState extends State<EditProfile> {
                                   true,
                                   true,
                                   TypeFood.Appetizer,
-
                               ));
                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Home(widget.restaurants, widget.currentRestaurant)));
                             }
