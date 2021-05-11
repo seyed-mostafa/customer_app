@@ -19,6 +19,7 @@ class FoodPage extends StatefulWidget {
 
 class _FoodPageState extends State<FoodPage> {
   int state = 1;
+  int like=0;
 
 
   @override
@@ -112,27 +113,51 @@ class _FoodPageState extends State<FoodPage> {
     }
 
 
-    DetailesOrReview(){
-      if(state==1){
+    DetailesOrReview() {
+      if (state == 1) {
         return Container(
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/5,vertical: 15),
-            child:
-            Container(
-              color: Colors.orange,
-              child: Text(widget.restaurants[widget.currentRestaurant]
-                  .getMenu()[widget.currentFood]
-                  .getDescription(),style: TextStyle(color: theme.black,fontSize: 16),),
-            )
-        );
-
-      }else{
-        return ListView(
-          children: List.generate(
-              widget.restaurants[widget.currentRestaurant].getMenu()[widget.currentFood].getComment().length
-              , (index) => Text(widget.restaurants[widget.currentRestaurant].getMenu()[widget.currentFood].getComment()[index])),
-        );
-
+            padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width / 6,
+                vertical: 15),
+            child: Container(
+              child: Container(
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(
+                      color: Colors.white,
+                      spreadRadius: 10,
+                      blurRadius: 0.5,
+                      offset: Offset(0, 0))
+                ]),
+                child: Text(
+                  widget.restaurants[widget.currentRestaurant]
+                      .getMenu()[widget.currentFood]
+                      .getDescription(),
+                  style: TextStyle(color: theme.black, fontSize: 15),
+                ),
+              ),
+            ));
+      } else {
+        return Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width / 6,
+                vertical: 15),
+            child: Container(
+              child: Container(
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(
+                      color: Colors.white,
+                      spreadRadius: 10,
+                      blurRadius: 0.5,
+                      offset: Offset(0, 0))
+                ]),
+                child: Text(widget.restaurants[widget.currentRestaurant]
+                    .getMenu()[widget.currentFood]
+                    .getComment()
+                    .elementAt(0)),
+              ),
+            ));
       }
     }
 
@@ -143,11 +168,32 @@ class _FoodPageState extends State<FoodPage> {
         child: Column(
         children: [
           Container(
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+
+                  ),
+                  child: IconButton(
+                      icon: Icon(
+                        like%2==0? Icons.favorite_border:Icons.favorite,
+                        color: Colors.red,
+                        size: 38,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          like++;
+                        });
+                      }
+                  )
+              ),
+            ),
             height: MediaQuery.of(context).size.height / 3,
             width: MediaQuery.of(context).size.width,
-            child: Image.asset(
-              'assets/images/1.jpg',
-              fit: BoxFit.cover,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/images/1.jpg'), fit: BoxFit.cover),
             ),
           ),
           Container(
