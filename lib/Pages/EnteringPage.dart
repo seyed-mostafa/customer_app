@@ -1,17 +1,18 @@
 
 import 'dart:io';
+import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Pages/Nav.dart';
+import 'package:customer_app/data/Customers.dart';
 import 'package:flutter/material.dart';
-import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/Objects/theme.dart';
-import 'package:customer_app/Pages/HomePage.dart';
 import 'RegisteringPage.dart';
 
 class EnteringPage extends StatefulWidget {
 
-  List<Restaurant> restaurants = [];
+  List<Customer> customers ;
+  EnteringPage(this.customers);
 
-  EnteringPage(this.restaurants);
+
 
   @override
   _EnteringPageState createState() => _EnteringPageState();
@@ -145,11 +146,11 @@ class _EnteringPageState extends State<EnteringPage> {
                         if(inputPhoneNumberEnter == phoneNumber &&
                             inputPasswordEnter == password){
                           validUser=true;
-                          int currentRestaurant = 0;
+                          int currentCustomer = 0;
                           file.writeAsString("Registered\nthis is the index of restaurant");
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => Nav(widget.restaurants, currentRestaurant)),
+                            MaterialPageRoute(builder: (context) => Nav(widget.customers[currentCustomer])),
                           );
                         }else{
                           validUser=false;
@@ -167,7 +168,7 @@ class _EnteringPageState extends State<EnteringPage> {
                         onPressed: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => RegisteringPage(widget.restaurants)),
+                            MaterialPageRoute(builder: (context) => RegisteringPage(widget.customers)),
                           );
                         },
                         child: Text("Sign up", style: TextStyle(fontSize: 18),)

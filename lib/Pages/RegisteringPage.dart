@@ -1,4 +1,5 @@
 
+import 'package:customer_app/Objects/Customer.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
 import 'EnteringPage.dart';
@@ -7,9 +8,8 @@ import 'dart:io';
 
 class RegisteringPage extends StatefulWidget {
 
-  List<Restaurant> restaurants = [];
-
-  RegisteringPage(this.restaurants);
+  List<Customer> customers ;
+  RegisteringPage(this.customers);
 
   @override
   _RegisteringPageState createState() => _RegisteringPageState();
@@ -163,17 +163,10 @@ class _RegisteringPageState extends State<RegisteringPage> {
                         print(inputAddress);
                         print(inputPhoneNumber);
                         print(inputPassword);
-                        widget.restaurants.add(
-                          Restaurant(
-                            inputName,
-                            null,
-                            inputPhoneNumber,
-                            inputPassword
-                          )
-                        );
+
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => EnteringPage(widget.restaurants)),
+                          MaterialPageRoute(builder: (context) => EnteringPage(widget.customers)),
                         );
                       }
                       setState(() {});

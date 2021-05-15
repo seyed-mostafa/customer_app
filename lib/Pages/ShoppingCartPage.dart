@@ -1,14 +1,15 @@
 
 
+import 'package:customer_app/Objects/Customer.dart';
+import 'package:customer_app/data/Restaurent.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
 
 class ShoppingCart extends StatefulWidget {
 
-  List<Restaurant> restaurants = [];
-  int currentRestaurant;
-
-  ShoppingCart(this.restaurants, this.currentRestaurant);
+  List<Restaurant> restaurants = importRestaurent();
+  Customer currentCustomer;
+  ShoppingCart(this.currentCustomer);
 
   @override
   _ShoppingCartState createState() => _ShoppingCartState();

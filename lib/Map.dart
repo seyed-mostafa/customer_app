@@ -29,7 +29,6 @@ class _MapState extends State<Map> {
           : MapType.normal;
     });
   }
-  List <LatLng> _marks= List.empty(growable: true);
   void _onAddMarkerButtonPressed() {
     setState(() {
       _markers.add(Marker(
