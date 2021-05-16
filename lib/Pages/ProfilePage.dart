@@ -20,6 +20,10 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
 
+    bool func(){
+      return false;
+    }
+
     Widget informationWidget(){
       return Row(
         children: [
@@ -57,7 +61,7 @@ class _ProfileState extends State<Profile> {
         children: [
           SizedBox(height: 10,),
           informationWidget(),
-          choicesWidget("Edit Information of Profile", EditProfile(widget.currentCustomer)),
+          choicesWidget("Edit Information of Profile", EditProfile(func, widget.currentCustomer)),
           choicesWidget("Wallet Managing", null),
           choicesWidget("My Comments", null),
           choicesWidget("Interested Restaurants", null),
