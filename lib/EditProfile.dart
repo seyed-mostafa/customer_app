@@ -16,13 +16,10 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(),
-      body: Container(
-        height: double.maxFinite,
-        child: SingleChildScrollView(
-
-      ),
-      )
+        appBar: appBar(),
+        body: Container(
+          child: Center(child: Text("Hello World!"),),
+        )
     );
   }
 }

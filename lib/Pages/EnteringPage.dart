@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Pages/Nav.dart';
+import 'package:customer_app/appBar.dart';
 import 'package:customer_app/data/Customers.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
@@ -39,13 +40,13 @@ class _EnteringPageState extends State<EnteringPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    bool func(){
+      return false;
+    }
+
     return Scaffold(
-        appBar: AppBar(
-          title: Center(
-              child: Text("Entering page", style: TextStyle(color: theme.yellow),)
-          ),
-          backgroundColor: theme.black,
-        ),
+        appBar: appBar(),
         body: SingleChildScrollView(
           child: Container(
             height: MediaQuery.of(context).size.height,
@@ -53,17 +54,6 @@ class _EnteringPageState extends State<EnteringPage> {
             padding: EdgeInsets.fromLTRB(50, 30, 50, 50),
             child: Column(
               children: [
-                Container(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                        "assets/images/Foodinaw1.jpg",
-                      fit: BoxFit.fill,
-                      height: MediaQuery.of(context).size.height/4,
-                      width: MediaQuery.of(context).size.width/2,
-                    ),
-                  ),
-                ),
                 SizedBox(height: 20,),
                 validUser||flag ?
                 Container(height: 0,):
@@ -81,7 +71,6 @@ class _EnteringPageState extends State<EnteringPage> {
                 SizedBox(height: 20,),
                 TextFormField(
                   cursorColor: theme.black,
-                  autofocus: true,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       border: new OutlineInputBorder(
@@ -105,7 +94,6 @@ class _EnteringPageState extends State<EnteringPage> {
                 ),
                 SizedBox(height: 20,),
                 TextField(
-                  autofocus: true,
                   cursorColor: theme.black,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
@@ -132,12 +120,12 @@ class _EnteringPageState extends State<EnteringPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    SizedBox(width: 30,),
+                    SizedBox(width: 20,),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           onPrimary: theme.yellow,
                           primary: theme.black,
-                          padding: EdgeInsets.all(20)
+                          padding: EdgeInsets.all(10)
                       ),
                       onPressed: (){
                         flag = false;
@@ -163,12 +151,12 @@ class _EnteringPageState extends State<EnteringPage> {
                         style: ElevatedButton.styleFrom(
                             onPrimary: theme.yellow,
                             primary: theme.black,
-                          padding: EdgeInsets.all(20)
+                          padding: EdgeInsets.all(10)
                         ),
                         onPressed: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => RegisteringPage(widget.customers)),
+                            MaterialPageRoute(builder: (context) => RegisteringPage(func)),
                           );
                         },
                         child: Text("Sign up", style: TextStyle(fontSize: 18),)
