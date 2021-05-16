@@ -2,7 +2,6 @@
 import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:flutter/material.dart';
 
-import 'entering_customer_app.dart';
 
 class Rigestring extends StatefulWidget {
 
@@ -164,10 +163,10 @@ class _RigestringState extends State<Rigestring> {
                         print(inputLastName);
                         print(inputPhoneNumber);
                         print(inputPassword);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Entering(widget.restaurants, widget.currentRestaurant)),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => Entering(widget.restaurants, widget.currentRestaurant)),
+                        // );
                       }
                       setState(() {});
                     },
