@@ -293,7 +293,6 @@ class _FoodPageState extends State<FoodPage> {
       );
     }
 
-
     return Scaffold(
       appBar: appBar(),
       body: foodData(),
