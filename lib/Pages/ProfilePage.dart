@@ -1,6 +1,7 @@
 
 
 import 'package:customer_app/Objects/Customer.dart';
+import 'package:customer_app/Objects/theme.dart';
 import 'package:customer_app/Pages/MyComment.dart';
 import 'package:customer_app/data/Restaurent.dart';
 import 'package:flutter/material.dart';
@@ -47,18 +48,26 @@ class _ProfileState extends State<Profile> {
     }
 
     Widget choicesWidget(String title, Widget page){
-      return TextButton(
-          onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => page));
-          },
-          child: Text(title, style: TextStyle(fontSize: 30),)
+      return Card(
+        shadowColor: theme.black,
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        color: theme.yellow,
+        child: TextButton(
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+            },
+            child: Text(title, style: TextStyle(fontSize: 24, color: theme.black),)
+        ),
       );
     }
 
     return Container(
-      padding: EdgeInsets.only(left: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      padding: EdgeInsets.only(left: 10, right: 10),
+      child: ListView(
+        //crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(height: 10,),
           informationWidget(),

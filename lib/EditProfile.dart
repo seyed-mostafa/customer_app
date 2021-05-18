@@ -258,7 +258,7 @@ class _EditProfileState extends State<EditProfile> {
                         widget.currentCustomer.setName(_inputFirstName);
                         widget.currentCustomer.setLastName(_inputLastName);
                         widget.currentCustomer.setPassword(inputPassword);
-                        widget.currentCustomer.setPassword(inputPhoneNumber);
+                        widget.currentCustomer.setPhoneNumber(inputPhoneNumber);
                         Navigator.pushReplacement(context, MaterialPageRoute(
                             builder: (context) => Nav(widget.currentCustomer)
                         ));
