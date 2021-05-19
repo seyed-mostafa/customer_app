@@ -1,4 +1,5 @@
 import 'package:customer_app/Objects/Customer.dart';
+import 'package:customer_app/data/Restaurent.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -9,10 +10,10 @@ import 'nav.dart';
 
 class FoodPage extends StatefulWidget {
   Customer customer;
-  Restaurant currentRestaurant;
+  Restaurant currentRestaurant = importRestaurent()[0];
   int currentFood;
 
-  FoodPage(this.currentRestaurant, this.currentFood,this.customer);
+  FoodPage(this.currentFood, this.customer);
 
   @override
   _FoodPageState createState() => _FoodPageState();
@@ -163,10 +164,8 @@ class _FoodPageState extends State<FoodPage> {
     }
 
     foodData() {
-
-
       return Container(
-        child: Column(
+        child: ListView(
         children: [
           Container(
             child: Align(
@@ -198,7 +197,6 @@ class _FoodPageState extends State<FoodPage> {
             ),
           ),
           Container(
-
             padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/100,vertical: 15),
             child: Column(
               children: [
