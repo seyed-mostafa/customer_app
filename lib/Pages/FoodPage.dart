@@ -6,7 +6,7 @@ import 'package:flutter/painting.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:customer_app/appBar.dart';
-import 'nav.dart';
+
 
 class FoodPage extends StatefulWidget {
   Customer customer;
