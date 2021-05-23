@@ -335,38 +335,7 @@ List<Restaurant> importRestaurent(){
     order.setOrderTime();
     restaurant3.addOrder(order);
   }
-  restaurant3.setSales({"online":600,"cash":420});
-  restaurant3.setSales({"online":900,"cash":400});
-  restaurant3.setSales({"online":300,"cash":500});
-  restaurant3.setSales({"online":300,"cash":600});
-  restaurant3.setSales({"online":320,"cash":300});
-  restaurant3.setSales({"online":400,"cash":700});
-  restaurant3.setSales({"online":370,"cash":660});
-  restaurant3.setSales({"online":660,"cash":500});
-  restaurant3.setSales({"online":750,"cash":530});
-  restaurant3.setSales({"online":600,"cash":610});
-  restaurant3.setSales({"online":430,"cash":440});
-  restaurant3.setSales({"online":460,"cash":460});
-  restaurant3.setSales({"online":450,"cash":390});
-  restaurant3.setSales({"online":340,"cash":360});
-  restaurant3.setSales({"online":500,"cash":560});
-  restaurant3.setSales({"online":550,"cash":550});
-  restaurant3.setSales({"online":490,"cash":440});
-  restaurant3.setSales({"online":450,"cash":390});
-  restaurant3.setSales({"online":380,"cash":370});
-  restaurant3.setSales({"online":570,"cash":650});
-  restaurant3.setSales({"online":600,"cash":600});
-  restaurant3.setSales({"online":650,"cash":550});
-  restaurant3.setSales({"online":590,"cash":500});
-  restaurant3.setSales({"online":480,"cash":300});
-  restaurant3.setSales({"online":540,"cash":420});
-  restaurant3.setSales({"online":440,"cash":330});
-  restaurant3.setSales({"online":460,"cash":460});
-  restaurant3.setSales({"online":490,"cash":520});
-  restaurant3.setSales({"online":630,"cash":500});
-  restaurant3.setSales({"online":500,"cash":400});
-
-
+  
 
   List<Restaurant> restaurant=[restaurant10,restaurant9,restaurant8,restaurant7,restaurant6,restaurant5,restaurant4,restaurant3,restaurant2,restaurant1];
   return restaurant;
