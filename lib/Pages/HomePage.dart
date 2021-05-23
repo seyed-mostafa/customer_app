@@ -3,6 +3,8 @@ import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:customer_app/Pages/FoodPage.dart';
+import 'package:customer_app/Pages/RestaurantPage.dart';
+import 'package:customer_app/Pages/TabBar.dart';
 import 'package:customer_app/data/Restaurent.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
@@ -50,7 +52,7 @@ class _HomeState extends State<Home> {
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black87,
+                            color: Colors.black45,
                             spreadRadius: 3,
                             blurRadius: 12,
                             offset: Offset(0,0)
@@ -108,11 +110,19 @@ class _HomeState extends State<Home> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 25
+            TextButton(
+              onPressed: (){
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => RestaurantPage(widget.currentCustomer, widget.restaurants[0]))
+                );
+              },
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25
+                ),
               ),
             ),
             SizedBox(height: 10,),

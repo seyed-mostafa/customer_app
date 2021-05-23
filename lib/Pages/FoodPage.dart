@@ -1,4 +1,5 @@
 import 'package:customer_app/Objects/Customer.dart';
+import 'package:customer_app/Pages/RestaurantPage.dart';
 import 'package:customer_app/data/Restaurent.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -292,7 +293,23 @@ class _FoodPageState extends State<FoodPage> {
     }
 
     return Scaffold(
-      appBar: appBar(),
+      appBar: AppBar(
+        backgroundColor:Colors.white ,
+        title: Text('Foodina',style: TextStyle(color: theme.yellow,
+            fontSize: 30, fontWeight: FontWeight.bold,fontStyle: FontStyle.italic)),
+        centerTitle: true,
+        elevation: 10,
+        iconTheme: IconThemeData(color:theme.yellow),
+        leading: IconButton(
+          icon: Icon(Icons.keyboard_backspace),
+          onPressed: (){
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => RestaurantPage(widget.customer, widget.currentRestaurant))
+            );
+          },
+        ),
+      ),
       body: foodData(),
     );
   }
