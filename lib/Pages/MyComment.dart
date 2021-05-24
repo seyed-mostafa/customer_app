@@ -18,7 +18,7 @@ class _MyCommentState extends State<MyComment> {
 
   Widget showComment(int index){
     return Container(
-      child: Text(widget.currentCustomer.getComment()[index]),
+      
     );
   }
 
