@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/Objects/theme.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:customer_app/appBar.dart';
 
 
@@ -28,7 +29,8 @@ class _FoodPageState extends State<FoodPage> {
   @override
   Widget build(BuildContext context) {
     bag() {
-      if (true) {
+
+
         return Row(
           children: [
             Spacer(
@@ -36,7 +38,7 @@ class _FoodPageState extends State<FoodPage> {
             ),
             IconButton(
                 icon: Icon(
-                  Icons.indeterminate_check_box_outlined,
+                  FontAwesomeIcons.minus,
                   size: 30,
                   color: theme.black,
                 ),
@@ -48,17 +50,20 @@ class _FoodPageState extends State<FoodPage> {
               onPressed: () {
                 print('add to bag');
               },
-              child: Text('add to bag'),
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Text('Add To Bag',style: TextStyle(fontSize: 22,fontWeight: FontWeight.w400),),
+              ),
               style: TextButton.styleFrom(
                   primary: Colors.white,
                   shadowColor: theme.black,
                   backgroundColor: theme.yellow,
-                  textStyle: TextStyle(fontSize: 45, color: Colors.green)),
+                ),
             ),
             Spacer(),
             IconButton(
                 icon: Icon(
-                  Icons.add_box_outlined,
+                  FontAwesomeIcons.plus,
                   size: 30,
                   color: theme.yellow,
                 ),
@@ -70,7 +75,7 @@ class _FoodPageState extends State<FoodPage> {
             ),
           ],
         );
-      } else {
+
         return Row(
           children: [
             Spacer(
@@ -112,7 +117,7 @@ class _FoodPageState extends State<FoodPage> {
             ),
           ],
         );
-      }
+
     }
 
 
