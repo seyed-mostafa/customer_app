@@ -26,6 +26,7 @@ dependencies:
   google_maps_flutter: ^2.0.3
   syncfusion_flutter_maps: ^19.1.58-beta
   intl: ^0.17.0
+  syncfusion_flutter_charts: ^19.1.64
 
 
   # The following adds the Cupertino Icons font to your application.
