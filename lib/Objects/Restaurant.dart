@@ -21,9 +21,8 @@ class Restaurant  {
   LatLng _address;
   List<Food> _menu = List.empty(growable: true);
   List<TypeFood> _type;
-  List<Order> _orders= List.empty(growable: true);
   List<Comment> _comments= List.empty(growable: true);
-  List<Map> sales;
+
 
   Restaurant(String name, LatLng address, String phoneNumber, String password)  {
     _count++;
@@ -33,69 +32,7 @@ class Restaurant  {
     this._password = password;
     this._phoneNumber = phoneNumber;
   }
-
-  void setSales(Map sale){
-    sales.add(sale);
-  }
-
-  int getOnlineSales(){
-    int sum;
-    for(int i=0;i<sales.length;i++){
-      sum+=sales[i]["online"];
-    }
-    return sum;
-  }
-
-  int getCashSales(){
-    int sum;
-    for(int i=0;i<sales.length;i++){
-      sum+=sales[i]["cash"];
-    }
-    return sum;
-  }
-
-  int getTotalSales(){
-    int sum;
-    for(int i=0;i<sales.length;i++){
-      sum+=sales[i]["online"];
-      sum+=sales[i]["cash"];
-    }
-    return sum;
-  }
-
-  void addComment(){
-    for(int i=0;;i++){
-      this.getMenu()[i];
-    }
-  }
-
-  void addOrder(Order order){
-    _orders.add(order);
-    this.arrange();
-  }
-
-  void arrange(){
-    List <Order> done= List.empty(growable: true);
-    List <Order> undone= List.empty(growable: true);
-    for(Order ord in _orders){
-      if(ord.getStatus()==true){
-        done.add(ord);
-      }else{
-        undone.add(ord);
-      }
-    }
-    done.sort((a,b) => a.getOrderTime().compareTo(b.getOrderTime()) );
-    undone.sort((a,b) => a.getOrderTime().compareTo(b.getOrderTime()) );
-    _orders.clear();
-    done=done.reversed.toList();
-    undone=undone.reversed.toList();
-    undone+=done;
-    _orders+=undone;
-  }
-
-  List<Order> getOrders(){
-    return _orders;
-  }
+  
 
   List<Food> getMenu() {
     return _menu;
