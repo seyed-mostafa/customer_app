@@ -19,9 +19,11 @@ class Home extends StatefulWidget {
 }
 class _HomeState extends State<Home> {
 
+  String searching = "";
 
   @override
   Widget build(BuildContext context) {
+    
     Size _size = MediaQuery.of(context).size;
 
     Widget showFood(Food food){
@@ -139,11 +141,43 @@ class _HomeState extends State<Home> {
     }
 
     return SingleChildScrollView(
-      padding: EdgeInsets.only(left: 10),
       child: Column(
         children: [
+          Container(
+            margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+            child: TextField(
+              cursorColor: theme.black,
+              style: TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search),
+                border: new OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(
+                    const Radius.circular(10),
+                  ),
+                  borderSide: new BorderSide(
+                    color: theme.black,
+                    width: 1.0,
+                  ),
+                ),
+                fillColor: theme.yellow,
+                filled: true,
+                hintText: "search your restaurant",
+                labelStyle: TextStyle(fontSize: 18,)
+              ),
+              onChanged: (String value){
+                setState(() {
+                  searching = value;
+                  print(searching);
+                });
+              },
+            ),
+          ),
           for(int i = 0; i < widget.restaurants.length; i++)
-            foodListForCustomer(widget.restaurants[i].getName(), widget.restaurants[i].getMenu())
+            if(widget.restaurants[i].getMenu().isEmpty) Container()
+            else if(searching == '') foodListForCustomer(widget.restaurants[i].getName(), widget.restaurants[i].getMenu())
+            else if(widget.restaurants[i].getName().contains(searching))
+              foodListForCustomer(widget.restaurants[i].getName(), widget.restaurants[i].getMenu())
+            else Container()
         ],
       ),
     );
