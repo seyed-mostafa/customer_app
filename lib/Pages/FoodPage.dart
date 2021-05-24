@@ -1,4 +1,5 @@
 import 'package:customer_app/Objects/Customer.dart';
+import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Pages/RestaurantPage.dart';
 import 'package:customer_app/data/Restaurent.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,96 +29,94 @@ class _FoodPageState extends State<FoodPage> {
 
   @override
   Widget build(BuildContext context) {
-    bag() {
 
+    bool isInBag(){
+      print(widget.customer.getShoppingCart().keys);
+      if (widget.customer.getShoppingCart().keys.isNotEmpty) {
+      for(Food food in widget.customer.getShoppingCart().keys){
+        print(food.getName());
+        if (food.getName().compareTo(widget.currentRestaurant.getMenu()[widget.currentFood].getName())==0) {
+          return true;
+        }
+      }
+      }
+      return false;
+    }
 
-        return Row(
-          children: [
-            Spacer(
-              flex: 3,
-            ),
-            IconButton(
-                icon: Icon(
-                  FontAwesomeIcons.minus,
-                  size: 30,
-                  color: theme.black,
-                ),
-                onPressed: () {
-                  print('mines');
-                }),
-            Spacer(),
-            TextButton(
-              onPressed: () {
+    addToBag(){
+      return Row(
+        children: [
+          Spacer(
+            flex: 3,
+          ),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                widget.customer.addShoppingCart(widget.currentRestaurant.getMenu()[widget.currentFood], 1);
                 print('add to bag');
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: Text('Add To Bag',style: TextStyle(fontSize: 22,fontWeight: FontWeight.w400),),
+              });
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Text('Add To Bag',style: TextStyle(fontSize: 22,fontWeight: FontWeight.w400),),
+            ),
+            style: TextButton.styleFrom(
+              primary: Colors.black,
+              shadowColor: theme.black,
+              backgroundColor: theme.yellow,
+            ),
+          ),
+          Spacer(
+            flex: 3,
+          ),
+        ],
+      );
+    }
+
+    increaseOrDecrease(){
+      return Row(
+        children: [
+          Spacer(
+            flex: 5,
+          ),
+          IconButton(
+              icon: Icon(
+                FontAwesomeIcons.minus,
+                size: 30,
+                color: theme.black,
               ),
-              style: TextButton.styleFrom(
-                  primary: Colors.white,
-                  shadowColor: theme.black,
-                  backgroundColor: theme.yellow,
-                ),
-            ),
-            Spacer(),
-            IconButton(
-                icon: Icon(
-                  FontAwesomeIcons.plus,
-                  size: 30,
-                  color: theme.yellow,
-                ),
-                onPressed: () {
-                  print('add');
-                }),
-            Spacer(
-              flex: 3,
-            ),
-          ],
-        );
-
-        return Row(
-          children: [
-            Spacer(
-              flex: 3,
-            ),
-            IconButton(
-                icon: Icon(
-                  Icons.indeterminate_check_box_outlined,
-                  size: 30,
-                  color: theme.black,
-                ),
-                onPressed: () {
-                  print('mines');
-                }),
-            Spacer(),
-            TextButton(
               onPressed: () {
-                print('add to bag');
-              },
-              child: Text('1'),
-              style: TextButton.styleFrom(
-                  primary: Colors.white,
-                  shadowColor: theme.black,
-                  backgroundColor: theme.yellow,
-                  textStyle: TextStyle(fontSize: 45, color: Colors.green)),
+                print('mines');
+              }),
+          Spacer(),
+          TextButton(
+           onPressed: (){},
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Text(widget.customer.getShoppingCart()[widget.currentRestaurant.getMenu()[widget.currentFood]].toString(),
+                style: TextStyle(fontSize: 22,fontWeight: FontWeight.w400),),
             ),
-            Spacer(),
-            IconButton(
-                icon: Icon(
-                  Icons.add_box_outlined,
-                  size: 30,
-                  color: theme.yellow,
-                ),
-                onPressed: () {
-                  print('add');
-                }),
-            Spacer(
-              flex: 3,
+            style: TextButton.styleFrom(
+              primary: Colors.black,
+              shadowColor: theme.black,
+              backgroundColor: theme.yellow,
             ),
-          ],
-        );
-
+          ),
+          Spacer(),
+          IconButton(
+              icon: Icon(
+                FontAwesomeIcons.plus,
+                size: 30,
+                color: theme.yellow,
+              ),
+              onPressed: () {
+                print('add');
+              }),
+          Spacer(
+            flex: 5,
+          ),
+        ],
+      );
     }
 
 
@@ -251,7 +250,7 @@ class _FoodPageState extends State<FoodPage> {
               ],
             ),
           ),
-            bag(),
+            isInBag()?increaseOrDecrease():addToBag(),
             Padding(padding:EdgeInsets.all(20)),
             Row(
               children: [
