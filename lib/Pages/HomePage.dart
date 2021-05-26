@@ -5,6 +5,7 @@ import 'package:customer_app/Objects/theme.dart';
 import 'package:customer_app/Pages/FoodPage.dart';
 import 'package:customer_app/Pages/MenuType.dart';
 import 'package:customer_app/Pages/RestaurantPage.dart';
+import 'package:customer_app/Pages/RestaurantPageTabBar.dart';
 import 'package:customer_app/Pages/TabBar.dart';
 import 'package:customer_app/data/Restaurent.dart';
 import 'package:flutter/material.dart';
@@ -151,7 +152,7 @@ class _HomeState extends State<Home> {
               onPressed: (){
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => RestaurantPage(widget.currentCustomer, widget.restaurants[0]))
+                  MaterialPageRoute(builder: (context) => RestaurantPageTabBar(widget.currentCustomer, widget.restaurants[0]))
                 );
               },
               child: Text(

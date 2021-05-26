@@ -66,6 +66,7 @@ class Order {
         _price+= ((food.getPrice()*(100-food.getDiscount()))/100*_order[food]).ceil();
       else
         _price+= (food.getPrice()*_order[food]);
+
     }
     return _price;
   }

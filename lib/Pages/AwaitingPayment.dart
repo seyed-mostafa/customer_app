@@ -110,15 +110,12 @@ class _AwaitingPaymentState extends State<AwaitingPayment> {
           children: [
             image(),
             Container(
-              width: MediaQuery.of(context).size.width*3 / 5,
+              width: 200,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Spacer(flex: 20,),
                   nameAndItem(index),
-                  Spacer(flex: 1,),
                   price(index),
-                  Spacer(flex: 10,),
                   detail(index),
                 ],
               ),
