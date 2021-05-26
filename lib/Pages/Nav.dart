@@ -47,7 +47,6 @@ class _NavState extends State<Nav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: theme.black,
       appBar: appBar(),
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: theme.black,

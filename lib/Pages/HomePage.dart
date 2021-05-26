@@ -23,7 +23,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   String searchingText = "";
-  TypeFood chosenType = null;
+  TypeFood chosenType = TypeFood.all;
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +102,7 @@ class _HomeState extends State<Home> {
                         child: Container(
                           width: _size.width * 0.5,
                           height: _size.height * 0.20,
-                          child: Image.asset("assets/images/1.jpg", fit: BoxFit.fitWidth,)
+                          child: Image.asset("assets/images/food1.jpg", fit: BoxFit.fitWidth,)
                         ),
                       ),
                     ),
@@ -116,9 +116,15 @@ class _HomeState extends State<Home> {
                             children: [
                               Text(
                                 food.getName(),
+                                style: TextStyle(
+                                  color: theme.black,
+                                ),
                               ),
                               Text(
-                                food.getPrice().toString() + " T"
+                                food.getPrice().toString() + " T",
+                                style: TextStyle(
+                                  color: theme.black,
+                                ),
                               )
                             ],
                           ),
@@ -126,7 +132,7 @@ class _HomeState extends State<Home> {
                         Spacer(),
                         IconButton(
                           splashRadius: 10,
-                          icon: Icon(FontAwesomeIcons.plusCircle),
+                          icon: Icon(FontAwesomeIcons.plusCircle, color: theme.white,),
                           onPressed: (){
 
                           }
@@ -150,16 +156,23 @@ class _HomeState extends State<Home> {
           children: [
             TextButton(
               onPressed: (){
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => RestaurantPageTabBar(widget.currentCustomer, widget.restaurants[0]))
-                );
+                for(int i = 0; i < widget.restaurants.length; i++){
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => RestaurantPageTabBar(widget.currentCustomer, widget.restaurants[0]))
+                  );
+                }
+
               },
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25
+              child: Padding(
+                padding: EdgeInsets.only(left: 10),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                    color: theme.black
+                  ),
                 ),
               ),
             ),
@@ -191,7 +204,9 @@ class _HomeState extends State<Home> {
               children: [
                 icon,
                 Text("  " + typeFood.toString().substring(9),
-                  style: TextStyle(fontSize: _size.width * 0.03),
+                  style: TextStyle(fontSize: _size.width * 0.03,
+                    color: theme.black
+                  ),
                 ),
               ],
             ),
@@ -211,16 +226,17 @@ class _HomeState extends State<Home> {
         child: ListView(
           scrollDirection: Axis.horizontal,
           children: [
-            typeWidget(TypeFood.Pizza, Icon(FontAwesomeIcons.pizzaSlice)),
-            typeWidget(TypeFood.Sandwich, Icon(FontAwesomeIcons.hotdog,)),
-            typeWidget(TypeFood.Drinks, Icon(FontAwesomeIcons.cocktail)),
-            typeWidget(TypeFood.PersianFood, Icon(Icons.food_bank)),
-            typeWidget(TypeFood.Dessert, Icon(Icons.no_food)),
-            typeWidget(TypeFood.Appetizer, Icon(Icons.fastfood)),
-            typeWidget(TypeFood.Fried, Icon(Icons.local_fire_department)),
-            typeWidget(TypeFood.Steaks, Icon(Icons.set_meal)),
-            typeWidget(TypeFood.Breakfast, Icon(Icons.breakfast_dining)),
-            typeWidget(TypeFood.International, Icon(Icons.food_bank)),
+            typeWidget(TypeFood.all, Icon(Icons.assignment_turned_in, color: theme.yellow,)),
+            typeWidget(TypeFood.Pizza, Icon(FontAwesomeIcons.pizzaSlice, color: theme.yellow,)),
+            typeWidget(TypeFood.Sandwich, Icon(FontAwesomeIcons.hotdog, color: theme.yellow,)),
+            typeWidget(TypeFood.Drinks, Icon(FontAwesomeIcons.cocktail, color: theme.yellow,)),
+            typeWidget(TypeFood.PersianFood, Icon(Icons.food_bank, color: theme.yellow,)),
+            typeWidget(TypeFood.Dessert, Icon(Icons.no_food, color: theme.yellow,)),
+            typeWidget(TypeFood.Appetizer, Icon(Icons.fastfood, color: theme.yellow,)),
+            typeWidget(TypeFood.Fried, Icon(Icons.local_fire_department, color: theme.yellow,)),
+            typeWidget(TypeFood.Steaks, Icon(Icons.set_meal, color: theme.yellow,)),
+            typeWidget(TypeFood.Breakfast, Icon(Icons.breakfast_dining, color: theme.yellow,)),
+            typeWidget(TypeFood.International, Icon(Icons.food_bank, color: theme.yellow,)),
           ]
         ),
       );
@@ -232,12 +248,11 @@ class _HomeState extends State<Home> {
           searching(),
           chooseType(),
           for(int i = 0; i < widget.restaurants.length; i++)
-            if(widget.restaurants[i].getMenu().isEmpty) Container()
-            else if(chosenType != null && !widget.restaurants[i].getMenu().contains(chosenType)) Container()
-            else if(searchingText == '') foodListForCustomer(widget.restaurants[i].getName(), widget.restaurants[i].getMenu())
+            if(widget.restaurants[i].getMenu().isNotEmpty)
+            if(chosenType == TypeFood.all || widget.restaurants[i].getMenu().contains(chosenType))
+            if(searchingText == '') foodListForCustomer(widget.restaurants[i].getName(), widget.restaurants[i].getMenu())
             else if(widget.restaurants[i].getName().contains(searchingText))
               foodListForCustomer(widget.restaurants[i].getName(), widget.restaurants[i].getMenu())
-            else Container()
         ],
       ),
     );

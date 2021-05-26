@@ -231,7 +231,7 @@ class _FoodPageState extends State<FoodPage> {
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/images/1.jpg'),
+                    image: AssetImage('assets/images/food1.jpg'),
                     fit: BoxFit.cover),
               ),
             ),

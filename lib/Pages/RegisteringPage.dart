@@ -1,4 +1,5 @@
 
+import 'package:customer_app/Map.dart';
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:customer_app/appBar.dart';
@@ -9,9 +10,9 @@ import 'dart:io';
 
 class RegisteringPage extends StatefulWidget {
 
-  Function change;
+  Function adding;
 
-  RegisteringPage(this.change);
+  RegisteringPage(this.adding);
 
   @override
   _RegisteringPageState createState() => _RegisteringPageState();
@@ -21,8 +22,6 @@ class _RegisteringPageState extends State<RegisteringPage> {
 
   final _formKey = GlobalKey<FormState>();
 
-  String password = "123";
-  String phoneNumber = "456";
   String inputPhoneNumber = '', inputPassword = '',
       _inputFirstName = '', _inputLastName = '', inputAddress = '';
   bool validUser = false;
@@ -62,7 +61,6 @@ class _RegisteringPageState extends State<RegisteringPage> {
               key: _formKey,
               child: Column(
                 children: [
-
                   //firs name
                   TextFormField(
                     cursorColor: theme.black,
@@ -92,7 +90,6 @@ class _RegisteringPageState extends State<RegisteringPage> {
                     onSaved: (String value) => _inputFirstName = value,
                   ),
                   SizedBox(height: 10,),
-
                   //last name
                   TextFormField(
                     cursorColor: theme.black,
@@ -122,17 +119,15 @@ class _RegisteringPageState extends State<RegisteringPage> {
                     onSaved: (String value) => _inputLastName = value,
                   ),
                   SizedBox(height: 10,),
-
                   //Address
                   TextFormField(
                     cursorColor: theme.black,
-                    autofocus: true,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: Icon(Icons.map),
                           onPressed: (){
-                            //Navigator.push(context, MaterialPageRoute(builder: (context) => Map()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Map()));
                           },
                         ),
                         border: new OutlineInputBorder(
@@ -163,7 +158,6 @@ class _RegisteringPageState extends State<RegisteringPage> {
                   //Phone number
                   TextFormField(
                     cursorColor: theme.black,
-                    autofocus: true,
                     style: TextStyle(color: Colors.white),
                     autovalidate: true,
                     decoration: InputDecoration(
@@ -197,7 +191,6 @@ class _RegisteringPageState extends State<RegisteringPage> {
                   //Password
                   TextFormField(
                     cursorColor: theme.black,
-                    autofocus: true,
                     style: TextStyle(color: Colors.white),
                     obscureText: hidden,
                     decoration: InputDecoration(
@@ -226,13 +219,13 @@ class _RegisteringPageState extends State<RegisteringPage> {
                         labelStyle: TextStyle(fontSize: 18,)
                     ),
                     onChanged: (String value){
-                      password = value;
+                      inputPassword = value;
                       setState(() {
 
                       });
                     },
                     validator: (String value){
-                      if(value.length < 6 || value.contains('a')){
+                      if(value.length < 6 || !value.contains(RegExp(r'[a-zA-Z]')) || !value.contains(RegExp(r'[0-9]'))){
                         return "password at least contains 6 letter and number";
                       }
                       return null;
@@ -254,7 +247,7 @@ class _RegisteringPageState extends State<RegisteringPage> {
                         print(inputAddress);
                         print(inputPhoneNumber);
                         print(inputPassword);
-                        widget.change(Customer(_inputFirstName,_inputLastName,inputPhoneNumber,inputPassword));
+                        widget.adding(Customer(_inputFirstName,_inputLastName,inputPhoneNumber,inputPassword));
                         Navigator.pop(context,);
                       }
                       setState(() {});
