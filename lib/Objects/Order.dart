@@ -5,7 +5,7 @@ import 'Food.dart';
 
 class Order {
 
-  String _restaurantName;
+  String _restaurantName,_restaurantAddressString;
   int _restaurantId,_id,_price=0;
   bool _delivered=false;
   LatLng _restaurantAddress;
@@ -32,6 +32,9 @@ class Order {
   void setRestaurantAddress(LatLng address){
     _restaurantAddress=address;
   }
+  void setRestaurantAddressString(String address){
+    _restaurantAddressString=address;
+  }
   void addFood(Food food,int i){
     _order[food]=i;
   }
@@ -57,6 +60,7 @@ class Order {
     return _deliveryTime;
   }
   int getPrice(){
+    _price=0;
     for(Food food in _order.keys){
       if(food.getDiscount()!=null)
         _price+= ((food.getPrice()*(100-food.getDiscount()))/100*_order[food]).ceil();
@@ -70,6 +74,9 @@ class Order {
   }
   String getRestaurantName(){
     return _restaurantName;
+  }
+  String getRestaurantAddressString(){
+    return _restaurantAddressString;
   }
   LatLng getRestaurantAddress(){
     return _restaurantAddress;

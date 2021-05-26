@@ -41,6 +41,7 @@ class _AwaitingPaymentState extends State<AwaitingPayment> {
   }
 
   price(index){
+    print(widget.currentCustomer.getShoppingCart()[index].getPrice());
     return  Row(
         children: [
             Text(widget.currentCustomer.getShoppingCart()[index].getPrice().toString(),
@@ -87,7 +88,6 @@ class _AwaitingPaymentState extends State<AwaitingPayment> {
   }
 
   showShoppingCart(index){
-    print(widget.currentCustomer.getShoppingCart()[index].getOrderTime());
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: MediaQuery.of(context).size.width / 25,

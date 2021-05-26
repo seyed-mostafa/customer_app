@@ -27,10 +27,23 @@ Customer importCustomer(){
   customer11.addShoppingCart(restaurant[0].getMenu()[1], restaurant[0].getId(), 2);
   customer11.addShoppingCart(restaurant[0].getMenu()[2], restaurant[0].getId(), 3);
   customer11.getShoppingCart()[0].setRestaurantName(restaurant[0].getName());
+  customer11.getShoppingCart()[0].setRestaurantAddressString(" Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St");
+
   customer11.addShoppingCart(restaurant[1].getMenu()[2], restaurant[1].getId(), 1);
   customer11.addShoppingCart(restaurant[1].getMenu()[3], restaurant[1].getId(), 2);
   customer11.addShoppingCart(restaurant[1].getMenu()[4], restaurant[1].getId(), 3);
   customer11.getShoppingCart()[1].setRestaurantName(restaurant[1].getName());
+  customer11.getShoppingCart()[1].setRestaurantAddressString( "Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St");
 
   return customer11;
+}
+
+
+class data{
+  Customer customer1 = new Customer('Ali', 'Alavi', '09123456790', '123');
+  Customer customer2 = new Customer('Naghi', 'Naghavi', '09123456791', '123');
+  Customer customer3 = new Customer('Soltan', 'Soltani', '09123456792', '123');
+  Customer customer4 = new Customer('Abbas', 'Abbasi', '09123456793', '123');
+  Customer customer5 = new Customer('Mostafa', 'Mostafai', '09123456794', '123');
+
 }

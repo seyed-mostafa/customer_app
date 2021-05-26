@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-
 class OrderPage extends StatefulWidget {
   Customer currentCustomer;
   Order currentOrder;
@@ -18,6 +17,75 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> {
+
+  payment(){
+    return  Container(
+      margin: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*1/3),
+      child: TextButton(
+        onPressed: () {
+          setState(() {});
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Text("Payment",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+          ),
+        ),
+        style: TextButton.styleFrom(
+          primary: Colors.black,
+          shadowColor: theme.black,
+          backgroundColor: theme.yellow,
+        ),
+      ),
+    );
+  }
+
+  table() {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+            color: theme.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey,
+                spreadRadius: 0.001,
+                blurRadius: 15,
+              )
+            ]),
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          child: Column(
+            children: [
+              DataTable(
+                columns: const <DataColumn>[
+                  DataColumn(
+                    label: Text('Food name'),
+                  ),
+                  DataColumn(numeric: true, label: Text('Num')),
+                  DataColumn(numeric: true, label: Text('Price')),
+                ],
+                rows: widget.currentOrder
+                    .getOrder()
+                    .entries
+                    .map(
+                      (e) => DataRow(cells: [
+                        DataCell(Text(e.key.getName())),
+                        DataCell(Text(e.value.toString())),
+                        DataCell(Text((e.key.getPrice() * e.value).toString())),
+                      ]),
+                    )
+                    .toList(),
+              ),
+              Container(
+                  child: Text('Total : ${widget.currentOrder.getPrice()}'))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   increaseOrDecrease(index) {
     return Row(
@@ -34,26 +102,31 @@ class _OrderPageState extends State<OrderPage> {
             onPressed: () {
               print('mines');
               setState(() {
-                if (widget.currentOrder.getOrder().values.elementAt(index)-1==0) {
-                  widget.currentCustomer.removeShoppingCart(widget.currentCustomer.getShoppingCart()[index]);
-                }
-                else{
-                  widget.currentOrder.addFood(widget.currentOrder.getOrder().keys.elementAt(index),
-                      widget.currentOrder.getOrder().values.elementAt(index)-1);
+                if (widget.currentOrder.getOrder().values.elementAt(index) -
+                        1 ==
+                    0) {
+                  widget.currentOrder.remove(
+                      widget.currentOrder.getOrder().keys.elementAt(index));
+                } else {
+                  widget.currentOrder.addFood(
+                      widget.currentOrder.getOrder().keys.elementAt(index),
+                      widget.currentOrder.getOrder().values.elementAt(index) -
+                          1);
                 }
               });
             }),
-       // Spacer(),
+        // Spacer(),
         TextButton(
           onPressed: () {
-            setState(() {
-
-            });
+            setState(() {});
           },
           child: Padding(
-            padding: const EdgeInsets.all(15),
+            padding: const EdgeInsets.all(7),
             child: Text(
-              widget.currentOrder.getOrder()[index].toString(),
+              widget.currentOrder
+                  .getOrder()[
+                      widget.currentOrder.getOrder().keys.elementAt(index)]
+                  .toString(),
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
             ),
           ),
@@ -63,7 +136,7 @@ class _OrderPageState extends State<OrderPage> {
             backgroundColor: theme.yellow,
           ),
         ),
-       // Spacer(),
+        // Spacer(),
         IconButton(
             icon: Icon(
               FontAwesomeIcons.plus,
@@ -73,29 +146,38 @@ class _OrderPageState extends State<OrderPage> {
             onPressed: () {
               print('add');
               setState(() {
-                widget.currentOrder.addFood(widget.currentOrder.getOrder().keys.elementAt(index),
-                    widget.currentOrder.getOrder().values.elementAt(index)+1);
+                widget.currentOrder.addFood(
+                    widget.currentOrder.getOrder().keys.elementAt(index),
+                    widget.currentOrder.getOrder().values.elementAt(index) + 1);
               });
-
             }),
       ],
     );
   }
 
-  price(index){
-    return  Row(
+  price(index) {
+    return Row(
       children: [
-        Text(widget.currentCustomer.getShoppingCart()[index].getPrice().toString(),
-          style: TextStyle(fontSize: 13,color: theme.black),),
+        Text(
+          widget.currentOrder
+              .getOrder()
+              .keys
+              .elementAt(index)
+              .getPrice()
+              .toString(),
+          style: TextStyle(fontSize: 13, color: theme.black),
+        ),
       ],
     );
   }
 
-  nameAndItem(index){
+  nameAndItem(index) {
     return Row(
       children: [
-        Text(widget.currentCustomer.getShoppingCart()[index].getRestaurantName(),
-          style: TextStyle(fontSize: 22,color: theme.black),),
+        Text(
+          widget.currentOrder.getOrder().keys.elementAt(index).getName(),
+          style: TextStyle(fontSize: 22, color: theme.black),
+        ),
         Spacer(),
         IconButton(
             icon: Icon(
@@ -103,16 +185,17 @@ class _OrderPageState extends State<OrderPage> {
               size: 22,
               color: theme.red2,
             ),
-            onPressed: (){
+            onPressed: () {
               setState(() {
-                widget.currentCustomer.removeShoppingCart(widget.currentCustomer.getShoppingCart()[index]);
+                widget.currentOrder.remove(
+                    widget.currentOrder.getOrder().keys.elementAt(index));
               });
             })
       ],
     );
   }
 
-  image(){
+  image(index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -121,7 +204,7 @@ class _OrderPageState extends State<OrderPage> {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           image: DecorationImage(
-              image: NetworkImage('assets/images/restaurant/2.jpg'),
+              image: NetworkImage('assets/images/food/${index + 1}.jpg'),
               fit: BoxFit.fill),
         ),
       ),
@@ -130,36 +213,39 @@ class _OrderPageState extends State<OrderPage> {
 
   food(index) {
     return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / 25,
-          vertical: 10
-      ),
+      padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width / 25, 8,
+          MediaQuery.of(context).size.width / 25, 0),
       child: Container(
         height: MediaQuery.of(context).size.height / 7,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.all( Radius.circular(15)),
+            borderRadius: BorderRadius.all(Radius.circular(15)),
             color: theme.white,
-            boxShadow:[
+            boxShadow: [
               BoxShadow(
                 color: Colors.grey,
                 spreadRadius: 0.001,
                 blurRadius: 15,
               )
-            ]
-        ),
+            ]),
         child: Row(
           children: [
-            image(),
+            image(index),
             Container(
-              width: MediaQuery.of(context).size.width*3 / 5,
+              width: MediaQuery.of(context).size.width * 3 / 5,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Spacer(flex: 20,),
+                  Spacer(
+                    flex: 20,
+                  ),
                   nameAndItem(index),
-                  Spacer(flex: 1,),
+                  Spacer(
+                    flex: 1,
+                  ),
                   price(index),
-                  Spacer(flex: 15,),
+                  Spacer(
+                    flex: 15,
+                  ),
                   increaseOrDecrease(index),
                 ],
               ),
@@ -170,22 +256,86 @@ class _OrderPageState extends State<OrderPage> {
     );
   }
 
-  body() {
-    return CustomScrollView(
-      slivers: [
-        SliverList(
-            delegate: SliverChildBuilderDelegate(
-                  (context, index) => food(index),
-              childCount: widget.currentOrder
-                  .getOrder()
-                  .length,
-            )
+  restaurant() {
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 1),
+          child: Container(
+            height: MediaQuery.of(context).size.height / 3,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: NetworkImage('assets/images/restaurant/2.jpg'),
+                  fit: BoxFit.cover),
+            ),
+          ),
         ),
-
+        Container(
+          height: 100,
+          decoration: BoxDecoration(
+            color: theme.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(40,20,0,0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'from  ',
+                      style: TextStyle(fontSize: 15, color: Colors.grey),
+                    ),
+                    Text(
+                      widget.currentOrder.getRestaurantName(),
+                      style:
+                          TextStyle(fontSize: 23, fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        FontAwesomeIcons.mapMarkerAlt,
+                        size: 20,
+                        color: theme.yellow,
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width /2,
+                      child: Text(
+                        widget.currentOrder.getRestaurantAddressString(),
+                        style:
+                        TextStyle(fontSize: 15),softWrap: true,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        )
       ],
     );
   }
 
+  body() {
+    print(widget.currentOrder.getOrder().length);
+    return ListView(
+      children: [
+        restaurant(),
+        for (int i = 0; i < widget.currentOrder.getOrder().length; i++) food(i),
+        SizedBox(height: 5),
+        Column(
+          children: [table()],
+        ),
+        payment(),
+        SizedBox(height: 20,)
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -197,16 +347,18 @@ class _OrderPageState extends State<OrderPage> {
           onPressed: () {
             Navigator.pop(
                 context,
-                MaterialPageRoute(builder: (context) =>
-                    AwaitingPayment(widget.currentCustomer))
-            );
+                MaterialPageRoute(
+                    builder: (context) =>
+                        AwaitingPayment(widget.currentCustomer)));
           },
         ),
         backgroundColor: Colors.white,
-        title: Text('Foodina', style: TextStyle(color: theme.yellow,
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-            fontStyle: FontStyle.italic)),
+        title: Text('Foodina',
+            style: TextStyle(
+                color: theme.yellow,
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic)),
         centerTitle: true,
         elevation: 10,
         iconTheme: IconThemeData(color: theme.yellow),
