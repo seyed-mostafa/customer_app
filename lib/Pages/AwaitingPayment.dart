@@ -24,7 +24,7 @@ class _AwaitingPaymentState extends State<AwaitingPayment> {
           TextButton(
               onPressed:(){
                 setState(() {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                       builder: (context) => OrderPage(widget.currentCustomer,

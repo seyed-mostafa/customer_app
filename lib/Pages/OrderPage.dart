@@ -1,6 +1,8 @@
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Pages/AwaitingPayment.dart';
+import 'package:customer_app/Pages/Nav.dart';
+import 'package:customer_app/Pages/ShoppingCartPage.dart';
 import 'package:customer_app/appBar.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
@@ -384,11 +386,11 @@ class _OrderPageState extends State<OrderPage> {
         leading: IconButton(
           icon: Icon(Icons.keyboard_backspace),
           onPressed: () {
-            Navigator.pop(
+            Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        AwaitingPayment(widget.currentCustomer)));
+                        Nav(widget.currentCustomer)));
           },
         ),
         backgroundColor: Colors.white,
