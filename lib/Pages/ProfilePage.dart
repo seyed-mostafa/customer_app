@@ -50,7 +50,7 @@ class _ProfileState extends State<Profile> {
     Widget choicesWidget(String title, Widget page){
       return Card(
         shadowColor: theme.black,
-        elevation: 5,
+        elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -74,7 +74,6 @@ class _ProfileState extends State<Profile> {
           choicesWidget("Edit Information of Profile", EditProfile(func, widget.currentCustomer)),
           choicesWidget("Wallet Managing", null),
           choicesWidget("My Comments", CommentsPage(widget.currentCustomer)),
-          choicesWidget("Interested Restaurants", null),
         ],
       ),
     );
