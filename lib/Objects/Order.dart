@@ -1,84 +1,78 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'Food.dart';
-import 'package:intl/intl.dart';
-import 'Restaurant.dart';
+
 
 
 class Order {
-  String _customerName,_restaurentName,_customerAddressString;
-  int _id,_price=0;
-  bool _status=false;
-  LatLng _customerAddress;
+
+  String _restaurantName;
+  int _restaurantId,_id,_price=0;
+  bool _delivered=false;
+  LatLng _restaurantAddress;
   static int _count=99246000;
   DateTime _orderTime,_deliveryTime;
   Map <Food,int> _order=new Map();
 
 
-  Order(Map <Food,int> order) {
-    this._order={...order};
+  Order(Food food,int restaurantId, int i) {
+    _order[food]=i;
     _count++;
     _id=_count;
+    _restaurantId=restaurantId;
+  }
+
+
+  void setDelivered(){
+    _delivered=true;
+    _deliveryTime= DateTime.now();
+  }
+  void setRestaurantName(String name){
+    _restaurantName=name;
+  }
+  void setRestaurantAddress(LatLng address){
+    _restaurantAddress=address;
+  }
+  void addFood(Food food,int i){
+    _order[food]=i;
+  }
+  void setOrderTime(){
+    _orderTime= DateTime.now();
+  }
+  void remove(Food food){
+    _order.remove(food);
+    if (_order.isEmpty) {
+      _restaurantId=0;
+    }
+  }
+
+
+
+  bool getDelivered(){
+    return _delivered;
+  }
+  DateTime getOrderTime() {
+    return _orderTime;
+  }
+  DateTime getDeliveryTime() {
+    return _deliveryTime;
+  }
+  int getPrice(){
     for(Food food in _order.keys){
       if(food.getDiscount()!=null)
         _price+= ((food.getPrice()*(100-food.getDiscount()))/100*_order[food]).ceil();
       else
         _price+= (food.getPrice()*_order[food]);
     }
-
-  }
-  void setCustomerAddressString(String customerAddressString){
-    this._customerAddressString=customerAddressString;
-  }
-  String getCustomerAddressString(){
-    return _customerAddressString;
-  }
-  void setStatus(){
-    _status=!_status;
-    if (_status) {
-      setDeliveryTime();
-    }
-  }
-  bool getStatus(){
-    return _status;
-  }
-  void setCustomerName(String name){
-    _customerName=name;
-  }
-  void setRestaurentName(String name){
-    _restaurentName=name;
-  }
-  void setCustomerAddress(LatLng address){
-    _customerAddress=address;
-  }
-  void setOrderTime(){
-    _orderTime= DateTime.now();
-  }
-  void setDeliveryTime(){
-    _deliveryTime= DateTime.now();
-  }
-  DateTime getDeliveryTime() {
-    return _deliveryTime;
-  }
-
-
-  int getPrice(){
     return _price;
   }
-
-  LatLng getCustomerAddress(){
-    return _customerAddress;
+  int getRestaurantId(){
+    return _restaurantId;
   }
-
-  String getRestaurentName(){
-    return _restaurentName;
+  String getRestaurantName(){
+    return _restaurantName;
   }
-
-  DateTime getOrderTime() {
-    return _orderTime;
-  }
-
-  String getCustomerName(){
-    return _customerName;
+  LatLng getRestaurantAddress(){
+    return _restaurantAddress;
   }
   int getId(){
     return _id;
@@ -86,6 +80,4 @@ class Order {
   Map <Food,int> getOrder(){
     return _order;
   }
-
-
 }

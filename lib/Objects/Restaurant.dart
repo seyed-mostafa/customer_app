@@ -1,6 +1,5 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:customer_app/Objects/Comment.dart';
-import 'Order.dart';
 import 'Food.dart';
 
 
@@ -10,7 +9,7 @@ import 'Food.dart';
 // _days =>                               روز های کاری رستوران به صورت یک رشته
 // _hour =>                                  ساعت کاری رستوران به ضورت یک رشته
 // _sendingRangeRadius =>                   شعاع محدوده ارسال غذا توسط رستوران
-// _address =>                       آدرس رستوران (به صورت مختصات )در کلاس خودش
+// _address =>                                   آدرس رستوران (به صورت مختصات )
 // List<Food> _menu =>                    منو رستوران به صورت لیستی از جنس غذا
 
 class Restaurant  {
@@ -32,7 +31,6 @@ class Restaurant  {
     this._password = password;
     this._phoneNumber = phoneNumber;
   }
-  
 
   List<Food> getMenu() {
     return _menu;

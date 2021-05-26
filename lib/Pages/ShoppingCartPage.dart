@@ -5,15 +5,14 @@ import 'package:customer_app/data/Restaurent.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/Objects/theme.dart';
-
 import 'AwaitingPayment.dart';
 import 'OngoingOrders.dart';
 import 'OrdersHistory.dart';
 
 class ShoppingCart extends StatefulWidget {
 
-  List<Restaurant> restaurants = importRestaurent();
-  final Customer currentCustomer;
+  //final List<Restaurant> restaurants = importRestaurant();
+  Customer currentCustomer;
   ShoppingCart(this.currentCustomer);
 
   @override
@@ -36,9 +35,9 @@ class _ShoppingCartState extends State<ShoppingCart> {
                   unselectedLabelColor: Colors.white,
                   indicatorColor: theme.yellow,
                   tabs: [
-                    Tab(text:"History",), //,child: Row(children: [ ],),),
-                    Tab(text: "Ongoing"),
                     Tab(text: "Awaiting Payment"),
+                    Tab(text: "Ongoing"),
+                    Tab(text:"History"),
                   ]
               )
             ],
@@ -46,9 +45,9 @@ class _ShoppingCartState extends State<ShoppingCart> {
         ),
         body: TabBarView(
           children: [
-            OrdersHistory(widget.currentCustomer),
-            OngoingOrders(widget.currentCustomer),
             AwaitingPayment(widget.currentCustomer),
+            OngoingOrders(widget.currentCustomer),
+            OrdersHistory(widget.currentCustomer),
           ],
         ),
       ),

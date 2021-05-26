@@ -1,4 +1,5 @@
 
+import 'package:customer_app/Objects/Order.dart';
 import 'Comment.dart';
 import 'Restaurant.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -7,100 +8,107 @@ import 'Food.dart';
 
 
 class Customer{
+
   String _firstName,_lastName,_phoneNumber,_password;
   num _wallet=0;
   List<LatLng> _address = List.empty(growable: true);
   List<Comment> _comments = List.empty(growable: true);
-  List<Restaurant> _favoriteRestaurent = List.empty(growable: true);
-
-  Map <Food,int> _shoppingCart =new Map();
-  List<Food> _previosOrders = List.empty(growable: true); /////   احتمالا باید تغییر کنه
+  List<Restaurant> _favoriteRestaurant = List.empty(growable: true);
+  List<Food> _favoriteFood = List.empty(growable: true);
+  List<Order> _shoppingCart =List.empty(growable: true);
+  List<Order> _orders = List.empty(growable: true);
 
 
 
   Customer(firstName,lastName,phoneNumber,password)
   {
-    this._firstName = firstName;
-    this._lastName=lastName;
-    this._phoneNumber=phoneNumber;
-    this._password=password;
-
+    _firstName = firstName;
+    _lastName=lastName;
+    _phoneNumber=phoneNumber;
+    _password=password;
   }
 
-  void setName(String fname) {
-    this._firstName = fname;
+  void setName(String name) {
+    _firstName = name;
   }
-
-  void setLastName(String lname) {
-    this._lastName = lname;
+  void setLastName(String name) {
+    _lastName = name;
   }
-
   void setPhoneNumber(String phoneNumber) {
-    this._phoneNumber = phoneNumber;
+    _phoneNumber = phoneNumber;
   }
-
   void setPassword(String password) {
-    this._password = password;
+    _password = password;
   }
   void setWallet(num wallet) {
-    this._wallet = wallet;
+    _wallet = wallet;
   }
-  void addAdres(LatLng address) {
-    this._address.add(address);
+  void addAddress(LatLng address) {
+    _address.add(address);
   }
-  void addPreviosOrders(Food food) {
-    this._previosOrders.add(food);
+  void removeShoppingCart(Order order){
+    _shoppingCart.remove(order);
+  }
+  void addShoppingCart(Food food,int restaurantId,int i) {
+    for(Order order in _shoppingCart){
+      if (order.getRestaurantId()==restaurantId) {
+        order.addFood(food, i);
+        return;
+      }
+    }
+    _shoppingCart.add(Order(food, restaurantId,i));
+  }
+  void removeFromShoppingCart(int index){
+    addPreviousOrders(_shoppingCart[index]);
+    _shoppingCart.removeAt(index);
+  }
+  void addPreviousOrders(Order order) {
+    _orders.add(order);
   }
   void addComment(Comment comment) {
     _comments.add(comment);
   }
-  void addFavoriteRestaurent(Restaurant favoriteRestaurent) {
-    this._favoriteRestaurent.add(favoriteRestaurent);
+  void addFavoriteRestaurant(Restaurant favoriteRestaurant) {
+    _favoriteRestaurant.add(favoriteRestaurant);
   }
-  void addShoppingCart(Food food,int count) {
-    _shoppingCart[food]=count;
+  void addFavoriteFood(Food favoriteFood) {
+    _favoriteFood.add(favoriteFood);
   }
+
 
 
 
   String getName() {
     return _firstName ;
   }
-
   String getLastName() {
     return _lastName ;
   }
-
   String getPhoneNumber() {
     return _phoneNumber ;
   }
-
   String getPassword() {
     return _password ;
   }
   num getWallet() {
     return _wallet ;
   }
-  List<LatLng> getAdres() {
+  List<LatLng> getAddress() {
     return _address;
   }
-  List<Food> getPreviosOrders() {
-    return _previosOrders;
+  List<Order> getShoppingCart() {
+    return _shoppingCart;
+  }
+  List<Order> getPreviousOrders() {
+    return _orders;
   }
   List<Comment> getComment() {
     return _comments;
   }
-  List<Restaurant> getFavoriteRestaurent() {
-    return _favoriteRestaurent;
+  List<Restaurant> getFavoriteRestaurant() {
+    return _favoriteRestaurant;
   }
-  Map<Food,int> getShoppingCart() {
-    return _shoppingCart;
+  List<Food> getFavoriteFood() {
+    return _favoriteFood;
   }
-
-  void setShoppingCartClear() {               //سبد خرید با این تابع خالی میشه
-    _shoppingCart.clear();                   //پس قبلش باید با تابع بالاییش، سبد خرید رو بگیریم و برای کلاس سفارشات بفرستیم
-  }
-
-
-
 }

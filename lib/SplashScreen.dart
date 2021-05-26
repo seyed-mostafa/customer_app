@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
 
-    Customer currentCustomer= new Customer('Ali', 'Alavi', '09123456790', '123');
+    Customer currentCustomer=importCustomer();
 
     super.initState();
     Timer(

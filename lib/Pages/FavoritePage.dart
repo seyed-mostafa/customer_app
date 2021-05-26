@@ -7,7 +7,7 @@ import 'package:customer_app/Objects/Restaurant.dart';
 
 class Favorite extends StatefulWidget {
 
-  List<Restaurant> restaurants = importRestaurent();
+  List<Restaurant> restaurants = importRestaurant();
   Customer currentCustomer;
   Favorite(this.currentCustomer);
 

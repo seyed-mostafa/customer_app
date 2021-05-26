@@ -125,7 +125,7 @@ class _EditProfileState extends State<EditProfile> {
 
                   //Address
                   TextFormField(
-                    initialValue: widget.currentCustomer.getAdres().toString(),
+                    initialValue: widget.currentCustomer.getAddress().toString(),
                     cursorColor: theme.black,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(

@@ -2,7 +2,7 @@
 
 import 'Restaurant.dart';
 
-class Food extends Restaurant{
+class Food {
   String _name, _description;
   num _discount, _price;
   bool _sizing, _available;
@@ -12,7 +12,7 @@ class Food extends Restaurant{
 
 
 
-   Food(String name, String description,num price,num discount,bool sizing,bool available,TypeFood typeFood) : super('', null, '', '')  {
+   Food(String name, String description,num price,num discount,bool sizing,bool available,TypeFood typeFood)   {
     this._name = name;
     if (discount!=null) {
       this._discount = discount;

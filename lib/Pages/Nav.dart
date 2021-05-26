@@ -22,7 +22,7 @@ class Nav extends StatefulWidget {
 
 class _NavState extends State<Nav> {
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
 
   showScreen() {
       print("here");

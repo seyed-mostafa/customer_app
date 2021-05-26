@@ -10,7 +10,7 @@ import '../EditProfile.dart';
 
 class Profile extends StatefulWidget {
 
-  List<Restaurant> restaurants = importRestaurent();
+  List<Restaurant> restaurants = importRestaurant();
   Customer currentCustomer;
   Profile(this.currentCustomer);
 

@@ -3,7 +3,7 @@ import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-List<Restaurant> importRestaurent(){
+List<Restaurant> importRestaurant(){
 
   Restaurant restaurant1 = new Restaurant('akbar jooje',
       LatLng(35.717676891099835, 51.331243399093914), '09123456780', '1234');
@@ -275,67 +275,6 @@ List<Restaurant> importRestaurent(){
 
     restaurant10.addMenu(food);
   }
-
-  Order order1=Order({food1:2,food4:1,food13:5,food20:1});
-  Order order2=Order({food3:1,food6:1,food5:9});
-  Order order3=Order({food5:1,food7:1,food13:3});
-  Order order4=Order({food15:4,food10:1,food13:3});
-  Order order5=Order({food18:2,food9:1,food19:4});
-  Order order6=Order({food19:1,food2:5,food11:2,food16:3});
-  Order order7=Order({food18:2,food4:1});
-  Order order8=Order({food2:1,food4:1,food7:1,food6:2});
-  Order order9=Order({food15:1,food5:2,food8:3});
-  Order order10=Order({food14:4,food4:1,food10:2});
-  Order order11=Order({food9:3,food10:5,food8:1});
-
-  order1.setCustomerName('Ali Alavi');
-  order2.setCustomerName('Naghi Naghavi');
-  order3.setCustomerName('Soltan Soltani');
-  order4.setCustomerName('Abbas Abbasi');
-  order5.setCustomerName('Mostafa Mostafai');
-  order6.setCustomerName('Gol Kharzare');
-  order7.setCustomerName('Pari Varparide');
-  order8.setCustomerName('Abdollah Nakhalaf');
-  order9.setCustomerName('Amir Booghi');
-  order10.setCustomerName('Noora Noori');
-  order11.setCustomerName('Pari Varparide');
-
-  order1.setCustomerAddressString('golbarg,kh kerman,pelak 34,vahed 2,salam bar hame daram talash mikonam ke matn ziadi benevisam :)');
-  order2.setCustomerAddressString('golbarg,kh kerman,pelak 34,vahed 2,salam bar hame daram talash mikonam ke matn ziadi benevisam :)');
-  order3.setCustomerAddressString('golbarg,kh kerman,pelak 34,vahed 2,salam bar hame daram talash mikonam ke matn ziadi benevisam :)');
-  order4.setCustomerAddressString('golbarg,kh kerman,pelak 34,vahed 2,salam bar hame daram talash mikonam ke matn ziadi benevisam :)');
-  order6.setCustomerAddressString('golbarg,kh kerman,pelak 34,vahed 2,salam bar hame daram talash mikonam ke matn ziadi benevisam :)');
-  order5.setCustomerAddressString('golbarg,kh kerman,pelak 34,vahed 2,salam bar hame daram talash mikonam ke matn ziadi benevisam :)');
-  order7.setCustomerAddressString('golbarg,kh kerman,pelak 34,vahed 2,salam bar hame daram talash mikonam ke matn ziadi benevisam :)');
-  order8.setCustomerAddressString('golbarg,kh kerman,pelak 34,vahed 2,salam bar hame daram talash mikonam ke matn ziadi benevisam :)');
-  order9.setCustomerAddressString('golbarg,kh kerman,pelak 34,vahed 2,salam bar hame daram talash mikonam ke matn ziadi benevisam :)');
-  order10.setCustomerAddressString('golbarg,kh kerman,pelak 34,vahed 2,salam bar hame daram talash mikonam ke matn ziadi benevisam :)');
-  order11.setCustomerAddressString('golbarg,kh kerman,pelak 34,vahed 2,salam bar hame daram talash mikonam ke matn ziadi benevisam :)');
-
-  order1.setCustomerAddress(LatLng(34.717676891099835, 51.331243399093914));
-  order2.setCustomerAddress(LatLng(35.717676891099835, 25.331243399093914));
-  order3.setCustomerAddress(LatLng(33.717676891099835, 25.331243399093914));
-  order4.setCustomerAddress(LatLng(32.717676891099835, 25.331243399093914));
-  order5.setCustomerAddress(LatLng(31.717676891099835, 25.331243399093914));
-  order6.setCustomerAddress(LatLng(35.717676891099835, 26.331243399093914));
-  order7.setCustomerAddress(LatLng(35.731750523607964, 51.47188366660937));
-  order8.setCustomerAddress(LatLng(35.717676891099835, 20.331243399093914));
-  order9.setCustomerAddress(LatLng(36.717676891099835, 25.331243399093914));
-  order10.setCustomerAddress( LatLng(36.717676891099835, 24.331243399093914));
-  order11.setCustomerAddress( LatLng(35.731750523607964, 51.47188366660937));
-
-
-
-  List orders=[
-    order11,order10,order9,order8,order7,order6,order5,order4,order3,order2,order1
-  ];
-
-  for(Order order in orders){
-    order.setRestaurentName(restaurant1.getName());
-    order.setOrderTime();
-    restaurant3.addOrder(order);
-  }
-
 
   List<Restaurant> restaurant=[restaurant10,restaurant9,restaurant8,restaurant7,restaurant6,restaurant5,restaurant4,restaurant3,restaurant2,restaurant1];
   return restaurant;

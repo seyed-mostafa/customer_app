@@ -1,5 +1,6 @@
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Food.dart';
+import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Pages/RestaurantPage.dart';
 import 'package:customer_app/data/Restaurent.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,12 +11,12 @@ import 'package:customer_app/Objects/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:customer_app/appBar.dart';
 
-
 class FoodPage extends StatefulWidget {
   Customer customer;
-  Restaurant currentRestaurant = importRestaurent()[0];
+  Restaurant currentRestaurant = importRestaurant()[0];
   int currentFood;
-
+  Order order;
+  Food food;
   FoodPage(this.currentFood, this.customer);
 
   @override
@@ -24,26 +25,29 @@ class FoodPage extends StatefulWidget {
 
 class _FoodPageState extends State<FoodPage> {
   int state = 1;
-  int like=0;
-
+  int like = 0;
 
   @override
   Widget build(BuildContext context) {
-
-    bool isInBag(){
-      print(widget.customer.getShoppingCart().keys);
-      if (widget.customer.getShoppingCart().keys.isNotEmpty) {
-      for(Food food in widget.customer.getShoppingCart().keys){
-        print(food.getName());
-        if (food.getName().compareTo(widget.currentRestaurant.getMenu()[widget.currentFood].getName())==0) {
-          return true;
+    bool isInBag() {
+      if (widget.customer.getShoppingCart().isNotEmpty) {
+        for (Order order in widget.customer.getShoppingCart()) {
+          if (order.getRestaurantId() == widget.currentRestaurant.getId()) {
+            for(Food food in order.getOrder().keys ){
+              if (food.getName()==widget.currentRestaurant.getMenu()[widget.currentFood].getName()) {
+                widget.order=order;
+                widget.food =food;
+               break;
+              }
+            }
+            return true;
+          }
         }
-      }
       }
       return false;
     }
 
-    addToBag(){
+    addToBag() {
       return Row(
         children: [
           Spacer(
@@ -52,13 +56,19 @@ class _FoodPageState extends State<FoodPage> {
           TextButton(
             onPressed: () {
               setState(() {
-                widget.customer.addShoppingCart(widget.currentRestaurant.getMenu()[widget.currentFood], 1);
+                widget.customer.addShoppingCart(
+                    widget.currentRestaurant.getMenu()[widget.currentFood],
+                    widget.currentRestaurant.getId(), 1);
+                widget.order=widget.customer.getShoppingCart().last;
                 print('add to bag');
               });
             },
             child: Padding(
               padding: const EdgeInsets.all(15),
-              child: Text('Add To Bag',style: TextStyle(fontSize: 22,fontWeight: FontWeight.w400),),
+              child: Text(
+                'Add To Bag',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
+              ),
             ),
             style: TextButton.styleFrom(
               primary: Colors.black,
@@ -73,7 +83,7 @@ class _FoodPageState extends State<FoodPage> {
       );
     }
 
-    increaseOrDecrease(){
+    increaseOrDecrease() {
       return Row(
         children: [
           Spacer(
@@ -87,14 +97,32 @@ class _FoodPageState extends State<FoodPage> {
               ),
               onPressed: () {
                 print('mines');
+                setState(() {
+                  if (widget.order.getOrder()[widget.food]-1==0) {
+                    widget.order.remove(widget.food);
+                    widget.order=null;
+                  }
+                  else{
+                  widget.customer.addShoppingCart(
+                      widget.currentRestaurant.getMenu()[widget.currentFood],
+                      widget.currentRestaurant.getId(), widget.order.getOrder()[widget.food]-1);
+                  widget.order=widget.customer.getShoppingCart().last;
+                  }
+                });
               }),
           Spacer(),
           TextButton(
-           onPressed: (){},
+            onPressed: () {
+              setState(() {
+
+              });
+            },
             child: Padding(
               padding: const EdgeInsets.all(15),
-              child: Text(widget.customer.getShoppingCart()[widget.currentRestaurant.getMenu()[widget.currentFood]].toString(),
-                style: TextStyle(fontSize: 22,fontWeight: FontWeight.w400),),
+              child: Text(
+                widget.order.getOrder()[widget.food].toString(),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
+              ),
             ),
             style: TextButton.styleFrom(
               primary: Colors.black,
@@ -111,6 +139,14 @@ class _FoodPageState extends State<FoodPage> {
               ),
               onPressed: () {
                 print('add');
+                setState(() {
+                print(widget.order.getOrder()[widget.food]);
+                widget.customer.addShoppingCart(
+                    widget.currentRestaurant.getMenu()[widget.currentFood],
+                    widget.currentRestaurant.getId(), widget.order.getOrder()[widget.food]+1);
+                widget.order=widget.customer.getShoppingCart().last;
+                });
+
               }),
           Spacer(
             flex: 5,
@@ -118,7 +154,6 @@ class _FoodPageState extends State<FoodPage> {
         ],
       );
     }
-
 
     DetailesOrReview() {
       if (state == 1) {
@@ -171,87 +206,92 @@ class _FoodPageState extends State<FoodPage> {
     foodData() {
       return Container(
         child: ListView(
-        children: [
-          Container(
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-
-                  ),
-                  child: IconButton(
-                      icon: Icon(
-                        like%2==0? Icons.favorite_border:Icons.favorite,
-                        color: Colors.red,
-                        size: 38,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          like++;
-                        });
-                      }
-                  )
+          children: [
+            Container(
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(),
+                    child: IconButton(
+                        icon: Icon(
+                          like % 2 == 0
+                              ? Icons.favorite_border
+                              : Icons.favorite,
+                          color: Colors.red,
+                          size: 38,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            like++;
+                          });
+                        })),
+              ),
+              height: MediaQuery.of(context).size.height / 3,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/images/1.jpg'),
+                    fit: BoxFit.cover),
               ),
             ),
-            height: MediaQuery.of(context).size.height / 3,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('assets/images/1.jpg'), fit: BoxFit.cover),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/100,vertical: 15),
-            child: Column(
-              children: [
-                Row(children: [
-                  Spacer(),
-                  Text(
-                    //name
-                    widget.currentRestaurant
-                        .getMenu()[widget.currentFood]
-                        .getName(),
-
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
-                  Spacer(
-                    flex: 10,
-                  ),
-                  Text(
-                    widget.currentRestaurant
-                        .getMenu()[widget.currentFood]
-                        .getPrice()
-                        .toString() +
-                        ' T',
-                    style: TextStyle(fontSize: 28),
-                  ),
-                  Spacer(),
-                ]),
-                SizedBox(
-                  height: 5,
-                ),
-
-                Row(
-                  children: [
+            Container(
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width / 100,
+                  vertical: 15),
+              child: Column(
+                children: [
+                  Row(children: [
                     Spacer(),
-                    Text('by ',style: TextStyle(fontSize: 12,color: Colors.grey),),
-                    Text(widget.currentRestaurant
-                        .getName(),
+                    Text(
+                      //name
+                      widget.currentRestaurant
+                          .getMenu()[widget.currentFood]
+                          .getName(),
 
-                      style: TextStyle(fontSize:12,fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
-                    Spacer(flex: 10,),
-                    Text(''),
+                    Spacer(
+                      flex: 10,
+                    ),
+                    Text(
+                      widget.currentRestaurant
+                              .getMenu()[widget.currentFood]
+                              .getPrice()
+                              .toString() +
+                          ' T',
+                      style: TextStyle(fontSize: 28),
+                    ),
                     Spacer(),
-                  ],
-                ),
-
-              ],
+                  ]),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    children: [
+                      Spacer(),
+                      Text(
+                        'by ',
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
+                      Text(
+                        widget.currentRestaurant.getName(),
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.bold),
+                      ),
+                      Spacer(
+                        flex: 10,
+                      ),
+                      Text(''),
+                      Spacer(),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-            isInBag()?increaseOrDecrease():addToBag(),
-            Padding(padding:EdgeInsets.all(20)),
+            isInBag() ? increaseOrDecrease() : addToBag(),
+            Padding(padding: EdgeInsets.all(20)),
             Row(
               children: [
                 Spacer(),
@@ -265,9 +305,9 @@ class _FoodPageState extends State<FoodPage> {
                   },
                   child: Text('Detailes',
                       style: TextStyle(
-
                         fontSize: 25,
-                        color: state == 1 ? theme.yellow : Colors.grey,)),
+                        color: state == 1 ? theme.yellow : Colors.grey,
+                      )),
                 ),
                 Spacer(
                   flex: 2,
@@ -290,7 +330,6 @@ class _FoodPageState extends State<FoodPage> {
             ),
             DetailesOrReview(),
             Spacer(),
-
           ],
         ),
       );
@@ -298,19 +337,24 @@ class _FoodPageState extends State<FoodPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:Colors.white ,
-        title: Text('Foodina',style: TextStyle(color: theme.yellow,
-            fontSize: 30, fontWeight: FontWeight.bold,fontStyle: FontStyle.italic)),
+        backgroundColor: Colors.white,
+        title: Text('Foodina',
+            style: TextStyle(
+                color: theme.yellow,
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic)),
         centerTitle: true,
         elevation: 10,
-        iconTheme: IconThemeData(color:theme.yellow),
+        iconTheme: IconThemeData(color: theme.yellow),
         leading: IconButton(
           icon: Icon(Icons.keyboard_backspace),
-          onPressed: (){
+          onPressed: () {
             Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => RestaurantPage(widget.customer, widget.currentRestaurant))
-            );
+                MaterialPageRoute(
+                    builder: (context) => RestaurantPage(
+                        widget.customer, widget.currentRestaurant)));
           },
         ),
       ),

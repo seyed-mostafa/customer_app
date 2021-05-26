@@ -13,7 +13,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Home extends StatefulWidget {
 
-  List<Restaurant> restaurants = importRestaurent();
+  List<Restaurant> restaurants = importRestaurant();
   Customer currentCustomer;
   Home(this.currentCustomer);
   @override
