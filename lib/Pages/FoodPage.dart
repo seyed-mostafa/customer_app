@@ -2,6 +2,7 @@ import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Pages/RestaurantPage.dart';
+import 'package:customer_app/Pages/RestaurantPageTabBar.dart';
 import 'package:customer_app/data/Restaurent.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -353,7 +354,7 @@ class _FoodPageState extends State<FoodPage> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => RestaurantPage(
+                    builder: (context) => RestaurantPageTabBar(
                         widget.customer, widget.currentRestaurant)));
           },
         ),

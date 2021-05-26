@@ -156,13 +156,10 @@ class _HomeState extends State<Home> {
           children: [
             TextButton(
               onPressed: (){
-                for(int i = 0; i < widget.restaurants.length; i++){
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => RestaurantPageTabBar(widget.currentCustomer, widget.restaurants[0]))
                   );
-                }
-
               },
               child: Padding(
                 padding: EdgeInsets.only(left: 10),
