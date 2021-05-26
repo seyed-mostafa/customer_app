@@ -125,7 +125,7 @@ class _HomeState extends State<Home> {
                         Spacer(),
                         IconButton(
                           splashRadius: 10,
-                          icon: Icon(Icons.add_circle_outline),
+                          icon: Icon(FontAwesomeIcons.plusCircle),
                           onPressed: (){
 
                           }

@@ -6,8 +6,10 @@ import 'package:customer_app/Pages/MenuPage.dart';
 import 'package:customer_app/Pages/Nav.dart';
 import 'package:customer_app/Pages/TabBar.dart';
 import 'package:customer_app/appBar.dart';
+import 'package:customer_app/data/Restaurent.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class RestaurantPage extends StatefulWidget {
@@ -68,17 +70,19 @@ class _RestaurantPageState extends State<RestaurantPage> {
   @override
   Widget build(BuildContext context) {
 
+    Size _size = MediaQuery.of(context).size;
+
     imageWidget(index){
       return Stack(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.20,
-            width: MediaQuery.of(context).size.width * 0.40,
+            // height: MediaQuery.of(context).size.height * 0.20,
+            // width: MediaQuery.of(context).size.width * 0.40,
             padding: EdgeInsets.fromLTRB(5, 10, 10, 10),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Image.asset(
-                'assets/images/'+(index+1).toString()+".jpg",
+                "assets/images/food1.jpg",
                 fit: BoxFit.cover,
               ),
             ),
@@ -104,50 +108,48 @@ class _RestaurantPageState extends State<RestaurantPage> {
     }
 
     dataFoodWidget(index){
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(widget.currentRestaurant.getMenu()[index].getName()),
-          Text(""),
-          Text("Price : ${widget.currentRestaurant.getMenu()[index].getPrice().toString()}"),
-        ],
+      return Container(
+        margin: EdgeInsets.only(left: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(widget.currentRestaurant.getMenu()[index].getName()),
+            Text("${widget.currentRestaurant.getMenu()[index].getPrice().toString()} T"),
+          ],
+        ),
       );
     }
 
     iconWidget(index){
-      return Column(
-        children: [
-          IconButton(
-              icon: Icon(
-                widget.currentRestaurant.getMenu()[index].getAvailable()?Icons.check_circle_rounded:Icons.circle,
-                color: widget.currentRestaurant.getMenu()[index].getAvailable()?Colors.greenAccent:Colors.redAccent,
-              ),
-              onPressed: (){
-                widget.currentRestaurant.getMenu()[index].setAvailable(!widget.currentRestaurant.getMenu()[index].getAvailable());
-                setState(() {});
-              }
-          ),
-          IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: (){
-                widget.currentRestaurant.getMenu().removeAt(index);
-                setState(() {});
-              }
+      return IconButton(
+        icon: Icon(FontAwesomeIcons.plusCircle),
+        splashRadius: 5,
+        onPressed: () => {
+          widget.currentCustomer.addShoppingCart(
+              widget.currentRestaurant.
+              getMenu()[index],
+              widget.currentRestaurant.getId(),
+              1
           )
-        ],
+        },
       );
     }
 
     Widget showFood(index){
       return Container(
+        width: _size.width/2,
         padding: const EdgeInsets.all(2),
         child: TextButton(
-          child: Row(
+          child: Column(
             children: [
               imageWidget(index),
-              dataFoodWidget(index),
-              Spacer(),
-              iconWidget(index),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  dataFoodWidget(index),
+                  iconWidget(index)
+                ],
+              )
             ],
           ),
           onPressed: (){
@@ -165,11 +167,21 @@ class _RestaurantPageState extends State<RestaurantPage> {
       );
     }
 
+    showRow (index) {
+      return Row(
+        children: [
+          showFood(index),
+          if (index+1 < widget.currentRestaurant.getMenu().length)
+          showFood(index+1),
+        ],
+      );
+    }
+
     Widget building(){
       return SliverList(
           delegate: SliverChildBuilderDelegate(
-            (context, index) => showFood(index),
-            childCount: widget.currentRestaurant.getMenu().length,
+            (context, index) => showRow(index*2),
+            childCount: (widget.currentRestaurant.getMenu().length * 0.5).ceil(),
           )
       );
     }
@@ -180,6 +192,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
           SliverAppBar(
             title: Text(widget.currentRestaurant.getName()),
             expandedHeight: 300,
+            pinned: true,
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
