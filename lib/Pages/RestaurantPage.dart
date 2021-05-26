@@ -117,8 +117,16 @@ class _RestaurantPageState extends State<RestaurantPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.currentRestaurant.getMenu()[index].getName()),
-            Text("${widget.currentRestaurant.getMenu()[index].getPrice().toString()} T"),
+            Text(widget.currentRestaurant.getMenu()[index].getName()
+              ,style: TextStyle(
+                color: theme.black
+              ),
+            ),
+            Text("${widget.currentRestaurant.getMenu()[index].getPrice().toString()} T",
+              style: TextStyle(
+                color: theme.black
+              ),
+            ),
           ],
         ),
       );
@@ -143,6 +151,11 @@ class _RestaurantPageState extends State<RestaurantPage> {
       return Container(
         width: _size.width/2,
         padding: const EdgeInsets.all(2),
+        margin: EdgeInsets.fromLTRB(10, 10, 5, 0),
+        decoration: BoxDecoration(
+          color: theme.yellow,
+          borderRadius: BorderRadius.circular(10)
+        ),
         child: TextButton(
           child: Column(
             children: [
@@ -234,9 +247,15 @@ class _RestaurantPageState extends State<RestaurantPage> {
               children: [
                 icon,
                 typeFood == TypeFood.all ? Text("  " + typeFood.toString().substring(9),
-                  style: TextStyle(fontSize: _size.width * 0.03)
+                  style: TextStyle(
+                      fontSize: _size.width * 0.03,
+                      color: theme.black
+                  )
                 ):Text("  " + "AllFood",
-                  style: TextStyle(fontSize: _size.width * 0.03),
+                  style: TextStyle(
+                      fontSize: _size.width * 0.03,
+                      color: theme.black
+                  ),
                 )
               ],
             ),
@@ -257,17 +276,17 @@ class _RestaurantPageState extends State<RestaurantPage> {
             scrollDirection: Axis.horizontal,
             children: [
               //here null means all type
-              typeWidget(TypeFood.all, Icon(Icons.assignment_turned_in_rounded)),
-              typeWidget(TypeFood.Pizza, Icon(FontAwesomeIcons.pizzaSlice)),
-              typeWidget(TypeFood.Sandwich, Icon(FontAwesomeIcons.hotdog,)),
-              typeWidget(TypeFood.Drinks, Icon(FontAwesomeIcons.cocktail)),
-              typeWidget(TypeFood.PersianFood, Icon(Icons.food_bank)),
-              typeWidget(TypeFood.Dessert, Icon(Icons.no_food)),
-              typeWidget(TypeFood.Appetizer, Icon(Icons.fastfood)),
-              typeWidget(TypeFood.Fried, Icon(Icons.local_fire_department)),
-              typeWidget(TypeFood.Steaks, Icon(Icons.set_meal)),
-              typeWidget(TypeFood.Breakfast, Icon(Icons.breakfast_dining)),
-              typeWidget(TypeFood.International, Icon(Icons.food_bank)),
+              typeWidget(TypeFood.all, Icon(Icons.assignment_turned_in_rounded, color: theme.yellow,)),
+              typeWidget(TypeFood.Pizza, Icon(FontAwesomeIcons.pizzaSlice, color: theme.yellow,)),
+              typeWidget(TypeFood.Sandwich, Icon(FontAwesomeIcons.hotdog, color: theme.yellow,)),
+              typeWidget(TypeFood.Drinks, Icon(FontAwesomeIcons.cocktail, color: theme.yellow,)),
+              typeWidget(TypeFood.PersianFood, Icon(Icons.food_bank, color: theme.yellow,)),
+              typeWidget(TypeFood.Dessert, Icon(Icons.no_food, color: theme.yellow,)),
+              typeWidget(TypeFood.Appetizer, Icon(Icons.fastfood, color: theme.yellow,)),
+              typeWidget(TypeFood.Fried, Icon(Icons.local_fire_department, color: theme.yellow,)),
+              typeWidget(TypeFood.Steaks, Icon(Icons.set_meal, color: theme.yellow,)),
+              typeWidget(TypeFood.Breakfast, Icon(Icons.breakfast_dining, color: theme.yellow,)),
+              typeWidget(TypeFood.International, Icon(Icons.food_bank, color: theme.yellow,)),
             ]
         ),
       );
