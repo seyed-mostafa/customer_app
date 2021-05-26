@@ -110,7 +110,7 @@ class _AwaitingPaymentState extends State<AwaitingPayment> {
           children: [
             image(),
             Container(
-              width: 200,
+              width: 300,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

@@ -5,6 +5,7 @@ import 'package:customer_app/appBar.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 class OrderPage extends StatefulWidget {
   Customer currentCustomer;
@@ -23,7 +24,45 @@ class _OrderPageState extends State<OrderPage> {
       margin: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*1/3),
       child: TextButton(
         onPressed: () {
-          setState(() {});
+          setState(() {
+            if (widget.currentCustomer.getWallet()<widget.currentOrder.getPrice()) {
+            showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: Text('Inventory is insufficient'),
+                content: const Text('Wallet balance is not enough.\nCharge your wallet'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'Ok'),
+                    child: const Text('Ok',style: TextStyle(color:Color(0xfffcb000)),),
+                  ),
+                ],
+              ),
+            );
+            }
+            else{
+              widget.currentOrder.setOrderTime();
+              widget.currentCustomer.setWallet(widget.currentCustomer.getWallet()-
+                  widget.currentOrder.getPrice());
+              widget.currentCustomer.removeShoppingCart(widget.currentOrder);
+              widget.currentCustomer.addPreviousOrders(widget.currentOrder);
+              showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: const Text('Payment was successful'),
+                  content: Text('Tracking Code : ${widget.currentOrder.getId()}\n'
+                      '${DateFormat('d MMM EEEEEE kk:mm').
+                  format(widget.currentOrder.getOrderTime())}'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Ok'),
+                      child: const Text('Ok',style: TextStyle(color:Color(0xfffcb000)),),
+                    ),
+                  ],
+                ),
+              );
+            }
+          });
         },
         child: Padding(
           padding: const EdgeInsets.all(10),
@@ -339,7 +378,6 @@ class _OrderPageState extends State<OrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    widget.currentOrder.setOrderTime();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

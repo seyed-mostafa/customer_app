@@ -35,6 +35,7 @@ Customer importCustomer(){
   customer11.getShoppingCart()[1].setRestaurantName(restaurant[1].getName());
   customer11.getShoppingCart()[1].setRestaurantAddressString( "Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St");
 
+  customer11.setWallet(300000);
   return customer11;
 }
 
