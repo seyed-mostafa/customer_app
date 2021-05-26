@@ -1,28 +1,39 @@
 
-import 'package:customer_app/Objects/Food.dart';
 
-class Comment extends Food {
-  String _comment1,_comment2;
-  DateTime _dateTime1,_dateTime2;
+class Comment  {
+  String _comment,_reply,_customerName,_restaurantName;
+  DateTime _timeComment,_timeReply;
 
-  Comment(String comment1) : super('', '', null, null, false, false, null){
-    this._comment1=comment1;
-    _dateTime1= DateTime.now();
+  Comment(String comment) {
+    this._comment=comment;
+    _timeComment= DateTime.now();
   }
-  void setComment2(String comment2){
-    this._comment1=comment2;
-    _dateTime2= DateTime.now();
+  void setReply(String reply){
+    this._reply=reply;
+    _timeReply= DateTime.now();
   }
-  String getComment1(){
-    return _comment1;
+  void setRestaurantName(String restaurantName){
+    _restaurantName=restaurantName;
   }
-  String getComment2(){
-    return _comment2;
+  void setCustomerName(String customerName){
+    _customerName=customerName;
   }
-  DateTime getDateTime1(){
-    return _dateTime1;
+  String getComment(){
+    return _comment;
   }
-  DateTime getDateTime2(){
-    return _dateTime2;
+  String getReply(){
+    return _reply;
+  }
+  String getRestaurantName(){
+    return _restaurantName;
+  }
+  String getCustomerName(){
+    return _customerName;
+  }
+  DateTime getTimeComment(){
+    return _timeComment;
+  }
+  DateTime getTimeReply(){
+    return _timeReply;
   }
 }

@@ -58,6 +58,13 @@ class Restaurant  {
     return _addressString;
   }
 
+  void addComment(Comment comment){
+    _comments.add(comment);
+  }
+  List<Comment> getComments(){
+    return _comments;
+  }
+
 
   void setName(String name) {
     this._name = name;

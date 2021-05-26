@@ -9,6 +9,7 @@ import 'package:customer_app/appBar.dart';
 import 'package:customer_app/data/Restaurent.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -26,6 +27,7 @@ class RestaurantPage extends StatefulWidget {
 class _RestaurantPageState extends State<RestaurantPage> {
 
   List<ChartData> chartData;
+  String searchingText = "";
 
   List<ChartData> chartData7(){
     List<ChartData> chartData=[
@@ -167,83 +169,57 @@ class _RestaurantPageState extends State<RestaurantPage> {
       );
     }
 
-    showRow (index) {
-      return Row(
-        children: [
-          showFood(index),
-          if (index+1 < widget.currentRestaurant.getMenu().length)
-          showFood(index+1),
-        ],
-      );
-    }
-
     Widget building(){
-      return SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) => showRow(index*2),
-            childCount: (widget.currentRestaurant.getMenu().length * 0.5).ceil(),
-          )
+      return Container(
+        height: _size.height,
+        width: _size.width,
+        child: GridView.count(
+          crossAxisCount: 2,
+          children: [
+            for(int i = 0; i < widget.currentRestaurant.getMenu().length; i++)
+              if(searchingText == "" || widget.currentRestaurant.getMenu()[i].getName().contains(searchingText))
+                showFood(i)
+          ],
+        ),
       );
     }
 
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            title: Text(widget.currentRestaurant.getName()),
-            expandedHeight: 300,
-            pinned: true,
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Nav(widget.currentCustomer))
-                );
-              }
-            ),
-            floating: true,
-            flexibleSpace: circlechart(),
+    Widget searching(){
+      return Container(
+        margin: EdgeInsets.fromLTRB(20, 20, 20, 10),
+        child: TextField(
+          cursorColor: theme.black,
+          style: TextStyle(color: Colors.black),
+          decoration: InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              border: new OutlineInputBorder(
+                borderRadius: const BorderRadius.all(
+                  const Radius.circular(10),
+                ),
+                borderSide: new BorderSide(
+                  color: theme.black,
+                  width: 1.0,
+                ),
+              ),
+              fillColor: theme.yellow,
+              filled: true,
+              hintText: "search your restaurant",
+              labelStyle: TextStyle(fontSize: 18,)
           ),
-          building(),
-        ],
-      )
-      // ListView(
-      //   children: [
-      //     circlechart(),
-      //     //back button
-      //     // Positioned(
-      //     //     left: 0,
-      //     //     top: 25,
-      //     //     child: IconButton(
-      //     //       onPressed: (){
-      //     //         Navigator.pushReplacement(
-      //     //           context,
-      //     //           MaterialPageRoute(builder: (context) => Nav(widget.currentCustomer))
-      //     //         );
-      //     //       },
-      //     //       icon: Icon(Icons.arrow_back_sharp),
-      //     //     )
-      //     // ),
-      //     Container(
-      //         height: MediaQuery.of(context).size.height/2,
-      //         child: tabBar(widget.currentCustomer, widget.currentRestaurant)),
-      //     // Positioned(
-      //     //     bottom: 0,
-      //     //     child: Container(
-      //     //       color: theme.black,
-      //     //       width: MediaQuery.of(context).size.width,
-      //     //       child: ButtonBar(
-      //     //         children: [
-      //     //
-      //     //         ],
-      //     //       ),
-      //     //     )
-      //     // )
-      //   ],
-      // ),
-    );
+          onChanged: (String value){
+            setState(() {
+              searchingText = value;
+              print(searching);
+            });
+          },
+        ),
+      );
+    }
+
+    return ListView(children:[
+      searching(),
+      building()
+    ] );
   }
 }
 
