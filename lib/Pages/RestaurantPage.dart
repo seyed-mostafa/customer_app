@@ -1,4 +1,5 @@
 import 'package:customer_app/Objects/Customer.dart';
+import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:customer_app/Pages/FoodPage.dart';
@@ -28,6 +29,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
 
   List<ChartData> chartData;
   String searchingText = "";
+  TypeFood chosenType = TypeFood.all;
 
   List<ChartData> chartData7(){
     List<ChartData> chartData=[
@@ -178,7 +180,8 @@ class _RestaurantPageState extends State<RestaurantPage> {
           children: [
             for(int i = 0; i < widget.currentRestaurant.getMenu().length; i++)
               if(searchingText == "" || widget.currentRestaurant.getMenu()[i].getName().contains(searchingText))
-                showFood(i)
+                if(chosenType == TypeFood.all || widget.currentRestaurant.getMenu()[i].getTypeFood() == chosenType)
+                  showFood(i)
           ],
         ),
       );
@@ -216,8 +219,63 @@ class _RestaurantPageState extends State<RestaurantPage> {
       );
     }
 
+    Widget typeWidget(TypeFood typeFood, Icon icon){
+      return Container(
+        margin: EdgeInsets.only(left: 10),
+        decoration: BoxDecoration(
+            color: theme.white,
+            borderRadius: BorderRadius.circular(10)
+        ),
+        width: _size.width * 0.25 + typeFood.toString().length,
+        child: TextButton(
+          child: Container(
+            padding: EdgeInsets.only(left: 5),
+            child: Row(
+              children: [
+                icon,
+                typeFood == TypeFood.all ? Text("  " + typeFood.toString().substring(9),
+                  style: TextStyle(fontSize: _size.width * 0.03)
+                ):Text("  " + "AllFood",
+                  style: TextStyle(fontSize: _size.width * 0.03),
+                )
+              ],
+            ),
+          ),
+          onPressed: (){
+            setState(() {
+              chosenType = typeFood;
+            });
+          },
+        ),
+      );
+    }
+
+    Widget chooseType(){
+      return Container(
+        height: 50,
+        child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              //here null means all type
+              typeWidget(TypeFood.all, Icon(Icons.assignment_turned_in_rounded)),
+              typeWidget(TypeFood.Pizza, Icon(FontAwesomeIcons.pizzaSlice)),
+              typeWidget(TypeFood.Sandwich, Icon(FontAwesomeIcons.hotdog,)),
+              typeWidget(TypeFood.Drinks, Icon(FontAwesomeIcons.cocktail)),
+              typeWidget(TypeFood.PersianFood, Icon(Icons.food_bank)),
+              typeWidget(TypeFood.Dessert, Icon(Icons.no_food)),
+              typeWidget(TypeFood.Appetizer, Icon(Icons.fastfood)),
+              typeWidget(TypeFood.Fried, Icon(Icons.local_fire_department)),
+              typeWidget(TypeFood.Steaks, Icon(Icons.set_meal)),
+              typeWidget(TypeFood.Breakfast, Icon(Icons.breakfast_dining)),
+              typeWidget(TypeFood.International, Icon(Icons.food_bank)),
+            ]
+        ),
+      );
+    }
+
     return ListView(children:[
       searching(),
+      chooseType(),
       building()
     ] );
   }
