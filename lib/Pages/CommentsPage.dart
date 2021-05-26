@@ -1,14 +1,15 @@
-
-import 'package:customer_app/Objects/Restaurant.dart';
-import 'package:customer_app/Objects/theme.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:customer_app/Objects/Customer.dart';
+import 'package:customer_app/appBar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:customer_app/Objects/theme.dart';
+
 
 class CommentsPage extends StatefulWidget {
-  Restaurant currentRestaurant;
+  Customer currentCustomer;
 
-  CommentsPage(this.currentRestaurant);
+  CommentsPage(this.currentCustomer);
 
   @override
   _CommentsPageState createState() => _CommentsPageState();
@@ -27,7 +28,7 @@ class _CommentsPageState extends State<CommentsPage> {
                 shape: BoxShape.circle,
                 image: DecorationImage(
                     image: NetworkImage(
-                        'assets/images/${widget.currentRestaurant.getComments()[index].getCustomerName()}.jpg'),
+                        'assets/images/profile/Ali.jpg'),
                     fit: BoxFit.fill),
               ),
             ),
@@ -36,14 +37,14 @@ class _CommentsPageState extends State<CommentsPage> {
             ),
             RichText(
               text: TextSpan(
-                  text: widget.currentRestaurant
+                  text: widget.currentCustomer
                       .getComments()[index]
                       .getCustomerName(),
                   style: TextStyle(fontSize: 18, color: theme.black),
                   children: <TextSpan>[
                     TextSpan(
                       text: DateFormat('\n d MMM kk:mm').format(widget
-                          .currentRestaurant
+                          .currentCustomer
                           .getComments()[index]
                           .getTimeComment()),
                       style: TextStyle(color: Colors.grey, fontSize: 10),
@@ -64,17 +65,17 @@ class _CommentsPageState extends State<CommentsPage> {
                   height: 2,
                   decoration: BoxDecoration(
                     gradient:
-                        LinearGradient(
-                            colors: [theme.yellow2, theme.white],
-                          stops:[0,0.8]
-                        ),
+                    LinearGradient(
+                        colors: [theme.yellow2, theme.white],
+                        stops:[0,0.8]
+                    ),
                   ),
                 ),
               ),
               Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    widget.currentRestaurant.getComments()[index].getComment(),
+                    widget.currentCustomer.getComments()[index].getComment(),
                     style: TextStyle(color: theme.black, fontSize: 14),
                   )),
               Padding(
@@ -83,8 +84,8 @@ class _CommentsPageState extends State<CommentsPage> {
                   height: 2,
                   decoration: BoxDecoration(
                     gradient:
-                        LinearGradient( colors: [theme.yellow2, theme.white],
-                            stops:[0,0.8]),
+                    LinearGradient( colors: [theme.yellow2, theme.white],
+                        stops:[0,0.8]),
                   ),
                 ),
               )
@@ -98,19 +99,7 @@ class _CommentsPageState extends State<CommentsPage> {
   bool send = false;
   String str = '';
 
-  replyWrite(index) {
-    bool isSend(String value) {
-      print(send);
-      print('str : $str');
-      if (send && str != '' && str != 'Reply...') {
-        setState(() {
-          send = false;
-          str = '';
-          widget.currentRestaurant.getComments()[index].setReply(value);
-        });
-      }
-    }
-
+  noReply(index) {
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width / 9),
@@ -121,30 +110,9 @@ class _CommentsPageState extends State<CommentsPage> {
             Container(
               width: MediaQuery.of(context).size.width / 2,
               height: 50,
-              child: TextFormField(
-                  //Food Name
-                  decoration: InputDecoration(hintText: 'Reply...'),
-                  style: TextStyle(color: Colors.grey[600], fontSize: 10),
-                  cursorColor: theme.black,
-                  onChanged: (value) {
-                    setState(() {
-                      str = value;
-                      print('value : $value');
-                      isSend(value);
-                    });
-                  }),
+              child: Text("${widget.currentCustomer.getComments()[index].getRestaurantName()} not yet reply...",
+              style: TextStyle(color: Colors.grey[600], fontSize: 12),)
             ),
-            IconButton(
-                icon: Icon(
-                  Icons.send,
-                  color: theme.yellow,
-                ),
-                onPressed: () {
-                  setState(() {
-                    send = true;
-                    isSend(str);
-                  });
-                })
           ],
         ),
       ),
@@ -175,7 +143,7 @@ class _CommentsPageState extends State<CommentsPage> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                        image: NetworkImage('assets/images/restaurant.jpg'),
+                        image: NetworkImage('assets/images/restaurant/1.jpg'),
                         fit: BoxFit.fill),
                   ),
                 ),
@@ -184,14 +152,14 @@ class _CommentsPageState extends State<CommentsPage> {
                 ),
                 RichText(
                   text: TextSpan(
-                      text: widget.currentRestaurant
+                      text: widget.currentCustomer
                           .getComments()[index]
                           .getRestaurantName(),
                       style: TextStyle(fontSize: 18, color: theme.black),
                       children: <TextSpan>[
                         TextSpan(
                           text: DateFormat('\n d MMM kk:mm').format(widget
-                              .currentRestaurant
+                              .currentCustomer
                               .getComments()[index]
                               .getTimeReply()),
                           style: TextStyle(color: Colors.grey, fontSize: 10),
@@ -220,7 +188,7 @@ class _CommentsPageState extends State<CommentsPage> {
                   Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        widget.currentRestaurant
+                        widget.currentCustomer
                             .getComments()[index]
                             .getReply(),
                         style: TextStyle(color: theme.black, fontSize: 14),
@@ -254,8 +222,8 @@ class _CommentsPageState extends State<CommentsPage> {
         child: Column(
           children: [
             comment(index),
-            widget.currentRestaurant.getComments()[index].getReply() == null
-                ? replyWrite(index)
+            widget.currentCustomer.getComments()[index].getReply() == null
+                ? noReply(index)
                 : replyShow(index),
             Divider(
               color: theme.red2,
@@ -270,11 +238,14 @@ class _CommentsPageState extends State<CommentsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.only(top: 20),
-        child: ListView(
-          children: List.generate(widget.currentRestaurant.getComments().length,
-              (index) => showComment(index)),
-        ));
+    return  Scaffold(
+        appBar: appBar(),
+       body: Container(
+            padding: EdgeInsets.only(top: 20),
+            child: ListView(
+              children: List.generate(widget.currentCustomer.getComments().length,
+                      (index) => showComment(index)),
+            )),
+    );
   }
 }

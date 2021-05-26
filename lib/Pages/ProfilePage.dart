@@ -2,7 +2,7 @@
 
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/theme.dart';
-import 'package:customer_app/Pages/MyComment.dart';
+import 'package:customer_app/Pages/CommentsPage.dart';
 import 'package:customer_app/data/Restaurent.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
@@ -73,7 +73,7 @@ class _ProfileState extends State<Profile> {
           informationWidget(),
           choicesWidget("Edit Information of Profile", EditProfile(func, widget.currentCustomer)),
           choicesWidget("Wallet Managing", null),
-          choicesWidget("My Comments", MyComment(widget.currentCustomer)),
+          choicesWidget("My Comments", CommentsPage(widget.currentCustomer)),
           choicesWidget("Interested Restaurants", null),
         ],
       ),

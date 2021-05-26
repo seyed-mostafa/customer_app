@@ -1,4 +1,5 @@
 
+import 'package:customer_app/Objects/Comment.dart';
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
@@ -23,6 +24,47 @@ List<Customer> importCustomers(){
 Customer importCustomer(){
   List<Restaurant> restaurant=importRestaurant();
   Customer customer11 = new Customer('Ali', 'Alavi', '09123456790', '123');
+
+  Comment comment=new Comment("ai khoda");
+  Comment comment2=new Comment("man dige rad dadam");
+  Comment comment3=new Comment("as dast in flutter");
+  Comment comment4=new Comment("ki bood migoft konkor ro bedin dige daneshgah rahate?");
+  Comment comment5=new Comment("khoda azab shab aval ghabresh ro ziad kone ");
+  Comment comment6=new Comment("khob dige dar mored chi benevisam");
+  Comment comment7=new Comment("fek konam baray comment ha bas bashe");
+  Comment comment8=new Comment("pas fellan khodahaffez :)))");
+  comment.setCustomerName("Abbas");
+  comment2.setCustomerName("Mostafa");
+  comment3.setCustomerName("Ali");
+  comment4.setCustomerName("Hasan");
+  comment5.setCustomerName("Abbas");
+  comment6.setCustomerName("Mostafa");
+  comment7.setCustomerName("Ali");
+  comment8.setCustomerName("Hasan");
+
+  comment.setRestaurantName('akbar jooje');
+  comment2.setRestaurantName('akbar jooje');
+  comment3.setRestaurantName('akbar jooje');
+  comment4.setRestaurantName('akbar jooje');
+  comment5.setRestaurantName('akbar jooje');
+  comment6.setRestaurantName('akbar jooje');
+  comment7.setRestaurantName('akbar jooje');
+  comment8.setRestaurantName('akbar jooje');
+  comment2.setReply("khob be darak :|");
+
+  customer11.addComment(comment);
+  customer11.addComment(comment2);
+  customer11.addComment(comment3);
+  customer11.addComment(comment4);
+  customer11.addComment(comment5);
+  customer11.addComment(comment6);
+  customer11.addComment(comment7);
+  customer11.addComment(comment8);
+
+
+
+
+
   customer11.addShoppingCart(restaurant[0].getMenu()[0], restaurant[0].getId(), 1);
   customer11.addShoppingCart(restaurant[0].getMenu()[1], restaurant[0].getId(), 2);
   customer11.addShoppingCart(restaurant[0].getMenu()[2], restaurant[0].getId(), 3);

@@ -102,7 +102,7 @@ class Customer{
   List<Order> getPreviousOrders() {
     return _orders;
   }
-  List<Comment> getComment() {
+  List<Comment> getComments() {
     return _comments;
   }
   List<Restaurant> getFavoriteRestaurant() {

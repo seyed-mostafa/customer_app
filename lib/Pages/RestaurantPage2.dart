@@ -20,7 +20,7 @@ class _RestaurantPage2State extends State<RestaurantPage2> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: CommentsPage(widget.currentRestaurant),
+      //child: CommentsPage(widget.currentRestaurant),
     );
   }
 }
