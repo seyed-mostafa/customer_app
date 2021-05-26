@@ -44,7 +44,7 @@ class _AwaitingPaymentState extends State<AwaitingPayment> {
     print(widget.currentCustomer.getShoppingCart()[index].getPrice());
     return  Row(
         children: [
-            Text(widget.currentCustomer.getShoppingCart()[index].getPrice().toString(),
+            Text("${widget.currentCustomer.getShoppingCart()[index].getPrice().toString()} T",
               style: TextStyle(fontSize: 13,color: theme.black),),
         ],
     );
@@ -114,8 +114,11 @@ class _AwaitingPaymentState extends State<AwaitingPayment> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Spacer(flex: 4,),
                   nameAndItem(index),
+                  Spacer(),
                   price(index),
+                  Spacer(),
                   detail(index),
                 ],
               ),
@@ -128,6 +131,7 @@ class _AwaitingPaymentState extends State<AwaitingPayment> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.currentCustomer.getPreviousOrders());
     return Container(
         padding: EdgeInsets.only(top: 20),
         child: ListView(

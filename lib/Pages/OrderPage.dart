@@ -1,9 +1,6 @@
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Order.dart';
-import 'package:customer_app/Pages/AwaitingPayment.dart';
 import 'package:customer_app/Pages/Nav.dart';
-import 'package:customer_app/Pages/ShoppingCartPage.dart';
-import 'package:customer_app/appBar.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
