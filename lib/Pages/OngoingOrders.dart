@@ -41,6 +41,7 @@ class _OngoingOrdersState extends State<OngoingOrders> {
   price(index){
     print("${widget.currentCustomer.getPreviousOrders()[index].getPrice()} T");
     return  Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(widget.currentCustomer.getPreviousOrders()[index].getPrice().toString(),
           style: TextStyle(fontSize: 13,color: theme.black),),
@@ -79,7 +80,7 @@ class _OngoingOrdersState extends State<OngoingOrders> {
   show(index){
     return Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / 25,
+          horizontal: MediaQuery.of(context).size.width / 60,
           vertical: 10
       ),
       child: Container(
@@ -99,7 +100,7 @@ class _OngoingOrdersState extends State<OngoingOrders> {
           children: [
             image(),
             Container(
-              width: 300,
+              width:  MediaQuery.of(context).size.width-200,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

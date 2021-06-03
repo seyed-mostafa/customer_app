@@ -56,6 +56,7 @@ class _OrdersHistoryState extends State<OrdersHistory> {
 
   nameAndItem(index) {
     return Row(
+      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           widget.currentCustomer.getPreviousOrders()[index].getRestaurantName(),
@@ -120,7 +121,7 @@ class _OrdersHistoryState extends State<OrdersHistory> {
     print("show");
     return Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / 25, vertical: 10),
+          horizontal: MediaQuery.of(context).size.width / 60, vertical: 10),
       child: Container(
         height: MediaQuery.of(context).size.height / 7,
         decoration: BoxDecoration(
@@ -137,7 +138,7 @@ class _OrdersHistoryState extends State<OrdersHistory> {
           children: [
             image(),
             Container(
-              width: 300,
+              width:  MediaQuery.of(context).size.width-200 ,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
