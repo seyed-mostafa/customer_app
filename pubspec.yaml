@@ -23,7 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_maps_flutter: ^2.0.3
+  google_maps_flutter: ^1.0.10
   syncfusion_flutter_maps: ^19.1.58-beta
   intl: ^0.17.0
   syncfusion_flutter_charts: ^19.1.64
