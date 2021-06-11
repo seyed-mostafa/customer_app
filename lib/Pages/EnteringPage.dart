@@ -36,7 +36,8 @@ class _EnteringPageState extends State<EnteringPage> {
 
   //for first time don't show error of input (red container in top)
   bool flag = true;
-  File file = File("dataBase.txt");
+
+  String messageServer = "";
 
   //for hide entering password
   bool hidden = true;
@@ -130,14 +131,12 @@ class _EnteringPageState extends State<EnteringPage> {
                       flag = false;
                       print(inputPhoneNumberEnter);
                       print(inputPasswordEnter);
-                      for(int i = 0; i < widget.customers.length; i++){
-                        if(inputPhoneNumberEnter == widget.customers[i].getPhoneNumber() &&
-                        inputPasswordEnter == widget.customers[i].getPassword()){
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => Nav(widget.customers[i])),
-                          );
-                        }
+                      _sendMessage();
+                      if (validUser) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => Nav(widget.customers[0])), // 0 index just for test
+                        );
                       }
                       validUser=false;
                       setState(() {});
@@ -166,5 +165,23 @@ class _EnteringPageState extends State<EnteringPage> {
         ),
       )
     );
+  }
+
+
+  void _sendMessage() async {
+    await Socket.connect("192.168.1.5", 8080)
+        .then((serverSocket) {
+      print('Connected to Server');
+      serverSocket.writeln("Phone: " + inputPhoneNumberEnter + ", " + "pass: " + inputPasswordEnter);
+      serverSocket.listen((socket) async {
+        String messageServer = await String.fromCharCodes(socket).trim();
+        setState(() {
+          print(messageServer);
+          if (messageServer.contains("true")) {
+            validUser = true;
+          }
+        });
+      });
+    });
   }
 }
