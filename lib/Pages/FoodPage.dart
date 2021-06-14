@@ -64,6 +64,7 @@ class _FoodPageState extends State<FoodPage> {
                 widget.customer.getShoppingCart()[widget.customer.getShoppingCart().indexOf(widget.order)].setRestaurantName(widget.currentRestaurant.getName());
                 widget.customer.getShoppingCart()[widget.customer.getShoppingCart().indexOf(widget.order)].setRestaurantAddressString(" Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St");
                 print('add to bag');
+
               });
             },
             child: Padding(

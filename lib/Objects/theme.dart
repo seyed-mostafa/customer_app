@@ -1,5 +1,5 @@
 
-//the main theme of app
+
 
 import 'package:flutter/material.dart';
 

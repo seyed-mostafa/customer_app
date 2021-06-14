@@ -1,25 +1,27 @@
 
-import 'package:customer_app/Objects/Customer.dart';
-import 'package:customer_app/Objects/Order.dart';
-import 'package:customer_app/Objects/Restaurant.dart';
-import 'package:customer_app/data/Customers.dart';
 import 'package:flutter/cupertino.dart';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 
-import 'data/Restaurent.dart';
+
+void _sendMessage() async {
+  await Socket.connect("192.168.56.1", 8080)
+      .then((serverSocket) {
+    print('Connected to Server');
+    serverSocket.writeln("I am mostafa" );
+    serverSocket.listen((socket) async {
+      String messageServer =  String.fromCharCodes(socket).trim();
+        print(messageServer);
+    });
+  });
+}
 
 void main() {
-  List<Restaurant> restaurant=importRestaurant();
- Customer customer=importCustomer();
-  print(customer.getShoppingCart()[0].getOrder()[restaurant[0].getMenu()[2]]);
- Order order=customer.getShoppingCart()[0];
- order.addFood(customer.getShoppingCart()[0].getOrder().keys.elementAt(2), 5);
-  print(customer.getShoppingCart()[0].getOrder()[restaurant[0].getMenu()[2]]);
+
+  _sendMessage();
 
 
-
- runApp(MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -30,13 +32,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Center(
-        ),
+        body: Center(),
       ),
     );
   }

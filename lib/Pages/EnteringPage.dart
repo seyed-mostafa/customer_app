@@ -138,7 +138,7 @@ class _EnteringPageState extends State<EnteringPage> {
                           MaterialPageRoute(builder: (context) => Nav(widget.customers[0])), // 0 index just for test
                         );
                       }
-                      validUser=false;
+                      validUser=true;
                       setState(() {});
                     },
                     child: Text("Sign in", style: TextStyle(fontSize: 18),),
@@ -169,7 +169,7 @@ class _EnteringPageState extends State<EnteringPage> {
 
 
   void _sendMessage() async {
-    await Socket.connect("192.168.1.5", 8080)
+    await Socket.connect("192.168.56.1", 8080)
         .then((serverSocket) {
       print('Connected to Server');
       serverSocket.writeln("Phone: " + inputPhoneNumberEnter + ", " + "pass: " + inputPasswordEnter);

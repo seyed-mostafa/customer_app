@@ -14,7 +14,6 @@ class Customer{
   List<LatLng> _address = List.empty(growable: true);
   List<Comment> _comments = List.empty(growable: true);
   List<Restaurant> _favoriteRestaurant = List.empty(growable: true);
-  List<Food> _favoriteFood = List.empty(growable: true);
   List<Order> _shoppingCart =List.empty(growable: true);
   List<Order> _orders = List.empty(growable: true);
 
@@ -71,9 +70,6 @@ class Customer{
   void addFavoriteRestaurant(Restaurant favoriteRestaurant) {
     _favoriteRestaurant.add(favoriteRestaurant);
   }
-  void addFavoriteFood(Food favoriteFood) {
-    _favoriteFood.add(favoriteFood);
-  }
 
 
 
@@ -107,8 +103,5 @@ class Customer{
   }
   List<Restaurant> getFavoriteRestaurant() {
     return _favoriteRestaurant;
-  }
-  List<Food> getFavoriteFood() {
-    return _favoriteFood;
   }
 }

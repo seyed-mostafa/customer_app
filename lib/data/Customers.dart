@@ -1,11 +1,10 @@
 
 import 'package:customer_app/Objects/Comment.dart';
 import 'package:customer_app/Objects/Customer.dart';
-import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/data/Restaurent.dart';
-import 'package:customer_app/data/Restaurent.dart';
+
 
 List<Customer> importCustomers(){
 
@@ -23,9 +22,7 @@ List<Customer> importCustomers(){
  Customer customer9 = new Customer('Abdollah', 'Nakhalaf', '09123456798', '123');
  Customer customer10 = new Customer('Amir', 'Booghi', '09123456799', '123');
 
- for(Food food in restaurant[0].getMenu()){
-   customer11.addFavoriteFood(food);
- }
+
  customer11.addFavoriteRestaurant(restaurant[1]);
  customer11.addFavoriteRestaurant(restaurant[3]);
  customer11.addFavoriteRestaurant(restaurant[5]);
@@ -117,9 +114,6 @@ List<Customer> importCustomers(){
 Customer importCustomer(){
   List<Restaurant> restaurant=importRestaurant();
   Customer customer11 = new Customer('Ali', 'Alavi', '09123456790', '123');
-  for(Food food in restaurant[0].getMenu()){
-  customer11.addFavoriteFood(food);
-  }
   customer11.addFavoriteRestaurant(restaurant[1]);
   customer11.addFavoriteRestaurant(restaurant[3]);
   customer11.addFavoriteRestaurant(restaurant[5]);
