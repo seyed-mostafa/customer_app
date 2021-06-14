@@ -6,7 +6,7 @@ import 'OrderPageOngoing.dart';
 
 class OngoingOrders extends StatefulWidget {
  final Customer currentCustomer;
-
+ 
   OngoingOrders(this.currentCustomer);
   @override
   _OngoingOrdersState createState() => _OngoingOrdersState();

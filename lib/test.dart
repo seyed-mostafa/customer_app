@@ -1,7 +1,10 @@
 
+import 'package:customer_app/Objects/Restaurant.dart';
+import 'package:customer_app/data/Data.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 void _sendMessage() async {
@@ -18,6 +21,9 @@ void _sendMessage() async {
 
 void main() {
 
+  Data.restaurants.add(new Restaurant('akbar jooje',
+      LatLng(35.717676891099835, 51.331243399093914), '09123456780', '1234'));
+  print(Data.restaurants.first.getId());
   _sendMessage();
 
 
