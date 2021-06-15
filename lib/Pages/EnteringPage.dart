@@ -1,10 +1,13 @@
 
 import 'dart:io';
+import 'package:customer_app/Objects/Comment.dart';
 import 'package:customer_app/Objects/Customer.dart';
+import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/Pages/Nav.dart';
 import 'package:customer_app/appBar.dart';
 import 'package:customer_app/data/Customers.dart';
+import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'RegisteringPage.dart';
@@ -138,7 +141,7 @@ class _EnteringPageState extends State<EnteringPage> {
                           MaterialPageRoute(builder: (context) => Nav(widget.customers[0])), // 0 index just for test
                         );
                       }
-                      validUser=true;
+                      validUser = false;
                       setState(() {});
                     },
                     child: Text("Sign in", style: TextStyle(fontSize: 18),),
@@ -168,20 +171,67 @@ class _EnteringPageState extends State<EnteringPage> {
   }
 
 
-  void _sendMessage() async {
-    await Socket.connect("192.168.56.1", 8080)
+  void _sendMessage() {
+    Socket.connect("192.168.1.5", 8080)
         .then((serverSocket) {
+
       print('Connected to Server');
+
+      serverSocket.writeln("Customer");
+
       serverSocket.writeln("Phone: " + inputPhoneNumberEnter + ", " + "pass: " + inputPasswordEnter);
-      serverSocket.listen((socket) async {
-        String messageServer = await String.fromCharCodes(socket).trim();
+
+      serverSocket.listen((socket) {
+        String messageServer = String.fromCharCodes(socket).trim();
+
+        print(messageServer);
+
+        if (messageServer.contains("true")) {
+          validUser = true;
+          messageServer = messageServer.substring(4); // remove true in start message
+          currentCustomerMaker(messageServer);
+        }
+
         setState(() {
-          print(messageServer);
-          if (messageServer.contains("true")) {
-            validUser = true;
-          }
+
         });
       });
     });
+  }
+
+  void currentCustomerMaker (String messageServer) {
+    String firstName = messageServer.substring(0, messageServer.indexOf("&"));
+    messageServer = messageServer.substring(messageServer.indexOf("&") + 2);
+    String lastName = messageServer.substring(0, messageServer.indexOf("&"));
+    messageServer = messageServer.substring(messageServer.indexOf("&") + 2);
+    String phoneNumber = messageServer.substring(0, messageServer.indexOf("&"));
+    messageServer = messageServer.substring(messageServer.indexOf("&") + 2);
+    String password = messageServer.substring(0, messageServer.indexOf("&"));
+    messageServer = messageServer.substring(messageServer.indexOf("&") + 2);
+    int wallet = int.parse(messageServer.substring(0, messageServer.indexOf("&")));
+    print("firstName: " + firstName + ", lastName: " + lastName + ", phoneNumber: " + phoneNumber + ", password: " + password + ", wallet: " + wallet.toString());
+
+    String list; //this is a String to this form:  [a, b, c, d, ]
+
+    messageServer = messageServer.substring(messageServer.indexOf("&") + 2);
+    list = messageServer.substring(1, messageServer.indexOf("&")); // 1 don't consider [
+
+    List<Comment> comments = [];
+    while (true) {
+      if  (list.indexOf(",") == -1) break;
+      String comment = list.substring(0, list.indexOf(","));
+      comments.add(new Comment(comment));
+      list = list.substring(list.indexOf(",") + 2);
+    }
+
+    for (int i = 0; i < comments.length; i++) {
+      print(comments[i].getComment());
+    }
+
+    // List<Restaurant> favoriteRestaurant= [];
+    // List<Order> shoppingCart = [];
+    // List<Order> orders = [];
+    Data.customer = new Customer(firstName, lastName, phoneNumber, password);
+    Data.customer.setWallet(wallet);
   }
 }
