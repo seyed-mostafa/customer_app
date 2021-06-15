@@ -1,28 +1,19 @@
 
 import 'dart:io';
-import 'package:customer_app/Objects/Customer.dart';
-import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/Pages/Nav.dart';
 import 'package:customer_app/appBar.dart';
-import 'package:customer_app/data/Customers.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'RegisteringPage.dart';
 
 class EnteringPage extends StatefulWidget {
 
-  List<Customer> customers;
-  EnteringPage(this.customers);
 
   @override
   _EnteringPageState createState() => _EnteringPageState();
 }
 
 class _EnteringPageState extends State<EnteringPage> {
-
-  adding(Customer customer) {
-    widget.customers.add(customer);
-  }
 
   //fake Dates
   String password = "123";
@@ -135,7 +126,7 @@ class _EnteringPageState extends State<EnteringPage> {
                       if (validUser) {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => Nav(widget.customers[0])), // 0 index just for test
+                          MaterialPageRoute(builder: (context) => Nav()), // 0 index just for test
                         );
                       }
                       validUser=true;
@@ -152,7 +143,7 @@ class _EnteringPageState extends State<EnteringPage> {
                       onPressed: (){
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => RegisteringPage(adding)),
+                          MaterialPageRoute(builder: (context) => RegisteringPage()),
                         );
                       },
                       child: Text("Sign up", style: TextStyle(fontSize: 18),)

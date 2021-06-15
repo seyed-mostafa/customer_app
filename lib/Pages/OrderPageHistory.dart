@@ -7,10 +7,10 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class OrderPageHistory extends StatefulWidget {
-  Customer currentCustomer;
+
   Order currentOrder;
 
-  OrderPageHistory(this.currentCustomer, this.currentOrder);
+  OrderPageHistory( this.currentOrder);
 
   @override
   _OrderPageHistoryState createState() => _OrderPageHistoryState();
@@ -190,7 +190,7 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        Nav(widget.currentCustomer)));
+                        Nav()));
           },
         ),
         backgroundColor: Colors.white,

@@ -1,5 +1,6 @@
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/appBar.dart';
+import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -7,15 +8,16 @@ import 'package:customer_app/Objects/theme.dart';
 
 
 class CommentsPage extends StatefulWidget {
-  Customer currentCustomer;
 
-  CommentsPage(this.currentCustomer);
 
   @override
   _CommentsPageState createState() => _CommentsPageState();
 }
 
 class _CommentsPageState extends State<CommentsPage> {
+
+  Customer currentCustomer=Data.customer;
+
   comment(index) {
     return Column(
       children: [
@@ -37,14 +39,13 @@ class _CommentsPageState extends State<CommentsPage> {
             ),
             RichText(
               text: TextSpan(
-                  text: widget.currentCustomer
+                  text: currentCustomer
                       .getComments()[index]
                       .getCustomerName(),
                   style: TextStyle(fontSize: 18, color: theme.black),
                   children: <TextSpan>[
                     TextSpan(
-                      text: DateFormat('\n d MMM kk:mm').format(widget
-                          .currentCustomer
+                      text: DateFormat('\n d MMM kk:mm').format(currentCustomer
                           .getComments()[index]
                           .getTimeComment()),
                       style: TextStyle(color: Colors.grey, fontSize: 10),
@@ -75,7 +76,7 @@ class _CommentsPageState extends State<CommentsPage> {
               Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    widget.currentCustomer.getComments()[index].getComment(),
+                    currentCustomer.getComments()[index].getComment(),
                     style: TextStyle(color: theme.black, fontSize: 14),
                   )),
               Padding(
@@ -110,7 +111,7 @@ class _CommentsPageState extends State<CommentsPage> {
             Container(
               width: MediaQuery.of(context).size.width / 2,
               height: 50,
-              child: Text("${widget.currentCustomer.getComments()[index].getRestaurantName()} not yet reply...",
+              child: Text("${currentCustomer.getComments()[index].getRestaurantName()} not yet reply...",
               style: TextStyle(color: Colors.grey[600], fontSize: 12),)
             ),
           ],
@@ -152,14 +153,13 @@ class _CommentsPageState extends State<CommentsPage> {
                 ),
                 RichText(
                   text: TextSpan(
-                      text: widget.currentCustomer
+                      text: currentCustomer
                           .getComments()[index]
                           .getRestaurantName(),
                       style: TextStyle(fontSize: 18, color: theme.black),
                       children: <TextSpan>[
                         TextSpan(
-                          text: DateFormat('\n d MMM kk:mm').format(widget
-                              .currentCustomer
+                          text: DateFormat('\n d MMM kk:mm').format(currentCustomer
                               .getComments()[index]
                               .getTimeReply()),
                           style: TextStyle(color: Colors.grey, fontSize: 10),
@@ -188,7 +188,7 @@ class _CommentsPageState extends State<CommentsPage> {
                   Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        widget.currentCustomer
+                       currentCustomer
                             .getComments()[index]
                             .getReply(),
                         style: TextStyle(color: theme.black, fontSize: 14),
@@ -222,7 +222,7 @@ class _CommentsPageState extends State<CommentsPage> {
         child: Column(
           children: [
             comment(index),
-            widget.currentCustomer.getComments()[index].getReply() == null
+            currentCustomer.getComments()[index].getReply() == null
                 ? noReply(index)
                 : replyShow(index),
             Divider(
@@ -243,7 +243,7 @@ class _CommentsPageState extends State<CommentsPage> {
        body: Container(
             padding: EdgeInsets.only(top: 20),
             child: ListView(
-              children: List.generate(widget.currentCustomer.getComments().length,
+              children: List.generate(currentCustomer.getComments().length,
                       (index) => showComment(index)),
             )),
     );

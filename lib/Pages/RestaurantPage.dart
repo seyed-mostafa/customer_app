@@ -1,25 +1,20 @@
+
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:customer_app/Pages/FoodPage.dart';
-import 'package:customer_app/Pages/MenuPage.dart';
-import 'package:customer_app/Pages/Nav.dart';
-import 'package:customer_app/Pages/TabBar.dart';
-import 'package:customer_app/appBar.dart';
-import 'package:customer_app/data/Restaurent.dart';
+import 'package:customer_app/data/Data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class RestaurantPage extends StatefulWidget {
 
-  Customer currentCustomer;
-  Restaurant currentRestaurant;
 
-  RestaurantPage(this.currentCustomer, this.currentRestaurant);
+  int currentRestaurant;
+  RestaurantPage(this.currentRestaurant);
 
   @override
   _RestaurantPageState createState() => _RestaurantPageState();
@@ -27,6 +22,8 @@ class RestaurantPage extends StatefulWidget {
 
 class _RestaurantPageState extends State<RestaurantPage> {
 
+  Customer currentCustomer=Data.customer;
+  Restaurant currentRestaurant;
   List<ChartData> chartData;
   String searchingText = "";
   TypeFood chosenType = TypeFood.all;
@@ -74,6 +71,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
   @override
   Widget build(BuildContext context) {
 
+    currentRestaurant=Data.restaurants.elementAt(widget.currentRestaurant);
     Size _size = MediaQuery.of(context).size;
 
     imageWidget(index){
@@ -91,8 +89,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
               ),
             ),
           ),
-          widget.currentRestaurant.
-          getMenu()[index].getDiscount() != null ?
+          currentRestaurant.getMenu()[index].getDiscount() != null ?
           Center(
             child: Container(
               decoration: BoxDecoration(
@@ -101,8 +98,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
               ),
               margin: EdgeInsets.fromLTRB(5, 10, 10, 10),
 
-              child: Text("${widget.currentRestaurant.
-              getMenu()[index].getDiscount()}%", style: TextStyle(color: Colors.white),),
+              child: Text("${currentRestaurant.getMenu()[index].getDiscount()}%", style: TextStyle(color: Colors.white),),
             ),
           ):
           Container()
@@ -117,12 +113,12 @@ class _RestaurantPageState extends State<RestaurantPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.currentRestaurant.getMenu()[index].getName()
+            Text(currentRestaurant.getMenu()[index].getName()
               ,style: TextStyle(
                 color: theme.black
               ),
             ),
-            Text("${widget.currentRestaurant.getMenu()[index].getPrice().toString()} T",
+            Text("${currentRestaurant.getMenu()[index].getPrice().toString()} T",
               style: TextStyle(
                 color: theme.black
               ),
@@ -132,20 +128,20 @@ class _RestaurantPageState extends State<RestaurantPage> {
       );
     }
 
-    iconWidget(index){
-      return IconButton(
-        icon: Icon(FontAwesomeIcons.plusCircle),
-        splashRadius: 5,
-        onPressed: () => {
-          widget.currentCustomer.addShoppingCart(
-              widget.currentRestaurant.
-              getMenu()[index],
-              widget.currentRestaurant.getId(),
-              1
-          )
-        },
-      );
-    }
+    // iconWidget(index){
+    //   return IconButton(
+    //     icon: Icon(FontAwesomeIcons.plusCircle),
+    //     splashRadius: 5,
+    //     onPressed: () => {
+    //       currentCustomer.addShoppingCart(
+    //           widget.currentRestaurant.
+    //           getMenu()[index],
+    //           widget.currentRestaurant.getId(),
+    //           1
+    //       )
+    //     },
+    //   );
+    // }
 
     Widget showFood(index){
       return Container(
@@ -164,7 +160,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   dataFoodWidget(index),
-                  iconWidget(index)
+                  //iconWidget(index)
                 ],
               )
             ],
@@ -173,10 +169,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => FoodPage(
-                  index,
-                  widget.currentCustomer,
-                ),
+                builder: (context) => FoodPage(currentRestaurant,currentRestaurant.getMenu().elementAt(index)),
               ),
             );
           },
@@ -191,9 +184,9 @@ class _RestaurantPageState extends State<RestaurantPage> {
         child: GridView.count(
           crossAxisCount: 2,
           children: [
-            for(int i = 0; i < widget.currentRestaurant.getMenu().length; i++)
-              if(searchingText == "" || widget.currentRestaurant.getMenu()[i].getName().contains(searchingText))
-                if(chosenType == TypeFood.all || widget.currentRestaurant.getMenu()[i].getTypeFood() == chosenType)
+            for(int i = 0; i < currentRestaurant.getMenu().length; i++)
+              if(searchingText == "" || currentRestaurant.getMenu()[i].getName().contains(searchingText))
+                if(chosenType == TypeFood.all || currentRestaurant.getMenu()[i].getTypeFood() == chosenType)
                   showFood(i)
           ],
         ),

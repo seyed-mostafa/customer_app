@@ -1,13 +1,12 @@
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Pages/OrderPage.dart';
+import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 class AwaitingPayment extends StatefulWidget {
-  final Customer currentCustomer;
-  AwaitingPayment(this.currentCustomer);
 
   @override
   _AwaitingPaymentState createState() => _AwaitingPaymentState();
@@ -15,7 +14,7 @@ class AwaitingPayment extends StatefulWidget {
 
 class _AwaitingPaymentState extends State<AwaitingPayment> {
 
-
+Customer currentCustomer=Data.customer;
 
   detail(index){
     return Row(
@@ -27,8 +26,7 @@ class _AwaitingPaymentState extends State<AwaitingPayment> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                      builder: (context) => OrderPage(widget.currentCustomer,
-                          widget.currentCustomer.getShoppingCart()[index])));
+                      builder: (context) => OrderPage(currentCustomer.getShoppingCart()[index])));
                 });
               },
               child: Text('View Details',
@@ -41,11 +39,11 @@ class _AwaitingPaymentState extends State<AwaitingPayment> {
   }
 
   price(index){
-    print(widget.currentCustomer.getShoppingCart()[index].getPrice());
+    print(currentCustomer.getShoppingCart()[index].getPrice());
     return  Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-            Text("${widget.currentCustomer.getShoppingCart()[index].getPrice().toString()} T",
+            Text("${currentCustomer.getShoppingCart()[index].getPrice().toString()} T",
               style: TextStyle(fontSize: 13,color: theme.black),),
         ],
     );
@@ -54,7 +52,7 @@ class _AwaitingPaymentState extends State<AwaitingPayment> {
   nameAndItem(index){
     return Row(
       children: [
-        Text(widget.currentCustomer.getShoppingCart()[index].getRestaurantName(),
+        Text(currentCustomer.getShoppingCart()[index].getRestaurantName(),
         style: TextStyle(fontSize: 22,color: theme.black),),
         Spacer(),
         IconButton(
@@ -65,7 +63,7 @@ class _AwaitingPaymentState extends State<AwaitingPayment> {
             ),
             onPressed: (){
               setState(() {
-              widget.currentCustomer.removeShoppingCart(widget.currentCustomer.getShoppingCart()[index]);
+              currentCustomer.removeShoppingCart(currentCustomer.getShoppingCart()[index]);//TODO:remove order from server
               });
             })
       ],
@@ -132,11 +130,10 @@ class _AwaitingPaymentState extends State<AwaitingPayment> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.currentCustomer.getPreviousOrders());
     return Container(
         padding: EdgeInsets.only(top: 20),
         child: ListView(
-          children: List.generate(widget.currentCustomer.getShoppingCart().length,
+          children: List.generate(currentCustomer.getShoppingCart().length,
                   (index) => showShoppingCart(index)),
         ));
   }

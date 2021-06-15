@@ -1,7 +1,5 @@
 
 
-import 'package:customer_app/Objects/Customer.dart';
-import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:customer_app/appBar.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +11,7 @@ import 'ShoppingCartPage.dart';
 class Nav extends StatefulWidget {
 
 
-  Customer currentCustomer;
-  Nav(this.currentCustomer);
+
 
   @override
   _NavState createState() => _NavState();
@@ -27,13 +24,13 @@ class _NavState extends State<Nav> {
   showScreen() {
       print("here");
       if(_selectedIndex == 0){//home
-        return Home(widget.currentCustomer);
+        return Home();
       }else if(_selectedIndex == 1){//fav
-        return Favorite(widget.currentCustomer);
+        return Favorite();
       }else if(_selectedIndex == 2){//shop
-        return ShoppingCart(widget.currentCustomer);
+        return ShoppingCart();
       }else {//(_selectedIndex == 3)(profile)
-        return Profile(widget.currentCustomer);
+        return Profile();
       }
   }
 

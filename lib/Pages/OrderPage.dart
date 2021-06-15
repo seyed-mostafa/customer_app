@@ -1,22 +1,23 @@
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Pages/Nav.dart';
+import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 class OrderPage extends StatefulWidget {
-  Customer currentCustomer;
-  Order currentOrder;
 
-  OrderPage(this.currentCustomer, this.currentOrder);
+  Order currentOrder;
+  OrderPage(this.currentOrder);
 
   @override
   _OrderPageState createState() => _OrderPageState();
 }
 
 class _OrderPageState extends State<OrderPage> {
+  Customer currentCustomer=Data.customer;
 
   payment(){
     return  Container(
@@ -24,7 +25,7 @@ class _OrderPageState extends State<OrderPage> {
       child: TextButton(
         onPressed: () {
           setState(() {
-            if (widget.currentCustomer.getWallet()<widget.currentOrder.getPrice()) {
+            if (currentCustomer.getWallet()<widget.currentOrder.getPrice()) {
             showDialog<String>(
               context: context,
               builder: (BuildContext context) => AlertDialog(
@@ -41,10 +42,10 @@ class _OrderPageState extends State<OrderPage> {
             }
             else{
               widget.currentOrder.setOrderTime();
-              widget.currentCustomer.setWallet(widget.currentCustomer.getWallet()-
-                  widget.currentOrder.getPrice());
-              widget.currentCustomer.removeShoppingCart(widget.currentOrder);
-              widget.currentCustomer.addPreviousOrders(widget.currentOrder);
+              currentCustomer.setWallet(currentCustomer.getWallet()-       //
+                  widget.currentOrder.getPrice());                         //TODO:These changes must also be applied to the server
+              currentCustomer.removeShoppingCart(widget.currentOrder);     //
+              currentCustomer.addPreviousOrders(widget.currentOrder);      //
               showDialog<String>(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
@@ -226,7 +227,7 @@ class _OrderPageState extends State<OrderPage> {
             onPressed: () {
               setState(() {
                 widget.currentOrder.remove(
-                    widget.currentOrder.getOrder().keys.elementAt(index));
+                    widget.currentOrder.getOrder().keys.elementAt(index));  //TODO:send data to server
               });
             })
       ],
@@ -387,7 +388,7 @@ class _OrderPageState extends State<OrderPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        Nav(widget.currentCustomer)));
+                        Nav()));
           },
         ),
         backgroundColor: Colors.white,

@@ -11,6 +11,7 @@ class Map extends StatefulWidget {
 
 class _MapState extends State<Map> {
 
+  //TODO:set customer location
 
   Completer<GoogleMapController> _controller = Completer();
 

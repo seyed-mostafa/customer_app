@@ -6,7 +6,6 @@ import 'package:customer_app/Objects/Customer.dart';
 import 'data/Customers.dart';
 
 class SplashScreen extends StatefulWidget {
-  List<Customer> customers = importCustomers();
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -17,16 +16,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
 
-    Customer currentCustomer=importCustomer();
-
     super.initState();
     Timer(
         Duration(seconds: 2),
             () => Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder:  EnteredUser ?
-                    (BuildContext context) => Nav (currentCustomer):
-                    (BuildContext context) => EnteringPage(widget.customers)
+                    (BuildContext context) => Nav ():
+                    (BuildContext context) => EnteringPage()
               )
             )
     );

@@ -1,19 +1,19 @@
 import 'package:customer_app/Objects/Customer.dart';
+import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'OrderPageOngoing.dart';
 
 
 class OngoingOrders extends StatefulWidget {
- final Customer currentCustomer;
- 
-  OngoingOrders(this.currentCustomer);
+
   @override
   _OngoingOrdersState createState() => _OngoingOrdersState();
 }
 
 class _OngoingOrdersState extends State<OngoingOrders> {
 
+  Customer currentCustomer=Data.customer;
 
   detail(index){
     return Row(
@@ -25,8 +25,7 @@ class _OngoingOrdersState extends State<OngoingOrders> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => OrderPageOngoing(widget.currentCustomer,
-                          widget.currentCustomer.getPreviousOrders()[index])));
+                      builder: (context) => OrderPageOngoing(currentCustomer.getPreviousOrders()[index])));
             });
           },
           child: Text('View Details',
@@ -39,11 +38,10 @@ class _OngoingOrdersState extends State<OngoingOrders> {
   }
 
   price(index){
-    print("${widget.currentCustomer.getPreviousOrders()[index].getPrice()} T");
     return  Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(widget.currentCustomer.getPreviousOrders()[index].getPrice().toString(),
+        Text(currentCustomer.getPreviousOrders()[index].getPrice().toString(),
           style: TextStyle(fontSize: 13,color: theme.black),),
       ],
     );
@@ -52,7 +50,7 @@ class _OngoingOrdersState extends State<OngoingOrders> {
   nameAndItem(index){
     return Row(
       children: [
-        Text(widget.currentCustomer.getPreviousOrders()[index].getRestaurantName(),
+        Text(currentCustomer.getPreviousOrders()[index].getRestaurantName(),
           style: TextStyle(fontSize: 22,color: theme.black),),
         Spacer(),
         Text("Order is on the way",
@@ -123,8 +121,8 @@ class _OngoingOrdersState extends State<OngoingOrders> {
     return ListView(
       children: [
         SizedBox(height: 5),
-        for (int i = 0; i < widget.currentCustomer.getPreviousOrders().length ; i++)
-          if (!(widget.currentCustomer.getPreviousOrders()[i].getDelivered()))
+        for (int i = 0; i < currentCustomer.getPreviousOrders().length ; i++)
+          if (!(currentCustomer.getPreviousOrders()[i].getDelivered()))
             show(i)
 
       ],

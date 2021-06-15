@@ -3,6 +3,7 @@ import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Pages/RestaurantPage.dart';
 import 'package:customer_app/Pages/RestaurantPageTabBar.dart';
+import 'package:customer_app/data/Data.dart';
 import 'package:customer_app/data/Restaurent.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,15 +11,15 @@ import 'package:flutter/painting.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:customer_app/appBar.dart';
+
 
 class FoodPage extends StatefulWidget {
   Customer customer;
-  Restaurant currentRestaurant = importRestaurant()[0];
-  int currentFood;
+  Food currentFood;
+  Restaurant currentRestaurant;
   Order order;
   Food food;
-  FoodPage(this.currentFood, this.customer);
+  FoodPage(this.currentRestaurant,this.currentFood);
 
   @override
   _FoodPageState createState() => _FoodPageState();
@@ -35,7 +36,7 @@ class _FoodPageState extends State<FoodPage> {
         for (Order order in widget.customer.getShoppingCart()) {
           if (order.getRestaurantId() == widget.currentRestaurant.getId()) {
             for(Food food in order.getOrder().keys ){
-              if (food.getName()==widget.currentRestaurant.getMenu()[widget.currentFood].getName()) {
+              if (food.getName()==widget.currentFood.getName()) {
                 widget.order=order;
                 widget.food =food;
                break;
@@ -58,7 +59,7 @@ class _FoodPageState extends State<FoodPage> {
             onPressed: () {
               setState(() {
                 widget.customer.addShoppingCart(
-                    widget.currentRestaurant.getMenu()[widget.currentFood],
+                    widget.currentFood,
                     widget.currentRestaurant.getId(), 1);
                 widget.order=widget.customer.getShoppingCart().last;
                 widget.customer.getShoppingCart()[widget.customer.getShoppingCart().indexOf(widget.order)].setRestaurantName(widget.currentRestaurant.getName());
@@ -108,7 +109,7 @@ class _FoodPageState extends State<FoodPage> {
                   }
                   else{
                   widget.customer.addShoppingCart(
-                      widget.currentRestaurant.getMenu()[widget.currentFood],
+                      widget.currentFood,
                       widget.currentRestaurant.getId(), widget.order.getOrder()[widget.food]-1);
                   widget.order=widget.customer.getShoppingCart().last;
                   }
@@ -146,7 +147,7 @@ class _FoodPageState extends State<FoodPage> {
                 setState(() {
                 print(widget.order.getOrder()[widget.food]);
                 widget.customer.addShoppingCart(
-                    widget.currentRestaurant.getMenu()[widget.currentFood],
+                    widget.currentFood,
                     widget.currentRestaurant.getId(), widget.order.getOrder()[widget.food]+1);
                 widget.order=widget.customer.getShoppingCart().last;
                 });
@@ -176,8 +177,7 @@ class _FoodPageState extends State<FoodPage> {
                       offset: Offset(0, 0))
                 ]),
                 child: Text(
-                  widget.currentRestaurant
-                      .getMenu()[widget.currentFood]
+                  widget.currentFood
                       .getDescription(),
                   style: TextStyle(color: theme.black, fontSize: 15),
                 ),
@@ -198,8 +198,7 @@ class _FoodPageState extends State<FoodPage> {
                       blurRadius: 0.5,
                       offset: Offset(0, 0))
                 ]),
-                child: Text(widget.currentRestaurant
-                    .getMenu()[widget.currentFood]
+                child: Text(widget.currentFood
                     .getComment()
                     .elementAt(0)),
               ),
@@ -249,8 +248,7 @@ class _FoodPageState extends State<FoodPage> {
                     Spacer(),
                     Text(
                       //name
-                      widget.currentRestaurant
-                          .getMenu()[widget.currentFood]
+                      widget.currentFood
                           .getName(),
 
                       style:
@@ -260,8 +258,7 @@ class _FoodPageState extends State<FoodPage> {
                       flex: 10,
                     ),
                     Text(
-                      widget.currentRestaurant
-                              .getMenu()[widget.currentFood]
+                      widget.currentFood
                               .getPrice()
                               .toString() +
                           ' T',
@@ -357,8 +354,7 @@ class _FoodPageState extends State<FoodPage> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => RestaurantPageTabBar(
-                        widget.customer, widget.currentRestaurant)));
+                    builder: (context) => RestaurantPageTabBar(Data.restaurants.indexOf(widget.currentRestaurant))));
           },
         ),
       ),

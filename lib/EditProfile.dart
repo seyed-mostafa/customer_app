@@ -6,18 +6,19 @@ import 'package:customer_app/appBar.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
+import 'data/Data.dart';
+
 class EditProfile extends StatefulWidget {
 
-  Function change;
-  Customer currentCustomer;
 
-  EditProfile(this.change, this.currentCustomer);
 
   @override
   _EditProfileState createState() => _EditProfileState();
 }
 
 class _EditProfileState extends State<EditProfile> {
+
+  Customer currentCustomer=Data.customer;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -63,7 +64,7 @@ class _EditProfileState extends State<EditProfile> {
 
                   //firs name
                   TextFormField(
-                    initialValue: widget.currentCustomer.getName(),
+                    initialValue: currentCustomer.getName(),
                     cursorColor: theme.black,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
@@ -94,7 +95,7 @@ class _EditProfileState extends State<EditProfile> {
 
                   //last name
                   TextFormField(
-                    initialValue: widget.currentCustomer.getLastName(),
+                    initialValue: currentCustomer.getLastName(),
                     cursorColor: theme.black,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
@@ -125,7 +126,7 @@ class _EditProfileState extends State<EditProfile> {
 
                   //Address
                   TextFormField(
-                    initialValue: widget.currentCustomer.getAddress().toString(),
+                    initialValue: currentCustomer.getAddress().toString(),
                     cursorColor: theme.black,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
@@ -162,7 +163,7 @@ class _EditProfileState extends State<EditProfile> {
 
                   //Phone number
                   TextFormField(
-                    initialValue: widget.currentCustomer.getPhoneNumber(),
+                    initialValue: currentCustomer.getPhoneNumber(),
                     cursorColor: theme.black,
                     style: TextStyle(color: Colors.white),
                     autovalidate: true,
@@ -196,7 +197,7 @@ class _EditProfileState extends State<EditProfile> {
 
                   //Password
                   TextFormField(
-                    initialValue: widget.currentCustomer.getPassword(),
+                    initialValue: currentCustomer.getPassword(),
                     cursorColor: theme.black,
                     style: TextStyle(color: Colors.white),
                     obscureText: hidden,
@@ -255,12 +256,12 @@ class _EditProfileState extends State<EditProfile> {
                         print(inputAddress);
                         print(inputPhoneNumber);
                         print(inputPassword);
-                        widget.currentCustomer.setName(_inputFirstName);
-                        widget.currentCustomer.setLastName(_inputLastName);
-                        widget.currentCustomer.setPassword(inputPassword);
-                        widget.currentCustomer.setPhoneNumber(inputPhoneNumber);
+                        currentCustomer.setName(_inputFirstName);
+                        currentCustomer.setLastName(_inputLastName);
+                        currentCustomer.setPassword(inputPassword);
+                        currentCustomer.setPhoneNumber(inputPhoneNumber);
                         Navigator.pushReplacement(context, MaterialPageRoute(
-                            builder: (context) => Nav(widget.currentCustomer)
+                            builder: (context) => Nav()
                         ));
                       }
                       setState(() {});

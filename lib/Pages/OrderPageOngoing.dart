@@ -1,4 +1,4 @@
-import 'package:customer_app/Objects/Customer.dart';
+
 import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Pages/Nav.dart';
 import 'package:flutter/material.dart';
@@ -6,17 +6,16 @@ import 'package:customer_app/Objects/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class OrderPageOngoing extends StatefulWidget {
-  Customer currentCustomer;
+
   Order currentOrder;
 
-  OrderPageOngoing(this.currentCustomer, this.currentOrder);
+  OrderPageOngoing( this.currentOrder);
 
   @override
   _OrderPageOngoingState createState() => _OrderPageOngoingState();
 }
 
 class _OrderPageOngoingState extends State<OrderPageOngoing> {
-
   payment(){
     return  Container(
       alignment:Alignment.center ,
@@ -165,7 +164,7 @@ class _OrderPageOngoingState extends State<OrderPageOngoing> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        Nav(widget.currentCustomer)));
+                        Nav()));
           },
         ),
         backgroundColor: Colors.white,

@@ -6,14 +6,14 @@ import 'package:customer_app/Objects/theme.dart';
 import 'package:customer_app/Pages/Nav.dart';
 import 'package:customer_app/Pages/RestaurantPage.dart';
 import 'package:customer_app/Pages/RestaurantPage2.dart';
+import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
 
 class RestaurantPageTabBar extends StatefulWidget {
 
-  Customer currentCustomer;
-  Restaurant currentRestaurant;
+  int restaurant;
 
-  RestaurantPageTabBar(this.currentCustomer, this.currentRestaurant);
+  RestaurantPageTabBar( this.restaurant);
 
   @override
   _RestaurantPageTabBarState createState() => _RestaurantPageTabBarState();
@@ -21,8 +21,10 @@ class RestaurantPageTabBar extends StatefulWidget {
 
 class _RestaurantPageTabBarState extends State<RestaurantPageTabBar> {
 
+
   @override
   Widget build(BuildContext context) {
+  Restaurant currentRestaurant=Data.restaurants[widget.restaurant];
 
     Size _size = MediaQuery.of(context).size;
 
@@ -47,7 +49,7 @@ class _RestaurantPageTabBarState extends State<RestaurantPageTabBar> {
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text(widget.currentRestaurant.getName()),
+                      Text(currentRestaurant.getName()),
                       Row(
                         children: [
                           for(int i = 0; i < 5; i++)
@@ -68,7 +70,7 @@ class _RestaurantPageTabBarState extends State<RestaurantPageTabBar> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Nav(widget.currentCustomer))
+                              builder: (context) => Nav())
                       );
                     }
                 ),
@@ -78,8 +80,8 @@ class _RestaurantPageTabBarState extends State<RestaurantPageTabBar> {
           },
           body: TabBarView(
             children: [
-              RestaurantPage(widget.currentCustomer, widget.currentRestaurant),
-              RestaurantPage2(widget.currentCustomer, widget.currentRestaurant)
+              RestaurantPage( widget.restaurant),
+              RestaurantPage2( widget.restaurant)
             ],
           ),
         ),

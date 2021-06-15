@@ -1,5 +1,4 @@
 
-import 'package:customer_app/Objects/Customer.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'AwaitingPayment.dart';
@@ -7,10 +6,6 @@ import 'OngoingOrders.dart';
 import 'OrdersHistory.dart';
 
 class ShoppingCart extends StatefulWidget {
-
-  //final List<Restaurant> restaurants = importRestaurant();
-  Customer currentCustomer;
-  ShoppingCart(this.currentCustomer);
 
   @override
   _ShoppingCartState createState() => _ShoppingCartState();
@@ -42,9 +37,9 @@ class _ShoppingCartState extends State<ShoppingCart> {
         ),
         body: TabBarView(
           children: [
-            AwaitingPayment(widget.currentCustomer),
-            OngoingOrders(widget.currentCustomer),
-            OrdersHistory(widget.currentCustomer),
+            AwaitingPayment(),
+            OngoingOrders(),
+            OrdersHistory(),
           ],
         ),
       ),

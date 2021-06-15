@@ -1,26 +1,20 @@
 
-import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Food.dart';
+import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:customer_app/Pages/FoodPage.dart';
-import 'package:customer_app/Pages/MenuType.dart';
-import 'package:customer_app/Pages/RestaurantPage.dart';
 import 'package:customer_app/Pages/RestaurantPageTabBar.dart';
-import 'package:customer_app/Pages/TabBar.dart';
-import 'package:customer_app/data/Restaurent.dart';
+import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
-import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Home extends StatefulWidget {
-
-  List<Restaurant> restaurants = importRestaurant();
-  Customer currentCustomer;
-  Home(this.currentCustomer);
   @override
   _HomeState createState() => _HomeState();
 }
 class _HomeState extends State<Home> {
+
+  List<Restaurant> restaurants=Data.restaurants;
 
   String searchingText = "";
   TypeFood chosenType = TypeFood.all;
@@ -62,11 +56,11 @@ class _HomeState extends State<Home> {
       );
     }
 
-    Widget showFood(Food food){
+    Widget showFood(Food food,int index){
       return TextButton(
         onPressed: (){
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => FoodPage(0, widget.currentCustomer)));
+              MaterialPageRoute(builder: (context) => FoodPage(restaurants[index],food)));
         },
         style: TextButton.styleFrom(
           padding: EdgeInsets.zero,
@@ -148,7 +142,7 @@ class _HomeState extends State<Home> {
       );
     }
 
-    Widget foodListForCustomer(String title, List<Food> foods){
+    Widget foodListForCustomer(String title, List<Food> foods,int index){
       return Container(
         margin: EdgeInsets.only(bottom: 15, top: 15),
         child: Column(
@@ -158,8 +152,8 @@ class _HomeState extends State<Home> {
               onPressed: (){
                   Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => RestaurantPageTabBar(widget.currentCustomer, widget.restaurants[0]))
-                  );
+                      MaterialPageRoute(builder: (context) => RestaurantPageTabBar(index)));
+
               },
               child: Padding(
                 padding: EdgeInsets.only(left: 10),
@@ -178,7 +172,7 @@ class _HomeState extends State<Home> {
               height: _size.height * 0.30,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: List.generate(foods.length, (index) => showFood(foods[index])),
+                children: List.generate(foods.length, (index) => showFood(foods[index],index)),
               ),
             ),
           ],
@@ -244,12 +238,12 @@ class _HomeState extends State<Home> {
         children: [
           searching(),
           chooseType(),
-          for(int i = 0; i < widget.restaurants.length; i++)
-            if(widget.restaurants[i].getMenu().isNotEmpty)
-            if(chosenType == TypeFood.all || widget.restaurants[i].getMenu().contains(chosenType))
-            if(searchingText == '') foodListForCustomer(widget.restaurants[i].getName(), widget.restaurants[i].getMenu())
-            else if(widget.restaurants[i].getName().contains(searchingText))
-              foodListForCustomer(widget.restaurants[i].getName(), widget.restaurants[i].getMenu())
+          for(int i = 0; i < restaurants.length; i++)
+            if(restaurants[i].getMenu().isNotEmpty)
+            if(chosenType == TypeFood.all || restaurants[i].getMenu().contains(chosenType))
+            if(searchingText == '') foodListForCustomer(restaurants[i].getName(), restaurants[i].getMenu(),i)
+            else if(restaurants[i].getName().contains(searchingText))
+              foodListForCustomer(restaurants[i].getName(), restaurants[i].getMenu(),i)
         ],
       ),
     );

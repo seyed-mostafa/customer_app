@@ -3,22 +3,20 @@
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:customer_app/Pages/CommentsPage.dart';
-import 'package:customer_app/data/Restaurent.dart';
+import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
-import 'package:customer_app/Objects/Restaurant.dart';
 import '../EditProfile.dart';
 
 class Profile extends StatefulWidget {
-
-  List<Restaurant> restaurants = importRestaurant();
-  Customer currentCustomer;
-  Profile(this.currentCustomer);
 
   @override
   _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+
+  Customer currentCustomer=Data.customer;
+
   @override
   Widget build(BuildContext context) {
 
@@ -38,9 +36,9 @@ class _ProfileState extends State<Profile> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("First Name : " + widget.currentCustomer.getName()),
-              Text("Last Name : " + widget.currentCustomer.getLastName()),
-              Text("Money of Wallet : " + widget.currentCustomer.getWallet().toString() + " T")
+              Text("First Name : " + currentCustomer.getName()),
+              Text("Last Name : " + currentCustomer.getLastName()),
+              Text("Money of Wallet : " + currentCustomer.getWallet().toString() + " T")
             ],
           )
         ],
@@ -67,13 +65,12 @@ class _ProfileState extends State<Profile> {
     return Container(
       padding: EdgeInsets.only(left: 10, right: 10),
       child: ListView(
-        //crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(height: 10,),
           informationWidget(),
-          choicesWidget("Edit Information of Profile", EditProfile(func, widget.currentCustomer)),
+          choicesWidget("Edit Information of Profile", EditProfile()),
           choicesWidget("Wallet Managing", null),
-          choicesWidget("My Comments", CommentsPage(widget.currentCustomer)),
+          choicesWidget("My Comments", CommentsPage()),
         ],
       ),
     );

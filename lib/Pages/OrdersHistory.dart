@@ -1,19 +1,21 @@
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Pages/OrderPageHistory.dart';
+import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class OrdersHistory extends StatefulWidget {
-  final Customer currentCustomer;
 
-  OrdersHistory(this.currentCustomer);
 
   @override
   _OrdersHistoryState createState() => _OrdersHistoryState();
 }
 
 class _OrdersHistoryState extends State<OrdersHistory> {
+
+  Customer currentCustomer=Data.customer;
+
   detail(index) {
     return Row(
       children: [
@@ -25,8 +27,7 @@ class _OrdersHistoryState extends State<OrdersHistory> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => OrderPageHistory(
-                          widget.currentCustomer,
-                          widget.currentCustomer.getPreviousOrders()[index])));
+                          currentCustomer.getPreviousOrders()[index])));
             });
           },
           child: Text('View Details',
@@ -40,11 +41,10 @@ class _OrdersHistoryState extends State<OrdersHistory> {
   }
 
   price(index) {
-    print("${widget.currentCustomer.getPreviousOrders()[index].getPrice()} T");
     return Row(
       children: [
         Text(
-          widget.currentCustomer
+          currentCustomer
               .getPreviousOrders()[index]
               .getPrice()
               .toString(),
@@ -59,7 +59,7 @@ class _OrdersHistoryState extends State<OrdersHistory> {
       //mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          widget.currentCustomer.getPreviousOrders()[index].getRestaurantName(),
+          currentCustomer.getPreviousOrders()[index].getRestaurantName(),
           style: TextStyle(fontSize: 22, color: theme.black),
         ),
         Spacer(),
@@ -163,10 +163,8 @@ class _OrdersHistoryState extends State<OrdersHistory> {
     return ListView(
       children: [
         SizedBox(height: 5),
-        for (int i = 0;
-            i < widget.currentCustomer.getPreviousOrders().length;
-            i++)
-          if (widget.currentCustomer.getPreviousOrders()[i].getDelivered())
+        for (int i = 0; i < currentCustomer.getPreviousOrders().length; i++)
+          if (currentCustomer.getPreviousOrders()[i].getDelivered())
             show(i)
       ],
     );

@@ -1,15 +1,13 @@
 
-import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/Pages/FoodPage.dart';
 import 'package:flutter/material.dart';
 
 class Menu extends StatefulWidget {
 
-  Customer currentCustomer;
   Restaurant currentRestaurant;
 
-  Menu(this.currentCustomer, this.currentRestaurant);
+  Menu(this.currentRestaurant);
 
   @override
   _MenuState createState() => _MenuState();
@@ -124,10 +122,7 @@ class _MenuState extends State<Menu> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => FoodPage(
-                index,
-                widget.currentCustomer,
-              ),
+              builder: (context) => FoodPage(widget.currentRestaurant,widget.currentRestaurant.getMenu().elementAt(index)),
             ),
           );
         },

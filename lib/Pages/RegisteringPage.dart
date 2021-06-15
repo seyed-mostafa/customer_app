@@ -3,16 +3,13 @@ import 'package:customer_app/Map.dart';
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:customer_app/appBar.dart';
+import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
 import 'EnteringPage.dart';
 import '../MultiChoice.dart';
 import 'dart:io';
 
 class RegisteringPage extends StatefulWidget {
-
-  Function adding;
-
-  RegisteringPage(this.adding);
 
   @override
   _RegisteringPageState createState() => _RegisteringPageState();
@@ -247,7 +244,7 @@ class _RegisteringPageState extends State<RegisteringPage> {
                         print(inputAddress);
                         print(inputPhoneNumber);
                         print(inputPassword);
-                        widget.adding(Customer(_inputFirstName,_inputLastName,inputPhoneNumber,inputPassword));
+                         Data.customer=new Customer(_inputFirstName,_inputLastName,inputPhoneNumber,inputPassword);
                         Navigator.pop(context,);
                       }
                       setState(() {});
