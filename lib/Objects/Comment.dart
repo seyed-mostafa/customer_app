@@ -4,6 +4,14 @@ class Comment  {
   String _comment,_reply,_customerName,_restaurantName;
   DateTime _timeComment,_timeReply;
 
+  Comment.full(String comment,String restaurantName,DateTime timeComment,String reply,DateTime timeReply){
+    _comment=comment;
+    _restaurantName=restaurantName;
+    _timeComment=timeComment;
+    _reply=reply;
+    _timeReply=timeReply;
+  }
+
   Comment(String comment) {
     this._comment=comment;
     _timeComment= DateTime.now();
