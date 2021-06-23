@@ -4,6 +4,7 @@ import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:customer_app/appBar.dart';
 import 'package:customer_app/data/Data.dart';
+import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/material.dart';
 import 'EnteringPage.dart';
 import '../MultiChoice.dart';
@@ -19,8 +20,9 @@ class _RegisteringPageState extends State<RegisteringPage> {
 
   final _formKey = GlobalKey<FormState>();
 
-  String inputPhoneNumber = '', inputPassword = '',
-      _inputFirstName = '', _inputLastName = '', inputAddress = '';
+  String _inputPhoneNumber = '', _inputPassword = '',
+      _inputFirstName = '', _inputLastName = '', _inputAddress = '',
+      _inputLongitude = '', _inputLatitude = '';
   bool validUser = false;
   bool hidden = true;
   List<String> foodType = [];
@@ -44,6 +46,13 @@ class _RegisteringPageState extends State<RegisteringPage> {
     return true;
   }
 
+  void _sendMessage() async { //format: Registering::firstName::lastName::phoneNumber::password::address(String)::longitude::latitude
+    await SocketConnect.socket.then((value) {
+      value.writeln("Registering::" + _inputFirstName + "::" + _inputLastName
+        + "::" + _inputPhoneNumber + "::" + _inputPassword + "::"
+        + _inputAddress + "::" + _inputLongitude + "::" + _inputLatitude);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +157,7 @@ class _RegisteringPageState extends State<RegisteringPage> {
                       }
                       return null;
                     },
-                    onSaved: (String value) => inputAddress = value,
+                    onSaved: (String value) => _inputAddress = value,
                   ),
                   SizedBox(height: 10,),
 
@@ -181,7 +190,7 @@ class _RegisteringPageState extends State<RegisteringPage> {
                       }
                       return null;
                     },
-                    onSaved: (String value) => inputPhoneNumber = value,
+                    onSaved: (String value) => _inputPhoneNumber = value,
                   ),
                   SizedBox(height: 10,),
 
@@ -216,7 +225,7 @@ class _RegisteringPageState extends State<RegisteringPage> {
                         labelStyle: TextStyle(fontSize: 18,)
                     ),
                     onChanged: (String value){
-                      inputPassword = value;
+                      _inputPassword = value;
                       setState(() {
 
                       });
@@ -241,10 +250,11 @@ class _RegisteringPageState extends State<RegisteringPage> {
                         _formKey.currentState.save();
                         print(_inputFirstName);
                         print(_inputLastName);
-                        print(inputAddress);
-                        print(inputPhoneNumber);
-                        print(inputPassword);
-                         Data.customer=new Customer(_inputFirstName,_inputLastName,inputPhoneNumber,inputPassword);
+                        print(_inputAddress);
+                        print(_inputPhoneNumber);
+                        print(_inputPassword);
+                        _sendMessage();
+                         Data.customer = new Customer(_inputFirstName,_inputLastName,_inputPhoneNumber,_inputPassword);
                         Navigator.pop(context,);
                       }
                       setState(() {});

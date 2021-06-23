@@ -14,7 +14,7 @@ class Home extends StatefulWidget {
 }
 class _HomeState extends State<Home> {
 
-  List<Restaurant> restaurants=Data.restaurants;
+  List<Restaurant> restaurants = Data.restaurants;
 
   String searchingText = "";
   TypeFood chosenType = TypeFood.all;
@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
     
     Size _size = MediaQuery.of(context).size;
 
-    Widget searching(){
+    Widget searching() {
       return Container(
         margin: EdgeInsets.fromLTRB(20, 20, 20, 10),
         child: TextField(

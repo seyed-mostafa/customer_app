@@ -3,6 +3,7 @@
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:customer_app/Pages/CommentsPage.dart';
+import 'package:customer_app/Pages/WalletManaging.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
 import '../EditProfile.dart';
@@ -19,10 +20,6 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-
-    bool func(){
-      return false;
-    }
 
     Widget informationWidget(){
       return Row(
@@ -69,7 +66,7 @@ class _ProfileState extends State<Profile> {
           SizedBox(height: 10,),
           informationWidget(),
           choicesWidget("Edit Information of Profile", EditProfile()),
-          choicesWidget("Wallet Managing", null),
+          choicesWidget("Wallet Managing", WalletManaging()),
           choicesWidget("My Comments", CommentsPage()),
         ],
       ),

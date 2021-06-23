@@ -1,6 +1,7 @@
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/appBar.dart';
 import 'package:customer_app/data/Data.dart';
+import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -234,6 +235,12 @@ class _CommentsPageState extends State<CommentsPage> {
         ),
       ),
     );
+  }
+
+  void _sendMessage() { //comment::comment(String)::restaurantName //ToDo
+    SocketConnect.socket.then((value) {
+      value.writeln("comment::");
+    });
   }
 
   @override

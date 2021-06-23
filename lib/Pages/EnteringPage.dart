@@ -4,7 +4,8 @@ import 'package:customer_app/appBar.dart';
 import 'package:customer_app/Objects/Comment.dart';
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/data/Data.dart';
-import 'package:customer_app/data/Data.dart';
+import 'package:customer_app/data/SocketConnect.dart';
+import 'package:customer_app/test.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'RegisteringPage.dart';
@@ -18,6 +19,8 @@ class _EnteringPageState extends State<EnteringPage> {
   //fake Dates
   String password = "123";
   String phoneNumber = "456";
+
+  Socket _Socket;
 
   //input Variable
   String inputPhoneNumberEnter = '', inputPasswordEnter = '';
@@ -142,7 +145,8 @@ class _EnteringPageState extends State<EnteringPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    Nav()), // 0 index just for test
+                                    Nav(),
+                            )
                           );
                         }
                         validUser = false;
@@ -180,9 +184,9 @@ class _EnteringPageState extends State<EnteringPage> {
         ));
   }
 
-  void _sendMessage() {
-    Socket.connect("192.168.56.1", 8080).then((serverSocket) {
-      print('Connected to Server');
+  void _sendMessage() async {
+    await SocketConnect.socket.then((serverSocket) {
+      print('Connected to Server in Entering Page');
 
       serverSocket.writeln("Customer");
 
@@ -192,8 +196,11 @@ class _EnteringPageState extends State<EnteringPage> {
           "pass: " +
           inputPasswordEnter);
 
+      _Socket = serverSocket;
       serverSocket.listen((socket) {
         String messageServer = String.fromCharCodes(socket).trim();
+
+        print(messageServer);
 
         if (messageServer.contains("true")) {
           validUser = true;
@@ -208,33 +215,49 @@ class _EnteringPageState extends State<EnteringPage> {
   }
 
   void currentCustomerMaker(String messageServer) {
+    String firstName = messageServer.substring(0, messageServer.indexOf("&"));
+    messageServer = messageServer.substring(messageServer.indexOf("&") + 2);
+    String lastName = messageServer.substring(0, messageServer.indexOf("&"));
+    messageServer = messageServer.substring(messageServer.indexOf("&") + 2);
+    String phoneNumber = messageServer.substring(0, messageServer.indexOf("&"));
+    messageServer = messageServer.substring(messageServer.indexOf("&") + 2);
+    String password = messageServer.substring(0, messageServer.indexOf("&"));
+    messageServer = messageServer.substring(messageServer.indexOf("&") + 2);
+    int wallet =
+        int.parse(messageServer.substring(0, messageServer.indexOf("&")));
+    print("firstName: " +
+        firstName +
+        ", lastName: " +
+        lastName +
+        ", phoneNumber: " +
+        phoneNumber +
+        ", password: " +
+        password +
+        ", wallet: " +
+        wallet.toString());
 
-    List<String> data=messageServer.split("&");
+    String list; //this is a String to this form:  [a, b, c, d, ]
 
-    for(String strig in data)
-      print(strig);
+    messageServer = messageServer.substring(messageServer.indexOf("&") + 2);
+    list = messageServer.substring(
+        1, messageServer.indexOf("&")); // 1 don't consider [
 
-    Data.customer.setName(data[0]);       //firstName
-    Data.customer.setLastName(data[1]);   //lastName
-    Data.customer.setPhoneNumber(data[2]);//phoneNumber
-    Data.customer.setPassword(data[3]);   //password
-    Data.customer.setWallet(int.parse(data[4]));//wallet
-
-
-    List<String> comments=data[5].split("^");
-
-    for(int i=0;i<comments.length;i++){
-      if(comments[i].endsWith("^^")){
-
-      }else{
-        
-      }
-      //Data.customer.addComment(new Comment.full(comment, restaurantName, timeComment, reply, timeReply));
+    List<Comment> comments = [];
+    while (true) {
+      if (list.indexOf(",") == -1) break;
+      String comment = list.substring(0, list.indexOf(","));
+      comments.add(new Comment(comment));
+      list = list.substring(list.indexOf(",") + 2);
     }
 
+    for (int i = 0; i < comments.length; i++) {
+      print(comments[i].getComment());
+    }
 
     // List<Restaurant> favoriteRestaurant= [];
     // List<Order> shoppingCart = [];
     // List<Order> orders = [];
+    Data.customer = new Customer(firstName, lastName, phoneNumber, password);
+    Data.customer.setWallet(wallet);
   }
 }
