@@ -51,8 +51,7 @@ class _OrderPageState extends State<OrderPage> {
                 builder: (BuildContext context) => AlertDialog(
                   title: const Text('Payment was successful'),
                   content: Text('Tracking Code : ${widget.currentOrder.getId()}\n'
-                      '${DateFormat('d MMM EEEEEE kk:mm').
-                  format(widget.currentOrder.getOrderTime())}'),
+                      '${widget.currentOrder.getOrderTime()}'),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () => Navigator.pop(context, 'Ok'),
@@ -346,7 +345,7 @@ class _OrderPageState extends State<OrderPage> {
                     Container(
                       width: MediaQuery.of(context).size.width /2,
                       child: Text(
-                        widget.currentOrder.getRestaurantAddressString(),
+                        widget.currentOrder.getRestaurantAddress().getAddress(),
                         style:
                         TextStyle(fontSize: 15),softWrap: true,
                       ),

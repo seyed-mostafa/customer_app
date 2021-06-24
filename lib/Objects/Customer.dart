@@ -1,8 +1,7 @@
 
 import 'package:customer_app/Objects/Order.dart';
 import 'Comment.dart';
-import 'Restaurant.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:customer_app/Objects/Location.dart';
 import 'Food.dart';
 
 
@@ -11,9 +10,9 @@ class Customer{
 
   String _firstName,_lastName,_phoneNumber,_password;
   num _wallet=0;
-  List<LatLng> _address = List.empty(growable: true);
+  List<Location> _address = List.empty(growable: true);
   List<Comment> _comments = List.empty(growable: true);
-  List<Restaurant> _favoriteRestaurant = List.empty(growable: true);
+  List<int> _favoriteRestaurant = List.empty(growable: true);
   List<Order> _shoppingCart =List.empty(growable: true);
   List<Order> _orders = List.empty(growable: true);
 
@@ -42,7 +41,7 @@ class Customer{
   void setWallet(num wallet) {
     _wallet = wallet;
   }
-  void addAddress(LatLng address) {
+  void addAddress(Location address) {
     _address.add(address);
   }
   void removeShoppingCart(Order order){
@@ -57,6 +56,10 @@ class Customer{
     }
     _shoppingCart.add(Order(food, restaurantId,i));
   }
+
+  void addNewShoppingCart(String restaurantName,String customerName,String orderTime,Location customerAddress,Location restaurantAddress,int restaurantId){
+    _shoppingCart.add(new Order.full(restaurantName, customerName, orderTime, customerAddress, restaurantAddress, restaurantId));
+  }
   void removeFromShoppingCart(int index){
     addPreviousOrders(_shoppingCart[index]);
     _shoppingCart.removeAt(index);
@@ -67,7 +70,7 @@ class Customer{
   void addComment(Comment comment) {
     _comments.add(comment);
   }
-  void addFavoriteRestaurant(Restaurant favoriteRestaurant) {
+  void addFavoriteRestaurant(int favoriteRestaurant) {
     _favoriteRestaurant.add(favoriteRestaurant);
   }
 
@@ -89,7 +92,7 @@ class Customer{
   num getWallet() {
     return _wallet ;
   }
-  List<LatLng> getAddress() {
+  List<Location> getAddress() {
     return _address;
   }
   List<Order> getShoppingCart() {
@@ -101,7 +104,7 @@ class Customer{
   List<Comment> getComments() {
     return _comments;
   }
-  List<Restaurant> getFavoriteRestaurant() {
+  List<int> getFavoriteRestaurant() {
     return _favoriteRestaurant;
   }
 }

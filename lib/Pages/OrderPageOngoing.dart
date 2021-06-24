@@ -123,7 +123,7 @@ class _OrderPageOngoingState extends State<OrderPageOngoing> {
                     Container(
                       width: MediaQuery.of(context).size.width /2,
                       child: Text(
-                        widget.currentOrder.getRestaurantAddressString(),
+                        widget.currentOrder.getRestaurantAddress().getAddress(),
                         style:
                         TextStyle(fontSize: 15),softWrap: true,
                       ),

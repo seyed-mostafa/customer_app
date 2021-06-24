@@ -1,45 +1,57 @@
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import 'package:intl/intl.dart';
 import 'Food.dart';
+import 'Location.dart';
 
 
 
 class Order {
 
-  String _restaurantName,_restaurantAddressString;
+
+
+  String _customerName, _restaurantName, _orderTime, _deliveryTime;
+  Location _customerAddress, _restaurantAddress;
   int _restaurantId,_id,_price=0;
   bool _delivered=false;
-  LatLng _restaurantAddress;
   static int _count=99246000;
-  DateTime _orderTime,_deliveryTime;
   Map <Food,int> _order=new Map();
 
 
-  Order(Food food,int restaurantId, int i) {
+  Order(Food food, int i,int restaurantId) {
     _order[food]=i;
     _count++;
     _id=_count;
     _restaurantId=restaurantId;
   }
 
+  Order.full(String restaurantName,String customerName,String orderTime,Location customerAddress,Location restaurantAddress,int restaurantId){
+    _restaurantName=restaurantName;
+    _customerName=customerName;
+    _orderTime=orderTime;
+    _customerAddress=customerAddress;
+    _restaurantAddress=restaurantAddress;
+    _restaurantId=restaurantId;
+  }
+
 
   void setDelivered(){
     _delivered=true;
-    _deliveryTime= DateTime.now();
+    _deliveryTime= DateFormat('\n d MMM kk:mm').format( DateTime.now());
   }
   void setRestaurantName(String name){
     _restaurantName=name;
   }
-  void setRestaurantAddress(LatLng address){
-    _restaurantAddress=address;
+  void setRestaurantAddress(Location location){
+    _restaurantAddress=location;
   }
-  void setRestaurantAddressString(String address){
-    _restaurantAddressString=address;
+  void setCustomerAddress(Location location){
+    _customerAddress=location;
   }
   void addFood(Food food,int i){
     _order[food]=i;
   }
   void setOrderTime(){
-    _orderTime= DateTime.now();
+    _orderTime=  DateFormat('\n d MMM kk:mm').format( DateTime.now());
   }
   void remove(Food food){
     _order.remove(food);
@@ -53,10 +65,10 @@ class Order {
   bool getDelivered(){
     return _delivered;
   }
-  DateTime getOrderTime() {
+  String getOrderTime() {
     return _orderTime;
   }
-  DateTime getDeliveryTime() {
+  String getDeliveryTime() {
     return _deliveryTime;
   }
   int getPrice(){
@@ -76,10 +88,10 @@ class Order {
   String getRestaurantName(){
     return _restaurantName;
   }
-  String getRestaurantAddressString(){
-    return _restaurantAddressString;
+  Location getCustomerAddress(){
+    return _customerAddress;
   }
-  LatLng getRestaurantAddress(){
+  Location getRestaurantAddress(){
     return _restaurantAddress;
   }
   int getId(){

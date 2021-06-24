@@ -1,24 +1,31 @@
 
 
-class Comment  {
-  String _comment,_reply,_customerName,_restaurantName;
-  DateTime _timeComment,_timeReply;
+import 'package:intl/intl.dart';
 
-  Comment.full(String comment,String restaurantName,DateTime timeComment,String reply,DateTime timeReply){
+class Comment  {
+  String _comment,_reply,_customerName,_restaurantName,_timeComment,_timeReply;
+
+
+  Comment.full(String comment,String restaurantName,String timeComment,String reply,String timeReply){
     _comment=comment;
     _restaurantName=restaurantName;
     _timeComment=timeComment;
     _reply=reply;
     _timeReply=timeReply;
   }
+  Comment.noFull(String comment,String restaurantName,String timeComment){
+    _comment=comment;
+    _restaurantName=restaurantName;
+    _timeComment=timeComment;
+  }
 
   Comment(String comment) {
     this._comment=comment;
-    _timeComment= DateTime.now();
+    _timeComment=DateFormat('\n d MMM kk:mm').format( DateTime.now());
   }
   void setReply(String reply){
     this._reply=reply;
-    _timeReply= DateTime.now();
+    _timeReply= DateFormat('\n d MMM kk:mm').format( DateTime.now());;
   }
   void setRestaurantName(String restaurantName){
     _restaurantName=restaurantName;
@@ -38,10 +45,10 @@ class Comment  {
   String getCustomerName(){
     return _customerName;
   }
-  DateTime getTimeComment(){
+  String getTimeComment(){
     return _timeComment;
   }
-  DateTime getTimeReply(){
+  String getTimeReply(){
     return _timeReply;
   }
 }

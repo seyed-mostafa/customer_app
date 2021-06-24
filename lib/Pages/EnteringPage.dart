@@ -1,11 +1,16 @@
 import 'dart:io';
+import 'package:customer_app/Objects/Food.dart';
+import 'package:customer_app/Objects/Location.dart';
 import 'package:customer_app/Pages/Nav.dart';
 import 'package:customer_app/appBar.dart';
 import 'package:customer_app/Objects/Comment.dart';
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/data/Data.dart';
+<<<<<<< Updated upstream
 import 'package:customer_app/data/SocketConnect.dart';
 import 'package:customer_app/test.dart';
+=======
+>>>>>>> Stashed changes
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'RegisteringPage.dart';
@@ -184,9 +189,15 @@ class _EnteringPageState extends State<EnteringPage> {
         ));
   }
 
+<<<<<<< Updated upstream
   void _sendMessage() async {
     await SocketConnect.socket.then((serverSocket) {
       print('Connected to Server in Entering Page');
+=======
+  Future<void> _sendMessage() async {
+    await Socket.connect("192.168.56.1", 8080).then((serverSocket) {
+      print('Connected to Server');
+>>>>>>> Stashed changes
 
       serverSocket.writeln("Customer");
 
@@ -196,9 +207,14 @@ class _EnteringPageState extends State<EnteringPage> {
           "pass: " +
           inputPasswordEnter);
 
+<<<<<<< Updated upstream
       _Socket = serverSocket;
       serverSocket.listen((socket) {
         String messageServer = String.fromCharCodes(socket).trim();
+=======
+      serverSocket.listen((socket) async {
+        String messageServer = await String.fromCharCodes(socket).trim();
+>>>>>>> Stashed changes
 
         print(messageServer);
 
@@ -208,13 +224,13 @@ class _EnteringPageState extends State<EnteringPage> {
               messageServer.substring(4); // remove true in start message
           currentCustomerMaker(messageServer);
         }
-
         setState(() {});
       });
     });
   }
 
   void currentCustomerMaker(String messageServer) {
+<<<<<<< Updated upstream
     String firstName = messageServer.substring(0, messageServer.indexOf("&"));
     messageServer = messageServer.substring(messageServer.indexOf("&") + 2);
     String lastName = messageServer.substring(0, messageServer.indexOf("&"));
@@ -259,5 +275,113 @@ class _EnteringPageState extends State<EnteringPage> {
     // List<Order> orders = [];
     Data.customer = new Customer(firstName, lastName, phoneNumber, password);
     Data.customer.setWallet(wallet);
+=======
+    List<String> data = messageServer.split("&");
+
+    for (String strig in data) print(strig);
+
+    Data.customer = new Customer(data[0], data[1], data[2], data[3]);
+    //firstName  0
+    //lastName    1
+    //phoneNumber  2
+    //password     3
+    Data.customer.setWallet(int.parse(data[4])); //wallet
+    Data.customer.addAddress(
+        new Location(data[5], double.parse(data[6]), double.parse(data[7])));
+
+    ////////////////////         comment         ///////////////////
+
+    List<String> comments = data[8].split("^^"); //comments
+
+    for (int i = 0; i < comments.length; i++) {
+      List<String> comment = comments[i].split("^");
+      // comment          0
+      //restaurantName    1
+      //commentTime       2
+      //reply             3
+      //replyTime         4
+
+      if (comment.length == 3) {
+        Data.customer
+            .addComment(new Comment.noFull(comment[0], comment[1], comment[2]));
+      } else {
+        Data.customer.addComment(new Comment.full(
+            comment[0], comment[1], comment[2], comment[3], comment[4]));
+      }
+    }
+
+    ////////////////////////             favoriteRestaurant          ///////////////
+
+    List<String> favoriteRestaurants = data[9].split("^");
+    for (int i = 0; i < favoriteRestaurants.length; i++) {
+      Data.customer.addFavoriteRestaurant(int.parse(favoriteRestaurants[i]));
+    }
+
+    /////////////////////////               shoppingCart            ////////////////
+
+    List<String> shoppingCarts = data[10].split("^^");
+    for (String str in shoppingCarts) {
+      List<String> shoppingCart = str.split("^");
+      Data.customer.addNewShoppingCart(
+          shoppingCart[0].substring(5),
+          Data.customer.getName(),
+          shoppingCart[2],
+          Data.customer.getAddress()[0],
+          new Location(shoppingCart[3], double.parse(shoppingCart[5]),
+              double.parse(shoppingCart[4])),
+          int.parse(shoppingCart[1]));
+      List<String> foods = shoppingCart[6].split(":::");
+      foods.removeLast();
+      for (String food in foods) {
+        List<String> f = food.split("::");
+        Data.customer.addShoppingCart(
+            new Food(
+                f[0],
+                f[1],
+                int.parse(f[2]),
+                int.parse(f[3]),
+                null,
+                f[4] == "true" ? true : false,
+                TypeFood.values.firstWhere((e) => e.toString() == "TypeFood."+f[5])),
+            int.parse(shoppingCart[1]),
+            int.parse(f[6]));
+      }
+      if (str.startsWith("true")) {
+        //check status of order
+        Data.customer.getShoppingCart().last.setDelivered();
+      }
+    }
+    /////////////////////////               Orders            ////////////////
+
+    List<String> orders = data[11].split("^^");
+    for (String str in orders) {
+      List<String> order = str.split("^");
+      Data.customer.addNewShoppingCart(
+          order[0].substring(5),
+          Data.customer.getName(),
+          order[2],
+          Data.customer.getAddress()[0],
+          new Location(
+              order[3], double.parse(order[5]), double.parse(order[4])),
+          int.parse(order[1]));
+      List<String> foods = order[6].split(":::");
+      foods.removeLast();
+      for (String food in foods) {
+        List<String> f = food.split("::");
+        Data.customer.addShoppingCart(
+            new Food(
+                f[0],
+                f[1],
+                int.parse(f[2]),
+                int.parse(f[3]),
+                null,
+                f[4] == "true" ? true : false,
+                TypeFood.values.firstWhere((e) =>  e.toString() == "TypeFood."+f[5])),
+            int.parse(order[1]),
+            int.parse(f[6]));
+      }
+      Data.customer.getShoppingCart().last.setDelivered();
+    }
+>>>>>>> Stashed changes
   }
 }

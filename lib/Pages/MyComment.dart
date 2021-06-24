@@ -42,11 +42,10 @@ class _CommentsPageState extends State<CommentsPage> {
                       .getCustomerName(),
                   style: TextStyle(fontSize: 18, color: theme.black),
                   children: <TextSpan>[
-                    TextSpan(
-                      text: DateFormat('\n d MMM kk:mm').format(widget
+                    TextSpan(text: widget
                           .currentCustomer
                           .getComments()[index]
-                          .getTimeComment()),
+                          .getTimeComment(),
                       style: TextStyle(color: Colors.grey, fontSize: 10),
                     )
                   ]),
@@ -190,11 +189,10 @@ class _CommentsPageState extends State<CommentsPage> {
                           .getRestaurantName(),
                       style: TextStyle(fontSize: 18, color: theme.black),
                       children: <TextSpan>[
-                        TextSpan(
-                          text: DateFormat('\n d MMM kk:mm').format(widget
+                        TextSpan(text: widget
                               .currentCustomer
                               .getComments()[index]
-                              .getTimeReply()),
+                              .getTimeReply(),
                           style: TextStyle(color: Colors.grey, fontSize: 10),
                         )
                       ]),

@@ -1,5 +1,6 @@
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Food.dart';
+import 'package:customer_app/Objects/Location.dart';
 import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Pages/RestaurantPage.dart';
 import 'package:customer_app/Pages/RestaurantPageTabBar.dart';
@@ -63,7 +64,7 @@ class _FoodPageState extends State<FoodPage> {
                     widget.currentRestaurant.getId(), 1);
                 widget.order=widget.customer.getShoppingCart().last;
                 widget.customer.getShoppingCart()[widget.customer.getShoppingCart().indexOf(widget.order)].setRestaurantName(widget.currentRestaurant.getName());
-                widget.customer.getShoppingCart()[widget.customer.getShoppingCart().indexOf(widget.order)].setRestaurantAddressString(" Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St");
+                widget.customer.getShoppingCart()[widget.customer.getShoppingCart().indexOf(widget.order)].setRestaurantAddress(new Location(" Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St",35.717676891099835, 51.331243399093914));
                 print('add to bag');
 
               });

@@ -2,6 +2,7 @@
 import 'package:customer_app/Objects/Comment.dart';
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Order.dart';
+import 'package:customer_app/Objects/Location.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/data/Restaurent.dart';
 
@@ -23,9 +24,9 @@ List<Customer> importCustomers(){
  Customer customer10 = new Customer('Amir', 'Booghi', '09123456799', '123');
 
 
- customer11.addFavoriteRestaurant(restaurant[1]);
- customer11.addFavoriteRestaurant(restaurant[3]);
- customer11.addFavoriteRestaurant(restaurant[5]);
+ customer11.addFavoriteRestaurant(restaurant[1].getId());
+ customer11.addFavoriteRestaurant(restaurant[3].getId());
+ customer11.addFavoriteRestaurant(restaurant[5].getId());
 
 
  Comment comment=new Comment("ai khoda");
@@ -72,13 +73,13 @@ List<Customer> importCustomers(){
  customer11.addShoppingCart(restaurant[0].getMenu()[1], restaurant[0].getId(), 2);
  customer11.addShoppingCart(restaurant[0].getMenu()[2], restaurant[0].getId(), 3);
  customer11.getShoppingCart()[0].setRestaurantName(restaurant[0].getName());
- customer11.getShoppingCart()[0].setRestaurantAddressString(" Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St");
+ customer11.getShoppingCart()[0].setRestaurantAddress(new Location(" Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St",35.717676891099835, 51.331243399093914));
 
  customer11.addShoppingCart(restaurant[1].getMenu()[2], restaurant[1].getId(), 1);
  customer11.addShoppingCart(restaurant[1].getMenu()[3], restaurant[1].getId(), 2);
  customer11.addShoppingCart(restaurant[1].getMenu()[4], restaurant[1].getId(), 3);
  customer11.getShoppingCart()[1].setRestaurantName(restaurant[1].getName());
- customer11.getShoppingCart()[1].setRestaurantAddressString( "Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St");
+ customer11.getShoppingCart()[1].setRestaurantAddress(new Location(" Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St",35.717676891099835, 51.331243399093914));
 
 
  Order order1 = new Order(restaurant[2].getMenu()[2], restaurant[2].getId(), 1);
@@ -86,7 +87,7 @@ List<Customer> importCustomers(){
  order1.addFood(restaurant[2].getMenu()[4], 4);
  customer11.addPreviousOrders(order1);
  customer11.getPreviousOrders()[0].setRestaurantName(restaurant[2].getName());
- customer11.getPreviousOrders()[0].setRestaurantAddressString( "Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St");
+ customer11.getPreviousOrders()[0].setRestaurantAddress(new Location(" Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St",35.717676891099835, 51.331243399093914));
 
  Order order2 = new Order(restaurant[3].getMenu()[2], restaurant[3].getId(), 4);
  order2.addFood(restaurant[3].getMenu()[1], 2);
@@ -94,7 +95,7 @@ List<Customer> importCustomers(){
  order2.setDelivered();
  customer11.addPreviousOrders(order2);
  customer11.getPreviousOrders()[1].setRestaurantName(restaurant[3].getName());
- customer11.getPreviousOrders()[1].setRestaurantAddressString( "Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St");
+ customer11.getPreviousOrders()[1].setRestaurantAddress(new Location(" Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St",35.717676891099835, 51.331243399093914));
 
 
 
@@ -114,9 +115,9 @@ List<Customer> importCustomers(){
 Customer importCustomer(){
   List<Restaurant> restaurant=importRestaurant();
   Customer customer11 = new Customer('Ali', 'Alavi', '09123456790', '123');
-  customer11.addFavoriteRestaurant(restaurant[1]);
-  customer11.addFavoriteRestaurant(restaurant[3]);
-  customer11.addFavoriteRestaurant(restaurant[5]);
+  customer11.addFavoriteRestaurant(restaurant[1].getId());
+  customer11.addFavoriteRestaurant(restaurant[3].getId());
+  customer11.addFavoriteRestaurant(restaurant[5].getId());
 
 
   Comment comment=new Comment("ai khoda");
@@ -163,13 +164,13 @@ Customer importCustomer(){
   customer11.addShoppingCart(restaurant[0].getMenu()[1], restaurant[0].getId(), 2);
   customer11.addShoppingCart(restaurant[0].getMenu()[2], restaurant[0].getId(), 3);
   customer11.getShoppingCart()[0].setRestaurantName(restaurant[0].getName());
-  customer11.getShoppingCart()[0].setRestaurantAddressString(" Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St");
+  customer11.getShoppingCart()[0].setRestaurantAddress(new Location(" Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St",35.717676891099835, 51.331243399093914));
 
   customer11.addShoppingCart(restaurant[1].getMenu()[2], restaurant[1].getId(), 1);
   customer11.addShoppingCart(restaurant[1].getMenu()[3], restaurant[1].getId(), 2);
   customer11.addShoppingCart(restaurant[1].getMenu()[4], restaurant[1].getId(), 3);
   customer11.getShoppingCart()[1].setRestaurantName(restaurant[1].getName());
-  customer11.getShoppingCart()[1].setRestaurantAddressString( "Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St");
+  customer11.getShoppingCart()[1].setRestaurantAddress(new Location(" Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St",35.717676891099835, 51.331243399093914));
 
 
 Order order1 = new Order(restaurant[2].getMenu()[2], restaurant[2].getId(), 1);
@@ -177,7 +178,7 @@ order1.addFood(restaurant[2].getMenu()[3], 2);
 order1.addFood(restaurant[2].getMenu()[4], 4);
 customer11.addPreviousOrders(order1);
 customer11.getPreviousOrders()[0].setRestaurantName(restaurant[2].getName());
-customer11.getPreviousOrders()[0].setRestaurantAddressString( "Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St");
+customer11.getPreviousOrders()[0].setRestaurantAddress(new Location(" Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St",35.717676891099835, 51.331243399093914));
 
   Order order2 = new Order(restaurant[3].getMenu()[2], restaurant[3].getId(), 4);
   order2.addFood(restaurant[3].getMenu()[1], 2);
@@ -185,7 +186,7 @@ customer11.getPreviousOrders()[0].setRestaurantAddressString( "Tehran Province, 
   order2.setDelivered();
   customer11.addPreviousOrders(order2);
   customer11.getPreviousOrders()[1].setRestaurantName(restaurant[3].getName());
-  customer11.getPreviousOrders()[1].setRestaurantAddressString( "Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St");
+  customer11.getPreviousOrders()[1].setRestaurantAddress(new Location(" Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St",35.717676891099835, 51.331243399093914));
 
 
 
