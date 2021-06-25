@@ -150,7 +150,7 @@ class _EnteringPageState extends State<EnteringPage> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Test(str),
+                                builder: (context) => Nav(),
                               ));
                         }
                         validUser = false;
@@ -188,22 +188,21 @@ class _EnteringPageState extends State<EnteringPage> {
         ));
   }
 
-  _sendMessage() async {
+  _sendMessage() async { //format: Entering::phone::password
     String messageServer = "";
     SocketConnect.socket.then((serverSocket) async {
       print('Connected to Server in Entering Page');
       serverSocket.writeln("Customer");
 
-      serverSocket.writeln("Phone: " +
+      serverSocket.writeln("Entering::" +
           inputPhoneNumberEnter +
-          ", " +
-          "pass: " +
+          "::" +
           inputPasswordEnter);
       serverSocket.listen((socket) {
         messageServer += String.fromCharCodes(socket).trim();
       });
     });
-    await Future.delayed(Duration(seconds: 6));
+    await Future.delayed(Duration(seconds: 4));
     if (messageServer.contains("true")) {
       validUser = true;
       messageServer =
