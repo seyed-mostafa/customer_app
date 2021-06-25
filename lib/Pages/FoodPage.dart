@@ -6,6 +6,7 @@ import 'package:customer_app/Pages/RestaurantPage.dart';
 import 'package:customer_app/Pages/RestaurantPageTabBar.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:customer_app/data/Restaurent.dart';
+import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -29,6 +30,12 @@ class FoodPage extends StatefulWidget {
 class _FoodPageState extends State<FoodPage> {
   int state = 1;
   int like = 0;
+
+  void _sendMessage() { //format: addToBag::foodIndex::count::restaurantId
+    SocketConnect.socket.then((value) {
+      value.writeln("addToBag::");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +68,10 @@ class _FoodPageState extends State<FoodPage> {
               setState(() {
                 widget.customer.addShoppingCart(
                     widget.currentFood,
-                    widget.currentRestaurant.getId(), 1);
+                    widget.currentRestaurant.getId(),
+                    1
+                );
+                _sendMessage();
                 widget.order=widget.customer.getShoppingCart().last;
                 widget.customer.getShoppingCart()[widget.customer.getShoppingCart().indexOf(widget.order)].setRestaurantName(widget.currentRestaurant.getName());
                 widget.customer.getShoppingCart()[widget.customer.getShoppingCart().indexOf(widget.order)].setRestaurantAddress(new Location(" Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St",35.717676891099835, 51.331243399093914));
