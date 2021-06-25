@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Objects/Location.dart';
+import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/Pages/Nav.dart';
 import 'package:customer_app/appBar.dart';
 import 'package:customer_app/Objects/Comment.dart';
@@ -23,6 +24,8 @@ class _EnteringPageState extends State<EnteringPage> {
   //fake Dates
   String password = "123";
   String phoneNumber = "456";
+
+  String str;
 
   Socket _Socket;
 
@@ -149,7 +152,7 @@ class _EnteringPageState extends State<EnteringPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    Nav(),
+                                    Test(str),
                             )
                           );
                         }
@@ -190,7 +193,7 @@ class _EnteringPageState extends State<EnteringPage> {
 
 
   void _sendMessage() async {
-    await SocketConnect.socket.then((serverSocket) {
+    await SocketConnect.socket.then((serverSocket) async{
       print('Connected to Server in Entering Page');
       serverSocket.writeln("Customer");
 
@@ -200,28 +203,31 @@ class _EnteringPageState extends State<EnteringPage> {
           "pass: " +
           inputPasswordEnter);
 
-      serverSocket.listen((socket) async {
+       await serverSocket.listen(( socket) async {
         String messageServer = await String.fromCharCodes(socket).trim();
 
         print(messageServer);
 
-        if (messageServer.contains("true")) {
+        if (messageServer.contains("true"))  {
           validUser = true;
           messageServer =
-              messageServer.substring(4); // remove true in start message
-          currentCustomerMaker(messageServer);
+              messageServer.substring(4);// remove true in start message
+          str=messageServer;
+         //await currentCustomerMaker(messageServer);
         }
         setState(() {});
       });
     });
   }
 
-  void currentCustomerMaker(String messageServer) {
+  Future<void> currentCustomerMaker(String messageServer) async {
+
+//   print(messageServer);
 
     List<String> data = messageServer.split("&");
 
-    for (String strig in data) print(strig);
-
+  //  for (String strig in data) print(strig);
+   // print("here");
     Data.customer = new Customer(data[0], data[1], data[2], data[3]);
     //firstName  0
     //lastName    1
@@ -230,6 +236,7 @@ class _EnteringPageState extends State<EnteringPage> {
     Data.customer.setWallet(int.parse(data[4])); //wallet
     Data.customer.addAddress(
         new Location(data[5], double.parse(data[6]), double.parse(data[7])));
+   // print("and here");
 
     ////////////////////         comment         ///////////////////
 
@@ -295,35 +302,62 @@ class _EnteringPageState extends State<EnteringPage> {
     }
     /////////////////////////               Orders            ////////////////
 
-    List<String> orders = data[11].split("^^");
-    for (String str in orders) {
-      List<String> order = str.split("^");
-      Data.customer.addNewShoppingCart(
-          order[0].substring(5),
-          Data.customer.getName(),
-          order[2],
-          Data.customer.getAddress()[0],
-          new Location(
-              order[3], double.parse(order[5]), double.parse(order[4])),
-          int.parse(order[1]));
-      List<String> foods = order[6].split(":::");
-      foods.removeLast();
-      for (String food in foods) {
-        List<String> f = food.split("::");
-        Data.customer.addShoppingCart(
-            new Food(
-                f[0],
-                f[1],
-                int.parse(f[2]),
-                int.parse(f[3]),
-                null,
-                f[4] == "true" ? true : false,
-                TypeFood.values.firstWhere((e) =>  e.toString() == "TypeFood."+f[5])),
-            int.parse(order[1]),
-            int.parse(f[6]));
-      }
-      Data.customer.getShoppingCart().last.setDelivered();
-    }
+    // List<String> orders = data[11].split("^^");
+    // for (String str in orders) {
+    //   List<String> order = str.split("^");
+    //   Data.customer.addNewShoppingCart(
+    //       order[0].substring(5),
+    //       Data.customer.getName(),
+    //       order[2],
+    //       Data.customer.getAddress()[0],
+    //       new Location(
+    //           order[3], double.parse(order[5]), double.parse(order[4])),
+    //       int.parse(order[1]));
+    //   List<String> foods = order[6].split(":::");
+    //   foods.removeLast();
+    //   for (String food in foods) {
+    //     List<String> f = food.split("::");
+    //     Data.customer.addShoppingCart(
+    //         new Food(
+    //             f[0],
+    //             f[1],
+    //             int.parse(f[2]),
+    //             int.parse(f[3]),
+    //             null,
+    //             f[4] == "true" ? true : false,
+    //             TypeFood.values.firstWhere((e) =>  e.toString() == "TypeFood."+f[5])),
+    //         int.parse(order[1]),
+    //         int.parse(f[6]));
+    //   }1
+    //   Data.customer.getShoppingCart().last.setDelivered();
+    // }
+
+
+
+
+
+
+
+
+    ////////////////////////////////////////////////////////              restaurants data        from data : 12             /////////////////////////////////
+   // print(data[11]);
+   //  List<String> data1=data[11].split("#");
+   //
+   //  Restaurant restaurant=new Restaurant(
+   //      data[0],new Location(data1[1], double.parse(data1[3]), double.parse(data1[2])) , data1[4], data1[5]);
+   //  restaurant.setSendingRangeRadius(int.parse(data1[6]));
+   //  restaurant.setId(int.parse(data1[7]));
+   //  restaurant.setDays(data1[8]);
+   //  restaurant.setHour(data1[9]);
+   //
+   //  List<String> type=data1[10].split("::");
+   //  for(String string in type){
+   //    restaurant.addTypeFood(TypeFood.values.firstWhere((e) => e.toString() == "TypeFood."+string));
+   //  }
+
+
+
+
 
   }
 }

@@ -1,3 +1,4 @@
+import 'package:customer_app/Objects/Location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:customer_app/Objects/Comment.dart';
 import 'Food.dart';
@@ -17,13 +18,13 @@ class Restaurant  {
   static int _count=99243000;
   String _name, _phoneNumber, _password, _days, _hour,_addressString;
   num _sendingRangeRadius,_id;
-  LatLng _address;
+  Location _address;
   List<Food> _menu = List.empty(growable: true);
   List<TypeFood> _type;
   List<Comment> _comments= List.empty(growable: true);
 
 
-  Restaurant(String name, LatLng address, String phoneNumber, String password)  {
+  Restaurant(String name, Location address, String phoneNumber, String password)  {
     _count++;
     _id=_count;
     this._name = name;
@@ -32,8 +33,13 @@ class Restaurant  {
     this._phoneNumber = phoneNumber;
   }
 
+
   List<Food> getMenu() {
     return _menu;
+  }
+
+  void setId(int id){
+    _id=id;
   }
 
   void addMenu(Food food){
@@ -78,7 +84,7 @@ class Restaurant  {
     this._hour = hour;
   }
 
-  void setAddress(LatLng address) {
+  void setAddress(Location address) {
     this._address = address;
   }
 
@@ -102,7 +108,7 @@ class Restaurant  {
     return _name;
   }
 
-  LatLng getAddress() {
+  Location getAddress() {
     return _address;
   }
 
