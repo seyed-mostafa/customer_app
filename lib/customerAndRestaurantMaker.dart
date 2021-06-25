@@ -123,10 +123,10 @@ customerAndRestaurantMaker(String messageServer) async {
 
   //print(data[11]);
   List<String> data1 = data[11].split("#");
-  for (String s in data1) print(s);
+  //for (String s in data1) print(s);
 
   Restaurant restaurant = new Restaurant(
-      data[0],
+      data1[0],
       new Location(data1[1], double.parse(data1[3]), double.parse(data1[2])),
       data1[4],
       data1[5]);
@@ -171,6 +171,7 @@ customerAndRestaurantMaker(String messageServer) async {
       restaurant.addComment(
           new Comment.noFull(comment[0], comment[1], comment[2], comment[3]));
   }
+  Data.restaurants.add(restaurant);
 
   /////////////////////////////////                   orders           /////////////////////
 

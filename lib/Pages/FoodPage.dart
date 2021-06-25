@@ -2,10 +2,8 @@ import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Objects/Location.dart';
 import 'package:customer_app/Objects/Order.dart';
-import 'package:customer_app/Pages/RestaurantPage.dart';
 import 'package:customer_app/Pages/RestaurantPageTabBar.dart';
 import 'package:customer_app/data/Data.dart';
-import 'package:customer_app/data/Restaurent.dart';
 import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +14,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 class FoodPage extends StatefulWidget {
-  Customer customer;
+  Customer customer=Data.customer;
   Food currentFood;
   Restaurant currentRestaurant;
   Order order;
