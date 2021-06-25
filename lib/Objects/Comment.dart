@@ -6,15 +6,17 @@ class Comment  {
   String _comment,_reply,_customerName,_restaurantName,_timeComment,_timeReply;
 
 
-  Comment.full(String comment,String restaurantName,String timeComment,String reply,String timeReply){
+  Comment.full(String comment,String customerName,String restaurantName,String timeComment,String reply,String timeReply){
     _comment=comment;
+    _customerName=customerName;
     _restaurantName=restaurantName;
     _timeComment=timeComment;
     _reply=reply;
     _timeReply=timeReply;
   }
-  Comment.noFull(String comment,String restaurantName,String timeComment){
+  Comment.noFull(String comment,String customerName,String restaurantName,String timeComment){
     _comment=comment;
+    _customerName=customerName;
     _restaurantName=restaurantName;
     _timeComment=timeComment;
   }

@@ -20,7 +20,7 @@ class Restaurant  {
   num _sendingRangeRadius,_id;
   Location _address;
   List<Food> _menu = List.empty(growable: true);
-  List<TypeFood> _type;
+  List<TypeFood> _type= List.empty(growable: true);
   List<Comment> _comments= List.empty(growable: true);
 
 
@@ -67,6 +67,7 @@ class Restaurant  {
   void addComment(Comment comment){
     _comments.add(comment);
   }
+
   List<Comment> getComments(){
     return _comments;
   }
@@ -100,6 +101,9 @@ class Restaurant  {
     this._sendingRangeRadius = sendingRangeRadius;
   }
 
+  void addOrder() {
+
+  }
 
 
 
@@ -131,5 +135,6 @@ class Restaurant  {
   String getHour() {
     return _hour;
   }
+
 
 }

@@ -38,8 +38,6 @@ class _EnteringPageState extends State<EnteringPage> {
   //for first time don't show error of input (red container in top)
   bool flag = true;
 
-  String messageServer = "";
-
   //for hide entering password
   bool hidden = true;
 
@@ -149,12 +147,10 @@ class _EnteringPageState extends State<EnteringPage> {
                         _sendMessage();
                         if (validUser) {
                           Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    Test(str),
-                            )
-                          );
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Test(str),
+                              ));
                         }
                         validUser = false;
                         setState(() {});
@@ -191,9 +187,9 @@ class _EnteringPageState extends State<EnteringPage> {
         ));
   }
 
-
-  void _sendMessage() async {
-    await SocketConnect.socket.then((serverSocket) async{
+  _sendMessage() async {
+    String messageServer = "";
+    SocketConnect.socket.then((serverSocket) async {
       print('Connected to Server in Entering Page');
       serverSocket.writeln("Customer");
 
@@ -202,32 +198,25 @@ class _EnteringPageState extends State<EnteringPage> {
           ", " +
           "pass: " +
           inputPasswordEnter);
-
-       await serverSocket.listen(( socket) async {
-        String messageServer = await String.fromCharCodes(socket).trim();
-
-        print(messageServer);
-
-        if (messageServer.contains("true"))  {
-          validUser = true;
-          messageServer =
-              messageServer.substring(4);// remove true in start message
-          str=messageServer;
-         //await currentCustomerMaker(messageServer);
-        }
-        setState(() {});
+      serverSocket.listen((socket) {
+        messageServer += String.fromCharCodes(socket).trim();
       });
     });
+    await Future.delayed(Duration(seconds: 6));
+    if (messageServer.contains("true")) {
+      validUser = true;
+      messageServer =
+          messageServer.substring(4); // remove true in start message
+      str = messageServer;
+      currentCustomerMaker(messageServer);
+    }
   }
 
-  Future<void> currentCustomerMaker(String messageServer) async {
-
-//   print(messageServer);
-
+  currentCustomerMaker(String messageServer) async {
     List<String> data = messageServer.split("&");
 
-  //  for (String strig in data) print(strig);
-   // print("here");
+    //for (String strig in data) print(strig);
+
     Data.customer = new Customer(data[0], data[1], data[2], data[3]);
     //firstName  0
     //lastName    1
@@ -236,7 +225,7 @@ class _EnteringPageState extends State<EnteringPage> {
     Data.customer.setWallet(int.parse(data[4])); //wallet
     Data.customer.addAddress(
         new Location(data[5], double.parse(data[6]), double.parse(data[7])));
-   // print("and here");
+    // print("and here");
 
     ////////////////////         comment         ///////////////////
 
@@ -251,11 +240,11 @@ class _EnteringPageState extends State<EnteringPage> {
       //replyTime         4
 
       if (comment.length == 3) {
-        Data.customer
-            .addComment(new Comment.noFull(comment[0], comment[1], comment[2]));
+        Data.customer.addComment(
+            new Comment.noFull(comment[0], data[0], comment[1], comment[2]));
       } else {
-        Data.customer.addComment(new Comment.full(
-            comment[0], comment[1], comment[2], comment[3], comment[4]));
+        Data.customer.addComment(new Comment.full(comment[0], data[0],
+            comment[1], comment[2], comment[3], comment[4]));
       }
     }
 
@@ -291,7 +280,8 @@ class _EnteringPageState extends State<EnteringPage> {
                 int.parse(f[3]),
                 null,
                 f[4] == "true" ? true : false,
-                TypeFood.values.firstWhere((e) => e.toString() == "TypeFood."+f[5])),
+                TypeFood.values
+                    .firstWhere((e) => e.toString() == "TypeFood." + f[5])),
             int.parse(shoppingCart[1]),
             int.parse(f[6]));
       }
@@ -332,32 +322,69 @@ class _EnteringPageState extends State<EnteringPage> {
     //   Data.customer.getShoppingCart().last.setDelivered();
     // }
 
+    ////////////////////////////////////////////////////////              restaurants data        from data : 11             /////////////////////////////////
 
+    //print(data[11]);
+    List<String> data1 = data[11].split("#");
+    for (String s in data1) print(s);
 
+    Restaurant restaurant = new Restaurant(
+        data[0],
+        new Location(data1[1], double.parse(data1[3]), double.parse(data1[2])),
+        data1[4],
+        data1[5]);
+    restaurant.setSendingRangeRadius(int.parse(data1[6]));
+    restaurant.setId(int.parse(data1[7]));
+    restaurant.setDays(data1[8]);
+    restaurant.setHour(data1[9]);
 
+    /////////////////////////////////                       type food            /////////////////////
 
+    List<String> type = data1[10].split("::");
+    for (String string in type) {
+      restaurant.addTypeFood(TypeFood.values
+          .firstWhere((e) => e.toString() == "TypeFood." + string));
+    }
 
+    /////////////////////////////////                       menu            /////////////////////
 
+    List<String> foods = data1[11].split(":::");
+    for (String food in foods) {
+      List<String> menu = food.split("::");
+      restaurant.addMenu(new Food(
+          menu[0],
+          menu[1],
+          int.parse(menu[2]),
+          int.parse(menu[3]),
+          null,
+          menu[4] == "true" ? true : false,
+          TypeFood.values
+              .firstWhere((e) => e.toString() == "TypeFood." + menu[5])));
+    }
 
-    ////////////////////////////////////////////////////////              restaurants data        from data : 12             /////////////////////////////////
-   // print(data[11]);
-   //  List<String> data1=data[11].split("#");
-   //
-   //  Restaurant restaurant=new Restaurant(
-   //      data[0],new Location(data1[1], double.parse(data1[3]), double.parse(data1[2])) , data1[4], data1[5]);
-   //  restaurant.setSendingRangeRadius(int.parse(data1[6]));
-   //  restaurant.setId(int.parse(data1[7]));
-   //  restaurant.setDays(data1[8]);
-   //  restaurant.setHour(data1[9]);
-   //
-   //  List<String> type=data1[10].split("::");
-   //  for(String string in type){
-   //    restaurant.addTypeFood(TypeFood.values.firstWhere((e) => e.toString() == "TypeFood."+string));
-   //  }
+    /////////////////////////////////                   comments           /////////////////////
 
+    List<String> comments1 = data1[12].split(":::");
+    for (String com in comments1) {
+      List<String> comment = com.split("::");
+      if (comment.length == 6)
+        restaurant.addComment(new Comment.full(comment[0], comment[1],
+            comment[2], comment[3], comment[4], comment[5]));
+      else
+        restaurant.addComment(
+            new Comment.noFull(comment[0], comment[1], comment[2], comment[3]));
+    }
 
+    /////////////////////////////////                   orders           /////////////////////
 
-
-
+    // List<String> orders = data1[13].split("^^");
+    // for (String ord in orders) {
+    //   List<String> order = ord.split("^");
+    //   restaurant.addOrder();
+    //   for (String food in foods1) {
+    //     List<String> menu = food.split("::");
+    //
+    //   }
+    // }
   }
 }

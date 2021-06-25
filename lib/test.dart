@@ -23,7 +23,8 @@ class _TestState extends State<Test> {
 
   @override
   Widget build(BuildContext context) {
-    currentCustomerMaker(widget.str);
+    //currentCustomerMaker(widget.str);
+    print(widget.str);
     return Scaffold(
       body: Center(
         child: Text(widget.str),
