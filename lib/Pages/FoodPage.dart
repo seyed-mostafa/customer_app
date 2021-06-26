@@ -35,23 +35,27 @@ class _FoodPageState extends State<FoodPage> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    bool isInBag() {
-      if (widget.customer.getShoppingCart().isNotEmpty) {
-        for (Order order in widget.customer.getShoppingCart()) {
-          if (order.getRestaurantId() == widget.currentRestaurant.getId()) {
-            for (Food food in order.getOrder().keys) {
-              if (food.getName() == widget.currentFood.getName()) {
-                widget.order = order;
-                return true;
-              }
+
+  bool isInBag() {
+    if (widget.customer.getShoppingCart().isNotEmpty) {
+      for (Order order in widget.customer.getShoppingCart()) {
+        if (order.getRestaurantId() == widget.currentRestaurant.getId()) {
+          for (Food food in order.getOrder().keys) {
+            if (food.getName() == widget.currentFood.getName()) {
+              widget.order = order;
+              print(order.getOrder()[widget.currentFood]);
+              return true;
             }
           }
         }
       }
-      return false;
     }
+    return false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
 
     addToBag() {
       return Row(
@@ -65,7 +69,7 @@ class _FoodPageState extends State<FoodPage> {
                 widget.customer.addShoppingCart(
                     widget.currentFood, widget.currentRestaurant.getId(), 1);
                 //TODO:add order for restaurant
-                _sendMessage();
+                //_sendMessage();
                 print('add to bag');
               });
             },
@@ -108,13 +112,12 @@ class _FoodPageState extends State<FoodPage> {
                     widget.order.remove(widget.currentFood);
                     widget.order = null;
                   } else {
-                    widget.customer.addShoppingCart(widget.currentFood,
-                        widget.currentRestaurant.getId(), 1);
                     widget.customer.addShoppingCart(
                         widget.currentFood,
                         widget.currentRestaurant.getId(),
                         widget.order.getOrder()[widget.currentFood] - 1);
                     widget.order = widget.customer.getShoppingCart().last;
+
                   }
                 });
               }),

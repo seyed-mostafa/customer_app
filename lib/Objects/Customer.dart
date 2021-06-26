@@ -58,8 +58,11 @@ class Customer{
       }
     }
     for(Restaurant restaurant in Data.restaurants)
-      if (restaurant.getId()==restaurantId)
-        _shoppingCart.add(new Order.full(restaurant.getName(), _firstName, DateFormat('\n d MMM kk:mm').format( DateTime.now()), _address[0], restaurant.getAddress(), restaurantId));
+      if (restaurant.getId()==restaurantId){
+        Order order=new Order.full(restaurant.getName(), _firstName, DateFormat('\n d MMM kk:mm').format( DateTime.now()), _address[0], restaurant.getAddress(), restaurantId);
+        order.addFood(food, i);
+        _shoppingCart.add(order);
+      }
   }
 
   void addNewShoppingCart(String restaurantName,String customerName,String orderTime,Location customerAddress,Location restaurantAddress,int restaurantId){
