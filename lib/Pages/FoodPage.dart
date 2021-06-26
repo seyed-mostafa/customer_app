@@ -45,10 +45,9 @@ class _FoodPageState extends State<FoodPage> {
               if (food.getName()==widget.currentFood.getName()) {
                 widget.order=order;
                 widget.food =food;
-               break;
+                return true;
               }
             }
-            return true;
           }
         }
       }
@@ -112,7 +111,7 @@ class _FoodPageState extends State<FoodPage> {
               onPressed: () {
                 print('mines');
                 setState(() {
-                  if (widget.order.getOrder()[widget.food]-1==0) {
+                  if (widget.order.getOrder()[widget.currentFood]-1==0) {
                     widget.order.remove(widget.food);
                     widget.order=null;
                   }
@@ -128,13 +127,12 @@ class _FoodPageState extends State<FoodPage> {
           TextButton(
             onPressed: () {
               setState(() {
-
               });
             },
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Text(
-                widget.order.getOrder()[widget.food].toString(),
+                widget.order.getOrder()[widget.currentFood].toString(),
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
               ),
             ),
