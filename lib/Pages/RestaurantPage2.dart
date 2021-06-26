@@ -24,7 +24,7 @@ class _RestaurantPage2State extends State<RestaurantPage2> {
   Widget build(BuildContext context) {
     currentRestaurant=Data.restaurants.elementAt(widget.currentRestaurant);
     return Container(
-      //child: CommentsPage(widget.currentRestaurant),
+      //child: CommentsPage(currentRestaurant),
     );
   }
 }

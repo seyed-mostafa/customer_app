@@ -93,14 +93,12 @@ class _OrderPageState extends State<OrderPage> {
               )
             ]),
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
           child: Column(
             children: [
               DataTable(
                 columns: const <DataColumn>[
-                  DataColumn(
-                    label: Text('Food name'),
-                  ),
+                  DataColumn(label: Text('Food name'),),
                   DataColumn(numeric: true, label: Text('Num')),
                   DataColumn(numeric: true, label: Text('Price')),
                 ],
@@ -128,9 +126,7 @@ class _OrderPageState extends State<OrderPage> {
   increaseOrDecrease(index) {
     return Row(
       children: [
-        Spacer(
-          flex: 5,
-        ),
+        Spacer(),
         IconButton(
             icon: Icon(
               FontAwesomeIcons.minus,
@@ -153,28 +149,17 @@ class _OrderPageState extends State<OrderPage> {
                 }
               });
             }),
-        // Spacer(),
-        TextButton(
-          onPressed: () {
-            setState(() {});
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(7),
-            child: Text(
-              widget.currentOrder
-                  .getOrder()[
-                      widget.currentOrder.getOrder().keys.elementAt(index)]
-                  .toString(),
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-            ),
-          ),
-          style: TextButton.styleFrom(
-            primary: Colors.black,
-            shadowColor: theme.black,
-            backgroundColor: theme.yellow,
+        Container(
+          padding: EdgeInsets.all(10),
+          color: theme.yellow,
+          child: Text(
+            widget.currentOrder
+                .getOrder()[
+                    widget.currentOrder.getOrder().keys.elementAt(index)]
+                .toString(),
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
           ),
         ),
-        // Spacer(),
         IconButton(
             icon: Icon(
               FontAwesomeIcons.plus,
@@ -236,60 +221,48 @@ class _OrderPageState extends State<OrderPage> {
   image(index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        width: 130,
-        height: 130,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          image: DecorationImage(
-              image: NetworkImage('assets/images/food/${index + 1}.jpg'),
-              fit: BoxFit.fill),
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Image.asset(
+            "assets/images/restaurant/" + (index+1).toString() + ".jpg",
+            fit: BoxFit.fill,
+          ),
         ),
       ),
     );
   }
 
   food(index) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width / 25, 8,
-          MediaQuery.of(context).size.width / 25, 0),
-      child: Container(
-        height: MediaQuery.of(context).size.height / 7,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(15)),
-            color: theme.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey,
-                spreadRadius: 0.001,
-                blurRadius: 15,
-              )
-            ]),
-        child: Row(
-          children: [
-            image(index),
-            Container(
-              width: MediaQuery.of(context).size.width * 3 / 5,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Spacer(
-                    flex: 20,
-                  ),
-                  nameAndItem(index),
-                  Spacer(
-                    flex: 1,
-                  ),
-                  price(index),
-                  Spacer(
-                    flex: 15,
-                  ),
-                  increaseOrDecrease(index),
-                ],
-              ),
+    return Container(
+      margin: EdgeInsets.all(5),
+      height: MediaQuery.of(context).size.height * 0.20,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          color: theme.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              spreadRadius: 0.001,
+              blurRadius: 15,
             )
-          ],
-        ),
+          ]),
+      child: Row(
+        children: [
+          image(index),
+          Container(
+            width: MediaQuery.of(context).size.width * 3 / 5,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                nameAndItem(index),
+                price(index),
+                increaseOrDecrease(index),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
@@ -299,21 +272,21 @@ class _OrderPageState extends State<OrderPage> {
       alignment: Alignment.bottomCenter,
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: 1),
+          padding: const EdgeInsets.only(bottom: 50),
           child: Container(
             height: MediaQuery.of(context).size.height / 3,
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: NetworkImage('assets/images/restaurant/2.jpg'),
-                  fit: BoxFit.cover),
+                image: AssetImage("assets/images/restaurant/2.jpg"),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
         Container(
-          height: 100,
           decoration: BoxDecoration(
             color: theme.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(50)),
           ),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(40,20,0,0),
@@ -367,9 +340,7 @@ class _OrderPageState extends State<OrderPage> {
         restaurant(),
         for (int i = 0; i < widget.currentOrder.getOrder().length; i++) food(i),
         SizedBox(height: 5),
-        Column(
-          children: [table()],
-        ),
+        table(),
         payment(),
         SizedBox(height: 20,)
       ],

@@ -13,7 +13,7 @@ class OngoingOrders extends StatefulWidget {
 
 class _OngoingOrdersState extends State<OngoingOrders> {
 
-  Customer currentCustomer=Data.customer;
+  Customer currentCustomer = Data.customer;
 
   detail(index){
     return Row(
@@ -28,7 +28,7 @@ class _OngoingOrdersState extends State<OngoingOrders> {
                       builder: (context) => OrderPageOngoing(currentCustomer.getPreviousOrders()[index])));
             });
           },
-          child: Text('View Details',
+          child: Text('Details',
               style: TextStyle(
                 fontSize: 15,
                 color:  theme.yellow ,
