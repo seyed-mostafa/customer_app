@@ -4,12 +4,16 @@ import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:customer_app/Pages/FoodPage.dart';
+import 'package:customer_app/Pages/RestaurantPage.dart';
 import 'package:customer_app/Pages/RestaurantPageTabBar.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Home extends StatefulWidget {
+
+
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -66,7 +70,7 @@ class _HomeState extends State<Home> {
       );
     }
 
-    Widget showFood(Food food,int index){
+    Widget showFood(Food food, int index){
       return TextButton(
         onPressed: (){
           Navigator.pushReplacement(context,
@@ -96,17 +100,18 @@ class _HomeState extends State<Home> {
                           BoxShadow(
                             color: Colors.black45,
                             spreadRadius: 3,
-                            blurRadius: 12,
+                            blurRadius: 15,
                             offset: Offset(0,0)
                           )
                         ]
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        child: Container(
-                          width: _size.width * 0.5,
-                          height: _size.height * 0.20,
-                          child: Image.asset("assets/images/food1.jpg", fit: BoxFit.fitWidth,)
+                        child: AspectRatio(
+                          aspectRatio: 16/10,
+                          child: Container(
+                            child: Image.asset("assets/images/food/" + (index+1).toString() + ".jpg", fit: BoxFit.fill,)
+                          ),
                         ),
                       ),
                     ),
@@ -124,6 +129,7 @@ class _HomeState extends State<Home> {
                                   color: theme.black,
                                 ),
                               ),
+                              SizedBox(height: 5,),
                               Text(
                                 food.getPrice().toString() + " T",
                                 style: TextStyle(
@@ -152,7 +158,7 @@ class _HomeState extends State<Home> {
       );
     }
 
-    Widget foodListForCustomer(String title, List<Food> foods,int index){
+    Widget foodListForCustomer(String title, List<Food> foods, int index){
       return Container(
         margin: EdgeInsets.only(bottom: 15, top: 15),
         child: Column(
@@ -165,8 +171,8 @@ class _HomeState extends State<Home> {
                       MaterialPageRoute(builder: (context) => RestaurantPageTabBar(index)));
 
               },
-              child: Padding(
-                padding: EdgeInsets.only(left: 10),
+              child: Container(
+                margin: EdgeInsets.only(left: 10),
                 child: Text(
                   title,
                   style: TextStyle(
@@ -183,6 +189,116 @@ class _HomeState extends State<Home> {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: List.generate(foods.length, (index) => showFood(foods[index],index)),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    Widget showRestaurant(Restaurant restaurant, int index) {
+      return TextButton(
+        onPressed: (){
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => RestaurantPageTabBar(index)));
+        },
+        style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap
+        ),
+        child: Container(
+          margin: EdgeInsets.only(left: 5, right: 5),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Container(
+              width: _size.width * 0.5,
+              color: theme.yellow.withOpacity(1),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black45,
+                              spreadRadius: 3,
+                              blurRadius: 15,
+                              offset: Offset(0,0)
+                          )
+                        ]
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: AspectRatio(
+                        aspectRatio: 16/10,
+                        child: Container(
+                            child: Image.asset("assets/images/restaurant/" + (index+1).toString() + ".jpg", fit: BoxFit.fill,)
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 5,),
+                  Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 5, right: 5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              restaurant.getName(),
+                              style: TextStyle(
+                                color: theme.black,
+                              ),
+                            ),
+                            SizedBox(height: 5,),
+                            Text(
+                              restaurant.getAddress().toString(),
+                              style: TextStyle(
+                                color: theme.black,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Spacer(),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    Widget restaurantList(String title, List<Restaurant> restaurants) {
+      return Container(
+        margin: EdgeInsets.only(bottom: 15, top: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextButton(
+              onPressed: () {
+                //ToDo
+              },
+              child: Container(
+                margin: EdgeInsets.only(left: 10),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      color: theme.black
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              height: _size.height * 0.30,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: List.generate(restaurants.length, (index) => showRestaurant(restaurants[index], index)),
               ),
             ),
           ],
@@ -248,6 +364,13 @@ class _HomeState extends State<Home> {
         children: [
           searching(),
           chooseType(),
+
+          for(int i = 0; i < Data.customer.getFavoriteRestaurant().length; i++)
+            restaurantList("Popular Restaurants", restaurants), //ToDo : Data.customer.getFavoriteRestaurant()
+
+          for(int i = 0; i < Data.customer.getFavoriteRestaurant().length; i++)
+            restaurantList("Near By Restaurant", restaurants), //ToDo : Data.customer.getNearByRestaurant
+
           for(int i = 0; i < restaurants.length; i++)
             if(restaurants[i].getMenu().isNotEmpty)
             if(chosenType == TypeFood.all || restaurants[i].getMenu().contains(chosenType))

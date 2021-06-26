@@ -202,7 +202,7 @@ class _EnteringPageState extends State<EnteringPage> {
         messageServer += String.fromCharCodes(socket).trim();
       });
     });
-    await Future.delayed(Duration(seconds: 4));
+    await Future.delayed(Duration(seconds: 4)); //stop for listen threading
     if (messageServer.contains("true")) {
       validUser = true;
       messageServer =
