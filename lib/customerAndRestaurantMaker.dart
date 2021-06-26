@@ -125,9 +125,9 @@ customerAndRestaurantMaker(String messageServer) async {
 
   //print(data[11]);
   List<String> string = data[11].split("##");
-  for (String s in string) print(s);
-for(String str in string) {
-  List<String> data1=str.split("#");
+    for (String s in string) print(s);
+  for(String str in string) {
+    List<String> data1=str.split("#");
   Restaurant restaurant = new Restaurant(
       data1[0],
       new Location(data1[1], double.parse(data1[3]), double.parse(data1[2])),
