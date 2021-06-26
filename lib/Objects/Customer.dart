@@ -1,5 +1,8 @@
 
 import 'package:customer_app/Objects/Order.dart';
+import 'package:customer_app/Objects/Restaurant.dart';
+import 'package:customer_app/data/Data.dart';
+import 'package:intl/intl.dart';
 import 'Comment.dart';
 import 'package:customer_app/Objects/Location.dart';
 import 'Food.dart';
@@ -54,7 +57,9 @@ class Customer{
         return;
       }
     }
-    _shoppingCart.add(Order(food, restaurantId,i));
+    for(Restaurant restaurant in Data.restaurants)
+      if (restaurant.getId()==restaurantId)
+        _shoppingCart.add(new Order.full(restaurant.getName(), _firstName, DateFormat('\n d MMM kk:mm').format( DateTime.now()), _address[0], restaurant.getAddress(), restaurantId));
   }
 
   void addNewShoppingCart(String restaurantName,String customerName,String orderTime,Location customerAddress,Location restaurantAddress,int restaurantId){

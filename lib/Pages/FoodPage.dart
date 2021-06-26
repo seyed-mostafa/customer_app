@@ -14,11 +14,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 class FoodPage extends StatefulWidget {
+  Order order;
   Customer customer=Data.customer;
   Food currentFood;
   Restaurant currentRestaurant;
-  Order order;
-  Food food;
   FoodPage(this.currentRestaurant,this.currentFood);
 
   @override
@@ -44,7 +43,6 @@ class _FoodPageState extends State<FoodPage> {
             for(Food food in order.getOrder().keys ){
               if (food.getName()==widget.currentFood.getName()) {
                 widget.order=order;
-                widget.food =food;
                 return true;
               }
             }
@@ -63,17 +61,10 @@ class _FoodPageState extends State<FoodPage> {
           TextButton(
             onPressed: () {
               setState(() {
-                widget.customer.addShoppingCart(
-                    widget.currentFood,
-                    widget.currentRestaurant.getId(),
-                    1
-                );
+                widget.customer.addShoppingCart(widget.currentFood, widget.currentRestaurant.getId(), 1);
+                //TODO:add order for restaurant
                 _sendMessage();
-                widget.order=widget.customer.getShoppingCart().last;
-                widget.customer.getShoppingCart()[widget.customer.getShoppingCart().indexOf(widget.order)].setRestaurantName(widget.currentRestaurant.getName());
-                widget.customer.getShoppingCart()[widget.customer.getShoppingCart().indexOf(widget.order)].setRestaurantAddress(new Location(" Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St",35.717676891099835, 51.331243399093914));
                 print('add to bag');
-
               });
             },
             child: Padding(
@@ -112,14 +103,14 @@ class _FoodPageState extends State<FoodPage> {
                 print('mines');
                 setState(() {
                   if (widget.order.getOrder()[widget.currentFood]-1==0) {
-                    widget.order.remove(widget.food);
+                    widget.order.remove(widget.currentFood);
                     widget.order=null;
                   }
                   else{
-                  widget.customer.addShoppingCart(
-                      widget.currentFood,
-                      widget.currentRestaurant.getId(), widget.order.getOrder()[widget.food]-1);
-                  widget.order=widget.customer.getShoppingCart().last;
+                    widget.customer.addShoppingCart(widget.currentFood, widget.currentRestaurant.getId(), 1);
+                    widget.customer.addShoppingCart(widget.currentFood, widget.currentRestaurant.getId(), widget.order.getOrder()[widget.currentFood]-1);
+                    widget.order=widget.customer.getShoppingCart().last;
+
                   }
                 });
               }),
@@ -152,10 +143,9 @@ class _FoodPageState extends State<FoodPage> {
               onPressed: () {
                 print('add');
                 setState(() {
-                print(widget.order.getOrder()[widget.food]);
                 widget.customer.addShoppingCart(
                     widget.currentFood,
-                    widget.currentRestaurant.getId(), widget.order.getOrder()[widget.food]+1);
+                    widget.currentRestaurant.getId(), widget.order.getOrder()[widget.currentFood]+1);
                 widget.order=widget.customer.getShoppingCart().last;
                 });
 
