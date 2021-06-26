@@ -87,6 +87,8 @@ customerAndRestaurantMaker(String messageServer) async {
       Data.customer.getShoppingCart().last.setDelivered();
     }
   }
+
+
   /////////////////////////               Orders            ////////////////
 
   // List<String> orders = data[11].split("^^");

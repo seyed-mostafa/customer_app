@@ -14,7 +14,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 class FoodPage extends StatefulWidget {
-  Customer customer=Data.customer;
+  Customer customer = Data.customer;
   Food currentFood;
   Restaurant currentRestaurant;
   Order order;
