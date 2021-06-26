@@ -272,7 +272,7 @@ class _HomeState extends State<Home> {
       );
     }
 
-    Widget popularRestaurantList(String title, List<Restaurant> restaurants) {
+    Widget restaurantList(String title, List<Restaurant> restaurants) {
       return Container(
         margin: EdgeInsets.only(bottom: 15, top: 15),
         child: Column(
@@ -366,7 +366,10 @@ class _HomeState extends State<Home> {
           chooseType(),
 
           for(int i = 0; i < Data.customer.getFavoriteRestaurant().length; i++)
-            popularRestaurantList("Popular Restaurants", restaurants), //ToDo : Data.customer.getFavoriteRestaurant()
+            restaurantList("Popular Restaurants", restaurants), //ToDo : Data.customer.getFavoriteRestaurant()
+
+          for(int i = 0; i < Data.customer.getFavoriteRestaurant().length; i++)
+            restaurantList("Near By Restaurant", restaurants), //ToDo : Data.customer.getNearByRestaurant
 
           for(int i = 0; i < restaurants.length; i++)
             if(restaurants[i].getMenu().isNotEmpty)
