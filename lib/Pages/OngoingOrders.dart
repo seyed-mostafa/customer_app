@@ -67,7 +67,7 @@ class _OngoingOrdersState extends State<OngoingOrders> {
           TextButton(
             onPressed:(){
               setState(() {
-                Navigator.push(
+                Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                         builder: (context) => OrderPageOngoing(currentCustomer.getPreviousOrders()[index])));

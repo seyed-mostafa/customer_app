@@ -1,11 +1,13 @@
 import 'package:customer_app/Objects/Customer.dart';
+import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Pages/Nav.dart';
 import 'package:customer_app/data/Data.dart';
+import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
+import 'OrderPageOngoing.dart';
 
 class OrderPage extends StatefulWidget {
 
@@ -18,6 +20,24 @@ class OrderPage extends StatefulWidget {
 
 class _OrderPageState extends State<OrderPage> {
   Customer currentCustomer=Data.customer;
+
+
+  void _sendMessage() async {
+    await SocketConnect.socket.then((value) async {
+      //format: addToOrders::restaurantName::orderTime::restaurantAddress::restaurantAddress::restaurantAddress::restaurantId::id::food^num&food^num
+
+      String sendMessage="addToOrders::"+ widget.currentOrder.getRestaurantName()+"::"+widget.currentOrder.getOrderTime()+"::"+
+          widget.currentOrder.getRestaurantAddress().getAddress()+"::"+widget.currentOrder.getRestaurantAddress().getLatitude().toString()+"::"+
+          widget.currentOrder.getRestaurantAddress().getLongitude().toString()+"::"+widget.currentOrder.getRestaurantId().toString()+"::"+
+          widget.currentOrder.getId().toString()+"::";
+      for(Food food in widget.currentOrder.getOrder().keys)
+         sendMessage+=food.getName()+"^"+widget.currentOrder.getOrder()[food].toString()+"&";
+      sendMessage=sendMessage.substring(0,sendMessage.length-1);
+      print(sendMessage);
+      print(sendMessage);
+      value.writeln(sendMessage);
+    });
+  }
 
   payment(){
     return  Container(
@@ -42,10 +62,11 @@ class _OrderPageState extends State<OrderPage> {
             }
             else{
               widget.currentOrder.setOrderTime();
-              currentCustomer.setWallet(currentCustomer.getWallet()-       //
-                  widget.currentOrder.getPrice());                         //TODO:These changes must also be applied to the server
-              currentCustomer.removeShoppingCart(widget.currentOrder);     //
-              currentCustomer.addPreviousOrders(widget.currentOrder);      //
+              currentCustomer.setWallet(currentCustomer.getWallet()-
+                  widget.currentOrder.getPrice());
+              currentCustomer.removeShoppingCart(widget.currentOrder);
+              currentCustomer.addPreviousOrders(widget.currentOrder);
+              _sendMessage();
               showDialog<String>(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
@@ -54,7 +75,15 @@ class _OrderPageState extends State<OrderPage> {
                       '${widget.currentOrder.getOrderTime()}'),
                   actions: <Widget>[
                     TextButton(
-                      onPressed: () => Navigator.pop(context, 'Ok'),
+                      onPressed: () {
+                        setState(() {
+                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OrderPageOngoing(widget.currentOrder)));
+                        });
+                      },
                       child: const Text('Ok',style: TextStyle(color:Color(0xfffcb000)),),
                     ),
                   ],
@@ -334,7 +363,6 @@ class _OrderPageState extends State<OrderPage> {
   }
 
   body() {
-    print(widget.currentOrder.getOrder().length);
     return ListView(
       children: [
         restaurant(),

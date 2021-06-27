@@ -23,7 +23,7 @@ class _OrdersHistoryState extends State<OrdersHistory> {
         TextButton(
           onPressed: () {
             setState(() {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => OrderPageHistory(

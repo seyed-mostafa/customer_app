@@ -61,7 +61,7 @@ class _WalletManagingState extends State<WalletManaging> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children:[
-                Text("Current Wallet: $increaseAmount"), //ToDo need widget.currentCustomer
+                Text("Current Wallet: $increaseAmount"),
                 TextFormField(
                   cursorColor: theme.black,
                   style: TextStyle(color: Colors.white),

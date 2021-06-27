@@ -223,12 +223,6 @@ class _CommentsPageState extends State<CommentsPage> {
     );
   }
 
-  void _sendMessage() { //comment::comment(String)::restaurantName //ToDo
-    SocketConnect.socket.then((value) {
-      value.writeln("comment::");
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return  Scaffold(

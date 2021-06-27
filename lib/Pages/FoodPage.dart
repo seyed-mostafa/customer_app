@@ -27,13 +27,6 @@ class _FoodPageState extends State<FoodPage> {
   int state = 1;
   int like = 0;
 
-  void _sendMessage() {
-    //format: addToBag::foodIndex::count::restaurantId
-    SocketConnect.socket.then((value) {
-      value.writeln("addToBag::");
-    });
-  }
-
 
   bool isInBag() {
     if (widget.customer.getShoppingCart().isNotEmpty) {
@@ -67,8 +60,6 @@ class _FoodPageState extends State<FoodPage> {
               setState(() {
                 widget.customer.addShoppingCart(
                     widget.currentFood, widget.currentRestaurant.getId(), 1);
-                //TODO:add order for restaurant
-                //_sendMessage();
                 print('add to bag');
               });
             },

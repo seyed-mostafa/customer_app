@@ -36,7 +36,7 @@ class Order {
 
   void setDelivered(){
     _delivered=true;
-    _deliveryTime= DateFormat('\n d MMM kk:mm').format( DateTime.now());
+    _deliveryTime= DateFormat('d MMM kk:mm').format( DateTime.now());
   }
   void setRestaurantName(String name){
     _restaurantName=name;
@@ -51,7 +51,9 @@ class Order {
     _order[food]=i;
   }
   void setOrderTime(){
-    _orderTime=  DateFormat('\n d MMM kk:mm').format( DateTime.now());
+    _count++;
+    _id=_count;
+    _orderTime=  DateFormat('d MMM kk:mm').format( DateTime.now());
   }
   void remove(Food food){
     _order.remove(food);
