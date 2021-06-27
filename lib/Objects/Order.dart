@@ -34,6 +34,10 @@ class Order {
   }
 
 
+  void setStatus(bool b){
+    _delivered=b;
+  }
+
   void setDelivered(){
     _delivered=true;
     _deliveryTime= DateFormat('d MMM kk:mm').format( DateTime.now());
