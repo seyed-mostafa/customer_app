@@ -306,7 +306,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
 
     return ListView(children:[
       searching(),
-      chooseType(),
+     chooseType(),
       building()
     ] );
   }
