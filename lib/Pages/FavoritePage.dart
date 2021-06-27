@@ -1,5 +1,8 @@
 
 
+import 'package:customer_app/Objects/Restaurant.dart';
+import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/Pages/RestaurantPageTabBar.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
 
@@ -19,28 +22,97 @@ class _FavoriteState extends State<Favorite> {
 
     Size _size = MediaQuery.of(context).size;
 
-    Widget restaurantElement(int index) {
-      return Expanded(
+    Widget showRestaurant(Restaurant restaurant, int id) {
+      int index = 0;
+      return TextButton(
+        onPressed: (){
+          for(int i = 0; i < Data.restaurants.length; i++) {
+            if(id == Data.restaurants[i].getId()) {
+              index = i;
+            }
+          }
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => RestaurantPageTabBar(index)));
+        },
+        style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap
+        ),
         child: Container(
-          color: Colors.red,
-          height: (index+1)%2 == 0 ? _size.width * 0.66:_size.width * 0.33,
-          width: (index+1)%2 == 0 ? _size.width * 0.66:_size.width * 0.33,
-          child: Center(child: Text("Element")),
+          margin: EdgeInsets.all(5),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Container(
+              width: _size.width * 0.45,
+              color: theme.yellow.withOpacity(1),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black45,
+                              spreadRadius: 3,
+                              blurRadius: 15,
+                              offset: Offset(0,0)
+                          )
+                        ]
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: AspectRatio(
+                        aspectRatio: 16/10,
+                        child: Container(
+                            child: Image.asset("assets/images/restaurant/" + (index+1).toString() + ".jpg", fit: BoxFit.fill,)
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 5,),
+                  Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 5, right: 5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              restaurant.getName(),
+                              style: TextStyle(
+                                color: theme.black,
+                              ),
+                            ),
+                            SizedBox(height: 5,),
+                            Text(
+                              restaurant.getAddress().toString(),
+                              style: TextStyle(
+                                color: theme.black,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
         ),
       );
     }
 
-    return SingleChildScrollView(
-      child: Wrap(
-        // children: List.generate(Data.restaurants.length, (index) =>
-        //   checkList.contains(restaurants[index].getId()) ?
-        //   showRestaurant(restaurants[index], index) : Container(),
-        //   ),
+    return Container(
+      width: _size.width,
+      child: GridView.count(
+        crossAxisCount: 2,
         children: [
-          for(int i = 0; i < 10; i++)
-            restaurantElement(i)
-        ],
-      )
+          for(int i = 0; i < Data.restaurants.length; i++)
+            if( Data.customer.getFavoriteRestaurant().contains(Data.restaurants[i].getId()))
+              showRestaurant(Data.restaurants[i], i)
+        ]
+      ),
     );
   }
 }
