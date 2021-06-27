@@ -37,7 +37,7 @@ class _EnteringPageState extends State<EnteringPage> {
   bool validUser = false;
 
   //for first time don't show error of input (red container in top)
-  bool flag = true;
+    bool flag = true;
 
   //for hide entering password
   bool hidden = true;
@@ -56,11 +56,7 @@ class _EnteringPageState extends State<EnteringPage> {
                 SizedBox(
                   height: 20,
                 ),
-                validUser || flag
-                    ? Container(
-                        height: 40,
-                      )
-                    : Container(
+                validUser || flag ? Container(height: 40,) : Container(
                         decoration: BoxDecoration(
                           color: Colors.red,
                           borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -141,11 +137,11 @@ class _EnteringPageState extends State<EnteringPage> {
                           onPrimary: theme.yellow,
                           primary: theme.black,
                           padding: EdgeInsets.all(20)),
-                      onPressed: () {
-                        flag = false;
+                      onPressed: () async {
                         print(inputPhoneNumberEnter);
                         print(inputPasswordEnter);
                         _sendMessage();
+                        await Future.delayed(Duration(seconds: 5));
                         if (validUser) {
                           Navigator.pushReplacement(
                               context,
@@ -153,8 +149,7 @@ class _EnteringPageState extends State<EnteringPage> {
                                 builder: (context) => Nav(),
                               ));
                         }
-                        validUser = false;
-                        setState(() {});
+                          setState(() {flag = false;});
                       },
                       child: Text(
                         "Sign in",
@@ -203,8 +198,12 @@ class _EnteringPageState extends State<EnteringPage> {
       });
     });
     await Future.delayed(Duration(seconds: 4)); //stop for listen threading
+    print(messageServer);
     if (messageServer.contains("true")) {
+      print("here");
+      setState(() {
       validUser = true;
+      });
       messageServer =
           messageServer.substring(4); // remove true in start message
       str = messageServer;

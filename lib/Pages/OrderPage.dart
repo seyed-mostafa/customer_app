@@ -49,6 +49,7 @@ class _OrderPageState extends State<OrderPage> {
             showDialog<String>(
               context: context,
               builder: (BuildContext context) => AlertDialog(
+
                 title: Text('Inventory is insufficient'),
                 content: const Text('Wallet balance is not enough.\nCharge your wallet'),
                 actions: <Widget>[
