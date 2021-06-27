@@ -67,7 +67,7 @@ Customer currentCustomer=Data.customer;
     );
   }
 
-  image(){
+  image(int index){
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: AspectRatio(
@@ -75,7 +75,7 @@ Customer currentCustomer=Data.customer;
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Image.asset(
-            "assets/images/restaurant/1.jpg",
+            "assets/images/restaurant/"+ Data.restaurants[index].getName() +".jpg",
             fit: BoxFit.fill,
           ),
         ),
@@ -100,7 +100,7 @@ Customer currentCustomer=Data.customer;
       ),
       child: Row(
         children: [
-          image(),
+          image(index),
           nameAndPrice(index),
           Spacer(),
           detailAndDelete(index)

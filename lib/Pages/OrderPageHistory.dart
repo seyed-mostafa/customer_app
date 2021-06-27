@@ -75,7 +75,7 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
             height: MediaQuery.of(context).size.height / 3,
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: NetworkImage('assets/images/restaurant/2.jpg'),
+                  image: NetworkImage('assets/images/restaurant/Mashti.jpg'),
                   fit: BoxFit.cover),
             ),
           ),

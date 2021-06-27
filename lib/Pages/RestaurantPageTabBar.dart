@@ -86,7 +86,7 @@ class _RestaurantPageTabBarState extends State<RestaurantPageTabBar> {
                 flexibleSpace: FlexibleSpaceBar(
                   titlePadding: EdgeInsets.only(bottom: 50),
                   collapseMode: CollapseMode.parallax,
-                  background: Image.asset("assets/images/food1.jpg"),
+                  background: Image.asset("assets/images/restaurant/mostafa va abbas.jpg"),
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -109,7 +109,7 @@ class _RestaurantPageTabBarState extends State<RestaurantPageTabBar> {
                   ),
                   centerTitle: true,
                 ),
-                expandedHeight: _size.height/3,
+                expandedHeight: _size.height * 0.25,
                 pinned: true,
                 leading: IconButton(
                     icon: Icon(Icons.arrow_back),

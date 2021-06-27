@@ -148,7 +148,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                         child: AspectRatio(
                           aspectRatio: 16/10,
                           child: Container(
-                              child: Image.asset("assets/images/food/" + (index+1).toString() + ".jpg", fit: BoxFit.fill,)
+                              child: Image.asset("assets/images/food/" + food.getName() + ".jpg", fit: BoxFit.fill,)
                           ),
                         ),
                       ),
@@ -214,7 +214,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
 
     Widget searching(){
       return Container(
-        margin: EdgeInsets.fromLTRB(20, 20, 20, 10),
+        margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
         child: TextField(
           cursorColor: theme.black,
           style: TextStyle(color: Colors.black),
@@ -222,7 +222,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
               prefixIcon: Icon(Icons.search),
               border: new OutlineInputBorder(
                 borderRadius: const BorderRadius.all(
-                  const Radius.circular(10),
+                  const Radius.circular(20),
                 ),
                 borderSide: new BorderSide(
                   color: theme.black,
@@ -248,8 +248,8 @@ class _RestaurantPageState extends State<RestaurantPage> {
       return Container(
         margin: EdgeInsets.only(left: 10),
         decoration: BoxDecoration(
-            color: theme.white,
-            borderRadius: BorderRadius.circular(10)
+            color: Colors.blue[900],
+            borderRadius: BorderRadius.circular(20)
         ),
         width: _size.width * 0.25 + typeFood.toString().length,
         child: TextButton(
@@ -258,15 +258,15 @@ class _RestaurantPageState extends State<RestaurantPage> {
             child: Row(
               children: [
                 icon,
-                typeFood == TypeFood.all ? Text("  " + typeFood.toString().substring(9),
+                typeFood != TypeFood.all ? Text("  " + typeFood.toString().substring(9),
                   style: TextStyle(
                       fontSize: _size.width * 0.03,
-                      color: theme.black
+                      color: theme.yellow
                   )
                 ):Text("  " + "AllFood",
                   style: TextStyle(
                       fontSize: _size.width * 0.03,
-                      color: theme.black
+                      color: theme.yellow
                   ),
                 )
               ],
@@ -283,6 +283,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
 
     Widget chooseType(){
       return Container(
+        margin: EdgeInsets.only(bottom: 10),
         height: 50,
         child: ListView(
             scrollDirection: Axis.horizontal,

@@ -102,7 +102,7 @@ class _HomeState extends State<Home> {
                         child: AspectRatio(
                           aspectRatio: 16/10,
                           child: Container(
-                            child: Image.asset("assets/images/food/" + (index+1).toString() + ".jpg", fit: BoxFit.fill,)
+                            child: Image.asset("assets/images/food/" + food.getName() + ".jpg", fit: BoxFit.fill,)
                           ),
                         ),
                       ),
@@ -230,7 +230,7 @@ class _HomeState extends State<Home> {
                       child: AspectRatio(
                         aspectRatio: 16/10,
                         child: Container(
-                            child: Image.asset("assets/images/restaurant/" + (index+1).toString() + ".jpg", fit: BoxFit.fill,)
+                            child: Image.asset("assets/images/restaurant/" + restaurant.getName() + ".jpg", fit: BoxFit.fill,)
                         ),
                       ),
                     ),

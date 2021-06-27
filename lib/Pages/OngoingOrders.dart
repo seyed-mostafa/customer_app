@@ -28,7 +28,7 @@ class _OngoingOrdersState extends State<OngoingOrders> {
     );
   }
 
-  image(){
+  image(index){
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: AspectRatio(
@@ -36,7 +36,7 @@ class _OngoingOrdersState extends State<OngoingOrders> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Image.asset(
-            "assets/images/restaurant/1.jpg",
+            "assets/images/restaurant/" + currentCustomer.getPreviousOrders()[index].getRestaurantName() + ".jpg",
             fit: BoxFit.fill,
           ),
         ),
@@ -61,7 +61,7 @@ class _OngoingOrdersState extends State<OngoingOrders> {
       ),
       child: Row(
         children: [
-          image(),
+          image(index),
           nameAndPrice(index),
           Spacer(),
           TextButton(

@@ -255,7 +255,7 @@ class _OrderPageState extends State<OrderPage> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Image.asset(
-            "assets/images/restaurant/" + (index+1).toString() + ".jpg",
+            "assets/images/restaurant/" + widget.currentOrder.getRestaurantName() + ".jpg",
             fit: BoxFit.fill,
           ),
         ),
@@ -306,7 +306,7 @@ class _OrderPageState extends State<OrderPage> {
             height: MediaQuery.of(context).size.height / 3,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/restaurant/2.jpg"),
+                image: AssetImage("assets/images/restaurant/" + widget.currentOrder.getRestaurantName() + ".jpg"),
                 fit: BoxFit.cover,
               ),
             ),

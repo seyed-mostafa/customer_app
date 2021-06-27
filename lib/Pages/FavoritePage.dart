@@ -64,7 +64,7 @@ class _FavoriteState extends State<Favorite> {
                       child: AspectRatio(
                         aspectRatio: 16/10,
                         child: Container(
-                            child: Image.asset("assets/images/restaurant/" + (index+1).toString() + ".jpg", fit: BoxFit.fill,)
+                            child: Image.asset("assets/images/restaurant/" + restaurant.getName() + ".jpg", fit: BoxFit.fill,)
                         ),
                       ),
                     ),

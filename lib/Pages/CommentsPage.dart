@@ -132,7 +132,7 @@ class _CommentsPageState extends State<CommentsPage> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(30),
                   child: Image.asset(
-                    "assets/images/restaurant/1.jpg",
+                    "assets/images/restaurant/Reihoon.jpg",
                     fit: BoxFit.fill,
                     height: 50,
                     width: 50,

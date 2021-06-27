@@ -1,6 +1,7 @@
 
 import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Pages/Nav.dart';
+import 'package:customer_app/test.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -80,7 +81,7 @@ class _OrderPageOngoingState extends State<OrderPageOngoing> {
             height: MediaQuery.of(context).size.height / 3,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/restaurant/2.jpg"),
+                image: AssetImage("assets/images/restaurant/" + widget.currentOrder.getRestaurantName() + ".jpg"),
                 fit: BoxFit.cover,
               ),
             ),

@@ -110,7 +110,7 @@ class _OrdersHistoryState extends State<OrdersHistory> {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           image: DecorationImage(
-              image: NetworkImage('assets/images/restaurant/2.jpg'),
+              image: NetworkImage('assets/images/restaurant/Mashti.jpg'),
               fit: BoxFit.fill),
         ),
       ),
