@@ -16,7 +16,7 @@ class RestaurantPageTabBar extends StatefulWidget {
 
   int restaurant;
 
-  RestaurantPageTabBar( this.restaurant);
+  RestaurantPageTabBar(this.restaurant);
 
   @override
   _RestaurantPageTabBarState createState() => _RestaurantPageTabBarState();
@@ -127,8 +127,8 @@ class _RestaurantPageTabBarState extends State<RestaurantPageTabBar> {
           },
           body: TabBarView(
             children: [
-              RestaurantPage( widget.restaurant),
-              RestaurantPage2( widget.restaurant)
+              RestaurantPage(widget.restaurant),
+              RestaurantPage2(widget.restaurant)
             ],
           ),
         ),

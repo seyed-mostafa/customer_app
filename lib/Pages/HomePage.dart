@@ -158,9 +158,9 @@ class _HomeState extends State<Home> {
       );
     }
 
-    Widget foodListForCustomer(String title, List<Food> foods, int index){
+    Widget foodList(String title, List<Food> foods, int restaurantIndex){
       return Container(
-        margin: EdgeInsets.only(bottom: 15, top: 15),
+        padding: EdgeInsets.only(bottom: 15, top: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -168,7 +168,7 @@ class _HomeState extends State<Home> {
               onPressed: (){
                   Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => RestaurantPageTabBar(index)));
+                      MaterialPageRoute(builder: (context) => RestaurantPageTabBar(restaurantIndex)));
 
               },
               child: Container(
@@ -188,7 +188,7 @@ class _HomeState extends State<Home> {
               height: _size.height * 0.30,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: List.generate(foods.length, (index) => showFood(foods[index],index)),
+                children: List.generate(foods.length, (index) => showFood(foods[index], restaurantIndex)),
               ),
             ),
           ],
@@ -374,9 +374,9 @@ class _HomeState extends State<Home> {
           for(int i = 0; i < restaurants.length; i++)
             if(restaurants[i].getMenu().isNotEmpty)
             if(chosenType == TypeFood.all || restaurants[i].getMenu().contains(chosenType))
-            if(searchingText == '') foodListForCustomer(restaurants[i].getName(), restaurants[i].getMenu(),i)
+            if(searchingText == '') foodList(restaurants[i].getName(), restaurants[i].getMenu(),i)
             else if(restaurants[i].getName().contains(searchingText))
-              foodListForCustomer(restaurants[i].getName(), restaurants[i].getMenu(),i)
+              foodList(restaurants[i].getName(), restaurants[i].getMenu(), i) //i is index of restaurant in restaurants
         ],
       ),
     );
