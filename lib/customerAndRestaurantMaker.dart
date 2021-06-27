@@ -25,6 +25,7 @@ customerAndRestaurantMaker(String messageServer) async {
   // print("and here");
 
   ////////////////////         comment         ///////////////////
+if (!(data[8].startsWith("null"))) {
 
   List<String> comments = data[8].split("^^"); //comments
 
@@ -44,50 +45,55 @@ customerAndRestaurantMaker(String messageServer) async {
           comment[1], comment[2], comment[3], comment[4]));
     }
   }
+}
 
   ////////////////////////             favoriteRestaurant          ///////////////
-
-  List<String> favoriteRestaurants = data[9].split("^");
-  for (int i = 0; i < favoriteRestaurants.length; i++) {
-    Data.customer.addFavoriteRestaurant(int.parse(favoriteRestaurants[i]));
+  if (!(data[9].startsWith("null"))) {
+    List<String> favoriteRestaurants = data[9].split("^");
+    for (int i = 0; i < favoriteRestaurants.length; i++) {
+      Data.customer.addFavoriteRestaurant(int.parse(favoriteRestaurants[i]));
+    }
   }
 
   /////////////////////////               shoppingCart            ////////////////
-
-  List<String> shoppingCarts = data[10].split("^^");
-  for (String str in shoppingCarts) {
-    List<String> shoppingCart = str.split("^");
-    Data.customer.addNewShoppingCart(
-        shoppingCart[0].substring(5),
-        Data.customer.getName(),
-        shoppingCart[2],
-        Data.customer.getAddress()[0],
-        new Location(shoppingCart[3], double.parse(shoppingCart[5]),
-            double.parse(shoppingCart[4])),
-        int.parse(shoppingCart[1]));
-    List<String> foods = shoppingCart[6].split(":::");
-    foods.removeLast();
-    for (String food in foods) {
-      List<String> f = food.split("::");
-      Data.customer.addShoppingCart(
-          new Food(
-              f[0],
-              f[1],
-              int.parse(f[2]),
-              int.parse(f[3]),
-              null,
-              f[4] == "true" ? true : false,
-              TypeFood.values
-                  .firstWhere((e) => e.toString() == "TypeFood." + f[5])),
-          int.parse(shoppingCart[1]),
-          int.parse(f[6]));
-    }
-    if (str.startsWith("true")) {
-      //check status of order
-      Data.customer.getShoppingCart().last.setDelivered();
+  if (!(data[10].startsWith("null"))) {
+    List<String> shoppingCarts = data[10].split("^^");
+    for (String str in shoppingCarts) {
+      List<String> shoppingCart = str.split("^");
+      Data.customer.addNewShoppingCart(
+          shoppingCart[0].substring(5),
+          Data.customer.getName(),
+          shoppingCart[2],
+          Data.customer.getAddress()[0],
+          new Location(shoppingCart[3], double.parse(shoppingCart[5]),
+              double.parse(shoppingCart[4])),
+          int.parse(shoppingCart[1]));
+      List<String> foods = shoppingCart[6].split(":::");
+      foods.removeLast();
+      for (String food in foods) {
+        List<String> f = food.split("::");
+        Data.customer.addShoppingCart(
+            new Food(
+                f[0],
+                f[1],
+                int.parse(f[2]),
+                int.parse(f[3]),
+                null,
+                f[4] == "true" ? true : false,
+                TypeFood.values
+                    .firstWhere((e) => e.toString() == "TypeFood." + f[5])),
+            int.parse(shoppingCart[1]),
+            int.parse(f[6]));
+      }
+      if (str.startsWith("true")) {
+        //check status of order
+        Data.customer
+            .getShoppingCart()
+            .last
+            .setDelivered();
+      }
     }
   }
-
 
   /////////////////////////               Orders            ////////////////
 
