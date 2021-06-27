@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Objects/Location.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
@@ -30,6 +31,8 @@ class _EnteringPageState extends State<EnteringPage> {
 
   Socket _Socket;
 
+  bool showWait = false;
+
   //input Variable
   String inputPhoneNumberEnter = '', inputPasswordEnter = '';
 
@@ -41,6 +44,22 @@ class _EnteringPageState extends State<EnteringPage> {
 
   //for hide entering password
   bool hidden = true;
+
+  Widget animationWait() {
+    return SizedBox(
+      width: 250.0,
+      child: TextLiquidFill(
+        text: 'Please Wait',
+        waveColor: Colors.white,
+        boxBackgroundColor: Colors.black,
+        textStyle: TextStyle(
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+        ),
+        boxHeight: 100,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,6 +157,10 @@ class _EnteringPageState extends State<EnteringPage> {
                           primary: theme.black,
                           padding: EdgeInsets.all(20)),
                       onPressed: () async {
+                        setState(() {
+                          showWait = true;
+                          flag = true;
+                        });
                         print(inputPhoneNumberEnter);
                         print(inputPasswordEnter);
                         _sendMessage();
@@ -149,7 +172,7 @@ class _EnteringPageState extends State<EnteringPage> {
                                 builder: (context) => Nav(),
                               ));
                         }
-                          setState(() {flag = false;});
+                          setState(() {flag = false; showWait = false;});
                       },
                       child: Text(
                         "Sign in",
@@ -177,6 +200,8 @@ class _EnteringPageState extends State<EnteringPage> {
                     )
                   ],
                 ),
+                SizedBox(height: 20,),
+                if(showWait) animationWait(),
               ],
             ),
           ),

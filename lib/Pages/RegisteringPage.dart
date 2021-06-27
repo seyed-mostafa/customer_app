@@ -57,10 +57,12 @@ class _RegisteringPageState extends State<RegisteringPage> {
   }
 
   void _sendMessage() async { //format: Registering::firstName::lastName::phoneNumber::password::address(String)::longitude::latitude
+    print("Connected to Server in Registering");
     await SocketConnect.socket.then((value) {
+      value.writeln("Customer");
       value.writeln("Registering::" + _inputFirstName + "::" + _inputLastName
         + "::" + _inputPhoneNumber + "::" + _inputPassword + "::"
-        + _inputAddress + "::" + _inputLongitude + "::" + _inputLatitude);
+        + _inputAddress + "::" + widget.latLng.longitude.toString() + "::" + widget.latLng.latitude.toString());
     });
   }
 
