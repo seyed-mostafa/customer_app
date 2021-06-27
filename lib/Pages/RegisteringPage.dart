@@ -6,17 +6,27 @@ import 'package:customer_app/appBar.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'EnteringPage.dart';
 import '../MultiChoice.dart';
 import 'dart:io';
 
 class RegisteringPage extends StatefulWidget {
+  LatLng latLng;
 
   @override
   _RegisteringPageState createState() => _RegisteringPageState();
 }
 
 class _RegisteringPageState extends State<RegisteringPage> {
+
+
+  change(LatLng latLng){
+    setState(() {
+      widget.latLng=latLng;
+    });
+  }
+
 
   final _formKey = GlobalKey<FormState>();
 
@@ -133,7 +143,7 @@ class _RegisteringPageState extends State<RegisteringPage> {
                         suffixIcon: IconButton(
                           icon: Icon(Icons.map),
                           onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Map()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Map(change)));
                           },
                         ),
                         border: new OutlineInputBorder(
