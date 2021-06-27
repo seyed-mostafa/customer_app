@@ -18,7 +18,7 @@ class Customer{
   List<int> _favoriteRestaurant = List.empty(growable: true); //restaurant popular Ids
   List<Order> _shoppingCart =List.empty(growable: true);
   List<Order> _orders = List.empty(growable: true);
-
+  List<Restaurant> _nearByRestaurants = [];
 
 
   Customer(firstName,lastName,phoneNumber,password)
@@ -125,7 +125,6 @@ class Customer{
         restaurants.add(restaurants[i]);
         print(restaurants[i].getId());
       }
-
 
     return restaurants;
   }
