@@ -50,8 +50,8 @@ class _EnteringPageState extends State<EnteringPage> {
       width: 250.0,
       child: TextLiquidFill(
         text: 'Please Wait',
-        waveColor: Colors.white,
-        boxBackgroundColor: Colors.black,
+        waveColor: Colors.black,
+        boxBackgroundColor: Colors.white,
         textStyle: TextStyle(
           fontSize: 30,
           fontWeight: FontWeight.bold,
@@ -143,62 +143,54 @@ class _EnteringPageState extends State<EnteringPage> {
                   },
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 20,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      width: 20,
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          onPrimary: theme.yellow,
-                          primary: theme.black,
-                          padding: EdgeInsets.all(20)),
-                      onPressed: () async {
-                        setState(() {
-                          showWait = true;
-                          flag = true;
-                        });
-                        print(inputPhoneNumberEnter);
-                        print(inputPasswordEnter);
-                        _sendMessage();
-                        await Future.delayed(Duration(seconds: 5));
-                        if (validUser) {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Nav(),
-                              ));
-                        }
-                          setState(() {flag = false; showWait = false;});
-                      },
-                      child: Text(
-                        "Sign in",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            onPrimary: theme.yellow,
-                            primary: theme.black,
-                            padding: EdgeInsets.all(20)),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => RegisteringPage()),
-                          );
-                        },
-                        child: Text(
-                          "Sign up",
-                          style: TextStyle(fontSize: 18),
-                        )),
-                    SizedBox(
-                      width: 30,
-                    )
-                  ],
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      onPrimary: theme.yellow,
+                      primary: theme.black,
+                      padding: EdgeInsets.only(left: 100, right: 100)),
+                  onPressed: () async {
+                    setState(() {
+                      showWait = true;
+                      flag = true;
+                    });
+                    print(inputPhoneNumberEnter);
+                    print(inputPasswordEnter);
+                    _sendMessage();
+                    await Future.delayed(Duration(seconds: 5));
+                    if (validUser) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Nav(),
+                          ));
+                    }
+                      setState(() {flag = false; showWait = false;});
+                  },
+                  child: Text(
+                    "Sign in",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        onPrimary: theme.yellow,
+                        primary: theme.black,
+                        padding: EdgeInsets.only(left: 97, right: 97)),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RegisteringPage()),
+                      );
+                    },
+                    child: Text(
+                      "Sign up",
+                      style: TextStyle(fontSize: 18),
+                    )),
+                SizedBox(
+                  width: 30,
                 ),
                 SizedBox(height: 20,),
                 if(showWait) animationWait(),
