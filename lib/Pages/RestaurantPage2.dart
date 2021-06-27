@@ -271,8 +271,11 @@ class _RestaurantPage2State extends State<RestaurantPage2> {
     );
   }
 
-  showComments() {
-    Container(
+
+  @override
+  Widget build(BuildContext context) {
+    currentRestaurant = Data.restaurants.elementAt(widget.currentRestaurant);
+    return  Container(
         padding: EdgeInsets.only(top: 20),
         child: ListView(
           children: List.generate(currentRestaurant
@@ -281,15 +284,6 @@ class _RestaurantPage2State extends State<RestaurantPage2> {
                   (index) => showComment(index)),
         )
     );
-  }
-  @override
-  Widget build(BuildContext context) {
-    currentRestaurant = Data.restaurants.elementAt(widget.currentRestaurant);
-    return ListView(
-        children:[
-        writeComment(),
-        showComments()
-    ] );
 
   }
 }
