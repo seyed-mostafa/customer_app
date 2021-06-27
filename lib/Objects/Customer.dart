@@ -81,6 +81,9 @@ class Customer{
   void addFavoriteRestaurant(int favoriteRestaurant) {
     _favoriteRestaurant.add(favoriteRestaurant);
   }
+  void removeFromFavoriteRestaurant(int id) {
+    _favoriteRestaurant.remove(id);
+  }
 
 
 
@@ -115,4 +118,5 @@ class Customer{
   List<int> getFavoriteRestaurant() {
     return _favoriteRestaurant;
   }
+
 }

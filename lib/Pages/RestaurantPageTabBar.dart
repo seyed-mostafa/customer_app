@@ -22,6 +22,12 @@ class RestaurantPageTabBar extends StatefulWidget {
 class _RestaurantPageTabBarState extends State<RestaurantPageTabBar> {
 
 
+  bool isInFavorite(){
+    if (Data.customer.getFavoriteRestaurant().contains(Data.restaurants[widget.restaurant].getId()))
+      return true;
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
   Restaurant currentRestaurant=Data.restaurants[widget.restaurant];
@@ -35,6 +41,22 @@ class _RestaurantPageTabBarState extends State<RestaurantPageTabBar> {
           headerSliverBuilder: (context, value) {
             return [
               SliverAppBar(
+                actions: [
+                  IconButton(
+                      icon: Icon(
+                        isInFavorite() ?  Icons.favorite : Icons.favorite_border,
+                        color: Colors.red,
+                        size: 38,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          if (Data.customer.getFavoriteRestaurant().contains(Data.restaurants[widget.restaurant].getId()))
+                            Data.customer.removeFromFavoriteRestaurant(Data.restaurants[widget.restaurant].getId());
+                          else
+                            Data.customer.addFavoriteRestaurant(Data.restaurants[widget.restaurant].getId());
+                        });
+                      })
+                ],
                 bottom: TabBar(
                   indicatorSize: TabBarIndicatorSize.label,
                   tabs: [

@@ -36,7 +36,7 @@ customerAndRestaurantMaker(String messageServer) async {
     //reply             3
     //replyTime         4
 
-    if (comment.length == 3) {
+    if (comment.contains("null")) {
       Data.customer.addComment(
           new Comment.noFull(comment[0], data[0], comment[1], comment[2]));
     } else {

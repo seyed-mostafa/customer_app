@@ -23,33 +23,25 @@ class _CommentsPageState extends State<CommentsPage> {
       children: [
         Row(
           children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                    image: NetworkImage(
-                        'assets/images/profile/Ali.jpg'),
-                    fit: BoxFit.fill),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: Image.asset(
+                "assets/images/profile/Ali.jpg",
+                fit: BoxFit.fill,
+                height: 50,
+                width: 50,
               ),
             ),
             SizedBox(
               width: 15,
             ),
-            RichText(
-              text: TextSpan(
-                  text: currentCustomer
-                      .getComments()[index]
-                      .getCustomerName(),
-                  style: TextStyle(fontSize: 18, color: theme.black),
-                  children: <TextSpan>[
-                    TextSpan(text: currentCustomer
-                          .getComments()[index]
-                          .getTimeComment(),
-                      style: TextStyle(color: Colors.grey, fontSize: 10),
-                    )
-                  ]),
+            Column(
+              children: [
+                Text(currentCustomer.getComments()[index].getCustomerName(),
+                    style: TextStyle(fontSize: 18, color: theme.black)),
+                Text(currentCustomer.getComments()[index].getTimeComment(),
+                    style: TextStyle(color: Colors.grey, fontSize: 10)),
+              ],
             ),
           ],
         ),
@@ -137,32 +129,29 @@ class _CommentsPageState extends State<CommentsPage> {
                 SizedBox(
                   width: 15,
                 ),
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: NetworkImage('assets/images/restaurant/1.jpg'),
-                        fit: BoxFit.fill),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: Image.asset(
+                    "assets/images/restaurant/1.jpg",
+                    fit: BoxFit.fill,
+                    height: 50,
+                    width: 50,
                   ),
                 ),
                 SizedBox(
                   width: 15,
                 ),
-                RichText(
-                  text: TextSpan(
-                      text: currentCustomer
-                          .getComments()[index]
-                          .getRestaurantName(),
-                      style: TextStyle(fontSize: 18, color: theme.black),
-                      children: <TextSpan>[
-                        TextSpan(text: currentCustomer
-                              .getComments()[index]
-                              .getTimeReply(),
-                          style: TextStyle(color: Colors.grey, fontSize: 10),
-                        )
-                      ]),
+                Column(
+                  children: [
+                    Text(currentCustomer
+                        .getComments()[index]
+                        .getRestaurantName(),
+                        style: TextStyle(fontSize: 18, color: theme.black)),
+                    Text(currentCustomer
+                        .getComments()[index]
+                        .getTimeReply(),
+                        style: TextStyle(color: Colors.grey, fontSize: 10)),
+                  ],
                 ),
               ],
             ),
