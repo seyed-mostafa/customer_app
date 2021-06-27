@@ -24,14 +24,6 @@ class _HomeState extends State<Home> {
   String searchingText = "";
   TypeFood chosenType = TypeFood.all;
 
-  @override
-  void initState() {
-    for(Restaurant restaurant in Data.restaurants){
-      print(restaurant.getName());
-    }
-    super.initState();
-  }
-
 
   @override
   Widget build(BuildContext context) {
