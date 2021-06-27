@@ -3,6 +3,8 @@
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:customer_app/appBar.dart';
+import 'package:customer_app/data/Data.dart';
+import 'package:customer_app/data/Data.dart';
 import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/material.dart';
 
@@ -35,19 +37,19 @@ class _WalletManagingState extends State<WalletManaging> {
 
     return true;
   }
-  int increaseAmount = 0;
 
   void _sendMessage() async {
     await SocketConnect.socket.then((value) {
       print('Connected to Server in WalletManaging');
 
-      value.writeln("wallet::$increaseAmount"); //ToDo need widget.currentCustomer :/
+      value.writeln("wallet::${Data.customer.getWallet()}");
 
     });
   }
 
   @override
   Widget build(BuildContext context) {
+  int increaseAmount = Data.customer.getWallet();
     return Scaffold(
       appBar: appBar(),
       backgroundColor: theme.yellow2,
@@ -86,7 +88,7 @@ class _WalletManagingState extends State<WalletManaging> {
                     }
                     return null;
                   },
-                  onSaved: (String value) => increaseAmount = int.tryParse(value),
+                  onSaved: (String value) => increaseAmount += int.tryParse(value),
                 ),
                 SizedBox(height: 20,),
                 ElevatedButton(
@@ -99,7 +101,7 @@ class _WalletManagingState extends State<WalletManaging> {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       _formKey.currentState.save();
-                      //ToDo need: widget._customer.setWallet(widget._customer.getWallet()+increaseAmount);
+                      Data.customer.setWallet(increaseAmount);
                       _sendMessage();
                     }
                     setState(() {});
