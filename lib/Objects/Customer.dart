@@ -15,7 +15,7 @@ class Customer{
   num _wallet=0;
   List<Location> _address = List.empty(growable: true);
   List<Comment> _comments = List.empty(growable: true);
-  List<int> _favoriteRestaurant = List.empty(growable: true);
+  List<int> _favoriteRestaurant = List.empty(growable: true); //restaurant popular Ids
   List<Order> _shoppingCart =List.empty(growable: true);
   List<Order> _orders = List.empty(growable: true);
 
@@ -117,6 +117,17 @@ class Customer{
   }
   List<int> getFavoriteRestaurant() {
     return _favoriteRestaurant;
+  }
+  List<Restaurant> getFavoriteRestaurants() {
+    List<Restaurant> restaurants = [];
+    for(int i = 0; i < restaurants.length; i++)
+      if (Data.customer.getFavoriteRestaurant().contains(restaurants[i].getId())) {
+        restaurants.add(restaurants[i]);
+        print(restaurants[i].getId());
+      }
+
+
+    return restaurants;
   }
 
 }

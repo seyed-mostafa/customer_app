@@ -298,7 +298,10 @@ class _HomeState extends State<Home> {
               height: _size.height * 0.30,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: List.generate(restaurants.length, (index) => showRestaurant(restaurants[index], index)),
+                children: [
+                  for(int i = restaurants.length-1, j = 0; j < 5 && restaurants.length-j > 0; i--, j++)
+                    showRestaurant(restaurants[i], i),
+                ]
               ),
             ),
           ],
@@ -359,17 +362,18 @@ class _HomeState extends State<Home> {
       );
     }
 
+    List<Restaurant> restaurantsByRate = restaurants;
+    restaurantsByRate.sort((a, b) => a.getRate().compareTo(b.getRate()));
+
     return SingleChildScrollView(
       child: Column(
         children: [
           searching(),
           chooseType(),
 
-          for(int i = 0; i < Data.customer.getFavoriteRestaurant().length; i++)
-            restaurantList("Popular Restaurants", restaurants), //ToDo : Data.customer.getFavoriteRestaurant()
+          restaurantList("Popular Restaurants", restaurantsByRate),
 
-          for(int i = 0; i < Data.customer.getFavoriteRestaurant().length; i++)
-            restaurantList("Near By Restaurant", restaurants), //ToDo : Data.customer.getNearByRestaurant
+          //restaurantList("Near By Restaurant", restaurants), //ToDo : Data.customer.getNearByRestaurant
 
           for(int i = 0; i < restaurants.length; i++)
             if(restaurants[i].getMenu().isNotEmpty)
