@@ -22,6 +22,9 @@ class Restaurant  {
   List<Food> _menu = List.empty(growable: true);
   List<TypeFood> _type= List.empty(growable: true);
   List<Comment> _comments= List.empty(growable: true);
+  List<double> _rate= List.empty(growable: true);
+
+
 
 
   Restaurant(String name, Location address, String phoneNumber, String password)  {
@@ -33,6 +36,16 @@ class Restaurant  {
     this._phoneNumber = phoneNumber;
   }
 
+  double getRate(){
+    double sum=0;
+    for(double i in _rate)
+      sum+=i;
+    return sum/_rate.length;
+  }
+
+  void addRate(double rate){
+    _rate.add(rate);
+  }
 
   List<Food> getMenu() {
     return _menu;

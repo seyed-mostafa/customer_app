@@ -133,6 +133,7 @@ customerAndRestaurantMaker(String messageServer) async {
       new Location(data1[1], double.parse(data1[3]), double.parse(data1[2])),
       data1[4],
       data1[5]);
+  restaurant.addRate((double.parse(data1[6]))/1000);
   restaurant.setSendingRangeRadius(int.parse(data1[6]));
   restaurant.setId(int.parse(data1[7]));
   restaurant.setDays(data1[8]);

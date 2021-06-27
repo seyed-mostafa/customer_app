@@ -1,6 +1,5 @@
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Food.dart';
-import 'package:customer_app/Objects/Location.dart';
 import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Pages/RestaurantPageTabBar.dart';
 import 'package:customer_app/data/Data.dart';
@@ -211,25 +210,7 @@ class _FoodPageState extends State<FoodPage> {
         child: ListView(
           children: [
             Container(
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(),
-                    child: IconButton(
-                        icon: Icon(
-                          like % 2 == 0
-                              ? Icons.favorite_border
-                              : Icons.favorite,
-                          color: Colors.red,
-                          size: 38,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            like++;
-                          });
-                        })),
-              ),
+
               height: MediaQuery.of(context).size.height / 3,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(

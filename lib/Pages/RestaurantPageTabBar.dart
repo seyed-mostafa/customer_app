@@ -8,6 +8,8 @@ import 'package:customer_app/Pages/RestaurantPage.dart';
 import 'package:customer_app/Pages/RestaurantPage2.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
 
 class RestaurantPageTabBar extends StatefulWidget {
 
@@ -31,7 +33,6 @@ class _RestaurantPageTabBarState extends State<RestaurantPageTabBar> {
   @override
   Widget build(BuildContext context) {
   Restaurant currentRestaurant=Data.restaurants[widget.restaurant];
-
     Size _size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -71,15 +72,21 @@ class _RestaurantPageTabBarState extends State<RestaurantPageTabBar> {
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      Spacer(),
                       Text(currentRestaurant.getName()),
-                      Row(
-                        children: [
-                          for(int i = 0; i < 5; i++)
-                            Icon(Icons.star, color: theme.yellow,)
-                          ,for(int i = 0; i < 5 - 5; i++)
-                            Icon(Icons.star_border)
-                        ],
-                      )
+                      Spacer(),
+                      RatingBarIndicator(
+                        rating: currentRestaurant.getRate(),
+                        itemBuilder: (context, index) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        itemCount: 5,
+                        itemSize: 15,
+                      ),
+                      SizedBox(width: 5,),
+                      Text(currentRestaurant.getRate().toString(), style: TextStyle(color: theme.yellow,fontSize: 10),),
+                      Text('/ 5.0', style: TextStyle(color: Colors.grey[500], fontSize: 10),)
                     ],
                   ),
                   centerTitle: true,
