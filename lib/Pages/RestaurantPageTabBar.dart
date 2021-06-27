@@ -1,15 +1,16 @@
 
 
-import 'package:customer_app/Objects/Customer.dart';
+
 import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:customer_app/Pages/Nav.dart';
 import 'package:customer_app/Pages/RestaurantPage.dart';
 import 'package:customer_app/Pages/RestaurantPage2.dart';
 import 'package:customer_app/data/Data.dart';
+import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:intl/intl.dart';
+
 
 class RestaurantPageTabBar extends StatefulWidget {
 
@@ -23,6 +24,19 @@ class RestaurantPageTabBar extends StatefulWidget {
 
 class _RestaurantPageTabBarState extends State<RestaurantPageTabBar> {
 
+  void _sendMessageAdd(id) async{
+    //format: addFavorite::restaurantId
+   await SocketConnect.socket.then((value) {
+      value.writeln("addFavorite::"+id.toString());
+    });
+  }
+
+  void _sendMessageRemove(id) async{
+    //format: removeFavorite::restaurantId
+   await SocketConnect.socket.then((value) {
+      value.writeln("removeFavorite::"+id.toString());
+    });
+  }
 
   bool isInFavorite(){
     if (Data.customer.getFavoriteRestaurant().contains(Data.restaurants[widget.restaurant].getId()))
@@ -51,10 +65,14 @@ class _RestaurantPageTabBarState extends State<RestaurantPageTabBar> {
                       ),
                       onPressed: () {
                         setState(() {
-                          if (Data.customer.getFavoriteRestaurant().contains(Data.restaurants[widget.restaurant].getId()))
+                          if (Data.customer.getFavoriteRestaurant().contains(Data.restaurants[widget.restaurant].getId())){
+                           _sendMessageRemove(Data.restaurants[widget.restaurant].getId());
                             Data.customer.removeFromFavoriteRestaurant(Data.restaurants[widget.restaurant].getId());
-                          else
+                          }
+                          else{
+                            _sendMessageAdd(Data.restaurants[widget.restaurant].getId());
                             Data.customer.addFavoriteRestaurant(Data.restaurants[widget.restaurant].getId());
+                          }
                         });
                       })
                 ],
