@@ -11,10 +11,6 @@ class Food {
   var _score = {"behdasht":null,"soratPeik":null,"garmiGhaza":null,"gheimat":null,"keifiat":null};
 
 
-  @override
-
-
-
 
    Food(String name, String description,num price,num discount,bool sizing,bool available,TypeFood typeFood)   {
     this._name = name;

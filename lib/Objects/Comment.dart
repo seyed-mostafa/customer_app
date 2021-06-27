@@ -23,11 +23,11 @@ class Comment  {
 
   Comment(String comment) {
     this._comment=comment;
-    _timeComment=DateFormat('\n d MMM kk:mm').format( DateTime.now());
+    _timeComment=DateFormat('d MMM kk:mm').format( DateTime.now());
   }
   void setReply(String reply){
     this._reply=reply;
-    _timeReply= DateFormat('\n d MMM kk:mm').format( DateTime.now());;
+    _timeReply= DateFormat('d MMM kk:mm').format( DateTime.now());;
   }
   void setRestaurantName(String restaurantName){
     _restaurantName=restaurantName;
