@@ -188,9 +188,15 @@ class _HomeState extends State<Home> {
       );
     }
 
-    Widget showRestaurant(Restaurant restaurant, int index) {
+    Widget showRestaurant(Restaurant restaurant, int id) {
+      int index = 0;
       return TextButton(
         onPressed: (){
+          for(int i = 0; i < restaurants.length; i++) {
+            if(id == restaurants[i].getId()) {
+              index = i;
+            }
+          }
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => RestaurantPageTabBar(index)));
         },
@@ -264,7 +270,7 @@ class _HomeState extends State<Home> {
       );
     }
 
-    Widget restaurantList(String title, List<Restaurant> restaurants) {
+    Widget restaurantList(String title, List<Restaurant> chosenRestaurants) {
       return Container(
         margin: EdgeInsets.only(bottom: 15, top: 15),
         child: Column(
@@ -291,8 +297,8 @@ class _HomeState extends State<Home> {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                  for(int i = restaurants.length-1, j = 0; j < 5 && restaurants.length-j > 0; i--, j++)
-                    showRestaurant(restaurants[i], i),
+                  for(int i = 0; i < chosenRestaurants.length; i++)
+                    showRestaurant(chosenRestaurants[i], chosenRestaurants[i].getId()),
                 ]
               ),
             ),
@@ -354,8 +360,27 @@ class _HomeState extends State<Home> {
       );
     }
 
-    List<Restaurant> restaurantsByRate = restaurants;
+    List<Restaurant> restaurantsByRate = new List.empty(growable: true);
+    restaurantsByRate.addAll(restaurants);
     restaurantsByRate.sort((a, b) => a.getRate().compareTo(b.getRate()));
+    restaurantsByRate = restaurantsByRate.reversed.toList();
+
+    List<Restaurant> restaurantsByDistance = new List.empty(growable: true);
+    restaurantsByDistance.addAll(restaurants);
+    restaurantsByDistance.sort((a, b) =>
+        a.getAddress().calculateDistance(
+        a.getAddress().getLatitude(),
+        a.getAddress().getLongitude(),
+        Data.customer.getAddress()[0].getLatitude(),
+        Data.customer.getAddress()[0].getLongitude()).compareTo(
+            b.getAddress().calculateDistance(
+                b.getAddress().getLatitude(),
+                b.getAddress().getLongitude(),
+                Data.customer.getAddress()[0].getLatitude(),
+                Data.customer.getAddress()[0].getLongitude()
+            )
+        )
+    );
 
     return SingleChildScrollView(
       child: Column(
@@ -365,7 +390,9 @@ class _HomeState extends State<Home> {
 
           restaurantList("Popular Restaurants", restaurantsByRate),
 
-          //restaurantList("Near By Restaurant", restaurants), //ToDo : Data.customer.getNearByRestaurant
+          restaurantList("Near By Restaurant", restaurantsByDistance),
+
+          restaurantList("All Restaurants", restaurants),
 
           for(int i = 0; i < restaurants.length; i++)
             if(restaurants[i].getMenu().isNotEmpty)
