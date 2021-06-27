@@ -110,7 +110,7 @@ class _FavoriteState extends State<Favorite> {
         children: [
           for(int i = 0; i < Data.restaurants.length; i++)
             if( Data.customer.getFavoriteRestaurant().contains(Data.restaurants[i].getId()))
-              showRestaurant(Data.restaurants[i], i)
+              showRestaurant(Data.restaurants[i], Data.restaurants[i].getId())
         ]
       ),
     );
