@@ -114,7 +114,7 @@ if (!(data[8].startsWith("null"))) {
       List<String> foods = order[7].split(":::");
       for (String food in foods) {
         List<String> f = food.split("::");
-        Data.customer.addShoppingCart(
+        orderToAdd.addFood(
             new Food(
                 f[0],
                 f[1],
@@ -124,9 +124,9 @@ if (!(data[8].startsWith("null"))) {
                 f[4] == "true" ? true : false,
                 TypeFood.values.firstWhere((e) =>
                 e.toString() == "TypeFood." + f[5])),
-            int.parse(order[1]),
             int.parse(f[6]));
       }
+      orderToAdd.setDelivered();
       Data.customer.addPreviousOrders(orderToAdd);
     }
   }
