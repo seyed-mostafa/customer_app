@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Objects/Location.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
@@ -30,6 +31,8 @@ class _EnteringPageState extends State<EnteringPage> {
 
   Socket _Socket;
 
+  bool showWait = false;
+
   //input Variable
   String inputPhoneNumberEnter = '', inputPasswordEnter = '';
 
@@ -37,10 +40,26 @@ class _EnteringPageState extends State<EnteringPage> {
   bool validUser = false;
 
   //for first time don't show error of input (red container in top)
-  bool flag = true;
+    bool flag = true;
 
   //for hide entering password
   bool hidden = true;
+
+  Widget animationWait() {
+    return SizedBox(
+      width: 250.0,
+      child: TextLiquidFill(
+        text: 'Please Wait',
+        waveColor: Colors.black,
+        boxBackgroundColor: Colors.white,
+        textStyle: TextStyle(
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+        ),
+        boxHeight: 100,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +75,7 @@ class _EnteringPageState extends State<EnteringPage> {
                 SizedBox(
                   height: 20,
                 ),
-                validUser || flag
-                    ? Container(
-                        height: 40,
-                      )
-                    : Container(
+                validUser || flag ? Container(height: 40,) : Container(
                         decoration: BoxDecoration(
                           color: Colors.red,
                           borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -128,84 +143,84 @@ class _EnteringPageState extends State<EnteringPage> {
                   },
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 20,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      width: 20,
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          onPrimary: theme.yellow,
-                          primary: theme.black,
-                          padding: EdgeInsets.all(20)),
-                      onPressed: () {
-                        flag = false;
-                        print(inputPhoneNumberEnter);
-                        print(inputPasswordEnter);
-                        _sendMessage();
-                        if (validUser) {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Test(str),
-                              ));
-                        }
-                        validUser = false;
-                        setState(() {});
-                      },
-                      child: Text(
-                        "Sign in",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            onPrimary: theme.yellow,
-                            primary: theme.black,
-                            padding: EdgeInsets.all(20)),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => RegisteringPage()),
-                          );
-                        },
-                        child: Text(
-                          "Sign up",
-                          style: TextStyle(fontSize: 18),
-                        )),
-                    SizedBox(
-                      width: 30,
-                    )
-                  ],
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      onPrimary: theme.yellow,
+                      primary: theme.black,
+                      padding: EdgeInsets.only(left: 100, right: 100)),
+                  onPressed: () async {
+                    setState(() {
+                      showWait = true;
+                      flag = true;
+                    });
+                    print(inputPhoneNumberEnter);
+                    print(inputPasswordEnter);
+                    _sendMessage();
+                    await Future.delayed(Duration(seconds: 5));
+                    if (validUser) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Nav(0),
+                          ));
+                    }
+                      setState(() {flag = false; showWait = false;});
+                  },
+                  child: Text(
+                    "Sign in",
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        onPrimary: theme.yellow,
+                        primary: theme.black,
+                        padding: EdgeInsets.only(left: 97, right: 97)),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RegisteringPage()),
+                      );
+                    },
+                    child: Text(
+                      "Sign up",
+                      style: TextStyle(fontSize: 18),
+                    )),
+                SizedBox(
+                  width: 30,
+                ),
+                SizedBox(height: 20,),
+                if(showWait) animationWait(),
               ],
             ),
           ),
         ));
   }
 
-  _sendMessage() async {
+  _sendMessage() async { //format: Entering::phone::password
     String messageServer = "";
     SocketConnect.socket.then((serverSocket) async {
       print('Connected to Server in Entering Page');
       serverSocket.writeln("Customer");
 
-      serverSocket.writeln("Phone: " +
+      serverSocket.writeln("Entering::" +
           inputPhoneNumberEnter +
-          ", " +
-          "pass: " +
+          "::" +
           inputPasswordEnter);
       serverSocket.listen((socket) {
         messageServer += String.fromCharCodes(socket).trim();
       });
     });
-    await Future.delayed(Duration(seconds: 6));
+    await Future.delayed(Duration(seconds: 4)); //stop for listen threading
+    print(messageServer);
     if (messageServer.contains("true")) {
+      print("here");
+      setState(() {
       validUser = true;
+      });
       messageServer =
           messageServer.substring(4); // remove true in start message
       str = messageServer;

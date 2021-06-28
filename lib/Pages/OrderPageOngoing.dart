@@ -1,6 +1,7 @@
 
 import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Pages/Nav.dart';
+import 'package:customer_app/test.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -30,7 +31,7 @@ class _OrderPageOngoingState extends State<OrderPageOngoing> {
       padding: const EdgeInsets.all(10),
       child: Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(15)),
+            borderRadius: BorderRadius.all(Radius.circular(20)),
             color: theme.white,
             boxShadow: [
               BoxShadow(
@@ -40,14 +41,12 @@ class _OrderPageOngoingState extends State<OrderPageOngoing> {
               )
             ]),
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
           child: Column(
             children: [
               DataTable(
                 columns: const <DataColumn>[
-                  DataColumn(
-                    label: Text('Food name'),
-                  ),
+                  DataColumn(label: Text('Food name'),),
                   DataColumn(numeric: true, label: Text('Num')),
                   DataColumn(numeric: true, label: Text('Price')),
                 ],
@@ -77,18 +76,18 @@ class _OrderPageOngoingState extends State<OrderPageOngoing> {
       alignment: Alignment.bottomCenter,
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: 1),
+          padding: const EdgeInsets.only(bottom: 50),
           child: Container(
             height: MediaQuery.of(context).size.height / 3,
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: NetworkImage('assets/images/restaurant/2.jpg'),
-                  fit: BoxFit.cover),
+                image: AssetImage("assets/images/restaurant/" + widget.currentOrder.getRestaurantName() + ".jpg"),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
         Container(
-          height: 100,
           decoration: BoxDecoration(
             color: theme.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
@@ -164,7 +163,7 @@ class _OrderPageOngoingState extends State<OrderPageOngoing> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        Nav()));
+                        Nav(2)));
           },
         ),
         backgroundColor: Colors.white,

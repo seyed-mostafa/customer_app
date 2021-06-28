@@ -74,105 +74,187 @@ class _RestaurantPageState extends State<RestaurantPage> {
     currentRestaurant=Data.restaurants.elementAt(widget.currentRestaurant);
     Size _size = MediaQuery.of(context).size;
 
-    imageWidget(index){
-      return Stack(
-        children: [
-          Container(
-            // height: MediaQuery.of(context).size.height * 0.20,
-            // width: MediaQuery.of(context).size.width * 0.40,
-            padding: EdgeInsets.fromLTRB(5, 10, 10, 10),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.asset(
-                "assets/images/food1.jpg",
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          currentRestaurant.getMenu()[index].getDiscount() != null ?
-          Center(
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(5)
-              ),
-              margin: EdgeInsets.fromLTRB(5, 10, 10, 10),
-
-              child: Text("${currentRestaurant.getMenu()[index].getDiscount()}%", style: TextStyle(color: Colors.white),),
-            ),
-          ):
-          Container()
-        ],
-
-      );
-    }
-
-    dataFoodWidget(index){
-      return Container(
-        margin: EdgeInsets.only(left: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(currentRestaurant.getMenu()[index].getName()
-              ,style: TextStyle(
-                color: theme.black
-              ),
-            ),
-            Text("${currentRestaurant.getMenu()[index].getPrice().toString()} T",
-              style: TextStyle(
-                color: theme.black
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    // iconWidget(index){
-    //   return IconButton(
-    //     icon: Icon(FontAwesomeIcons.plusCircle),
-    //     splashRadius: 5,
-    //     onPressed: () => {
-    //       currentCustomer.addShoppingCart(
-    //           widget.currentRestaurant.
-    //           getMenu()[index],
-    //           widget.currentRestaurant.getId(),
-    //           1
-    //       )
-    //     },
+    // Widget showFood(index){
+    //   return Container(
+    //     width: _size.width/2,
+    //     padding: const EdgeInsets.all(2),
+    //     margin: EdgeInsets.fromLTRB(10, 10, 5, 0),
+    //     decoration: BoxDecoration(
+    //       color: theme.yellow,
+    //       borderRadius: BorderRadius.circular(10)
+    //     ),
+    //     child: TextButton(
+    //       child: Column(
+    //         children: [
+    //           imageWidget(index),
+    //           Row(
+    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //             children: [
+    //               dataFoodWidget(index),
+    //               //iconWidget(index)
+    //             ],
+    //           )
+    //         ],
+    //       ),
+    //       onPressed: (){
+    //         Navigator.pushReplacement(
+    //           context,
+    //           MaterialPageRoute(
+    //             builder: (context) => FoodPage(currentRestaurant,currentRestaurant.getMenu().elementAt(index)),
+    //           ),
+    //         );
+    //       },
+    //     ),
     //   );
     // }
 
-    Widget showFood(index){
-      return Container(
-        width: _size.width/2,
-        padding: const EdgeInsets.all(2),
-        margin: EdgeInsets.fromLTRB(10, 10, 5, 0),
-        decoration: BoxDecoration(
-          color: theme.yellow,
-          borderRadius: BorderRadius.circular(10)
+    Widget showFood(Food food, int index){
+      return TextButton(
+        onPressed: (){
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => FoodPage(currentRestaurant,food)));
+        },
+        style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap
         ),
-        child: TextButton(
-          child: Column(
-            children: [
-              imageWidget(index),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Container(
+          margin: EdgeInsets.only(left: 5, right: 5, bottom: 5),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: food.getDiscount() == 0 ? Container(
+              width: _size.width * 0.5,
+              color: theme.yellow.withOpacity(1),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  dataFoodWidget(index),
-                  //iconWidget(index)
+                  Container(
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black45,
+                              spreadRadius: 3,
+                              blurRadius: 15,
+                              offset: Offset(0,0)
+                          )
+                        ]
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: AspectRatio(
+                        aspectRatio: 16/10,
+                        child: Container(
+                            child: Image.asset("assets/images/food/" + food.getName() + ".jpg", fit: BoxFit.fill,)
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 5,),
+                  Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 5, right: 5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              food.getName(),
+                              style: TextStyle(
+                                color: theme.black,
+                              ),
+                            ),
+                            SizedBox(height: 5,),
+                            Text(
+                              food.getPrice().toString() + " T",
+                              style: TextStyle(
+                                color: theme.black,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Spacer(),
+                      IconButton(
+                          splashRadius: 10,
+                          icon: Icon(FontAwesomeIcons.plusCircle, color: theme.white,),
+                          onPressed: (){
+
+                          }
+                      )
+                    ],
+                  )
                 ],
-              )
-            ],
-          ),
-          onPressed: (){
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => FoodPage(currentRestaurant,currentRestaurant.getMenu().elementAt(index)),
               ),
-            );
-          },
+            ):Banner(
+              color: Colors.red,
+              message: food.getDiscount().toString() + " %",
+              location: BannerLocation.topStart,
+              child: Container(
+                width: _size.width * 0.5,
+                color: theme.yellow.withOpacity(1),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black45,
+                                spreadRadius: 3,
+                                blurRadius: 15,
+                                offset: Offset(0,0)
+                            )
+                          ]
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: AspectRatio(
+                          aspectRatio: 16/10,
+                          child: Container(
+                              child: Image.asset("assets/images/food/" + food.getName() + ".jpg", fit: BoxFit.fill,)
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 5,),
+                    Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 5, right: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                food.getName(),
+                                style: TextStyle(
+                                  color: theme.black,
+                                ),
+                              ),
+                              SizedBox(height: 5,),
+                              Text(
+                                food.getPrice().toString() + " T",
+                                style: TextStyle(
+                                  color: theme.black,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Spacer(),
+                        IconButton(
+                            splashRadius: 10,
+                            icon: Icon(FontAwesomeIcons.plusCircle, color: theme.white,),
+                            onPressed: (){
+
+                            }
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
       );
     }
@@ -187,7 +269,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
             for(int i = 0; i < currentRestaurant.getMenu().length; i++)
               if(searchingText == "" || currentRestaurant.getMenu()[i].getName().contains(searchingText))
                 if(chosenType == TypeFood.all || currentRestaurant.getMenu()[i].getTypeFood() == chosenType)
-                  showFood(i)
+                  showFood(currentRestaurant.getMenu()[i], i)
           ],
         ),
       );
@@ -195,7 +277,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
 
     Widget searching(){
       return Container(
-        margin: EdgeInsets.fromLTRB(20, 20, 20, 10),
+        margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
         child: TextField(
           cursorColor: theme.black,
           style: TextStyle(color: Colors.black),
@@ -203,7 +285,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
               prefixIcon: Icon(Icons.search),
               border: new OutlineInputBorder(
                 borderRadius: const BorderRadius.all(
-                  const Radius.circular(10),
+                  const Radius.circular(20),
                 ),
                 borderSide: new BorderSide(
                   color: theme.black,
@@ -229,8 +311,8 @@ class _RestaurantPageState extends State<RestaurantPage> {
       return Container(
         margin: EdgeInsets.only(left: 10),
         decoration: BoxDecoration(
-            color: theme.white,
-            borderRadius: BorderRadius.circular(10)
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20)
         ),
         width: _size.width * 0.25 + typeFood.toString().length,
         child: TextButton(
@@ -239,15 +321,15 @@ class _RestaurantPageState extends State<RestaurantPage> {
             child: Row(
               children: [
                 icon,
-                typeFood == TypeFood.all ? Text("  " + typeFood.toString().substring(9),
+                typeFood != TypeFood.all ? Text("  " + typeFood.toString().substring(9),
                   style: TextStyle(
                       fontSize: _size.width * 0.03,
-                      color: theme.black
+                      color: theme.yellow
                   )
                 ):Text("  " + "AllFood",
                   style: TextStyle(
                       fontSize: _size.width * 0.03,
-                      color: theme.black
+                      color: theme.yellow
                   ),
                 )
               ],
@@ -264,6 +346,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
 
     Widget chooseType(){
       return Container(
+        margin: EdgeInsets.only(bottom: 10),
         height: 50,
         child: ListView(
             scrollDirection: Axis.horizontal,
@@ -287,7 +370,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
 
     return ListView(children:[
       searching(),
-      chooseType(),
+     chooseType(),
       building()
     ] );
   }

@@ -1,11 +1,8 @@
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Food.dart';
-import 'package:customer_app/Objects/Location.dart';
 import 'package:customer_app/Objects/Order.dart';
-import 'package:customer_app/Pages/RestaurantPage.dart';
 import 'package:customer_app/Pages/RestaurantPageTabBar.dart';
 import 'package:customer_app/data/Data.dart';
-import 'package:customer_app/data/Restaurent.dart';
 import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,14 +11,13 @@ import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-
 class FoodPage extends StatefulWidget {
-  Customer customer;
+  Order order;
+  Customer customer = Data.customer;
+
   Food currentFood;
   Restaurant currentRestaurant;
-  Order order;
-  Food food;
-  FoodPage(this.currentRestaurant,this.currentFood);
+  FoodPage(this.currentRestaurant, this.currentFood);
 
   @override
   _FoodPageState createState() => _FoodPageState();
@@ -31,31 +27,27 @@ class _FoodPageState extends State<FoodPage> {
   int state = 1;
   int like = 0;
 
-  void _sendMessage() { //format: addToBag::foodIndex::count::restaurantId
-    SocketConnect.socket.then((value) {
-      value.writeln("addToBag::");
-    });
+
+  bool isInBag() {
+    if (widget.customer.getShoppingCart().isNotEmpty) {
+      for (Order order in widget.customer.getShoppingCart()) {
+        if (order.getRestaurantId() == widget.currentRestaurant.getId()) {
+          for (Food food in order.getOrder().keys) {
+            if (food.getName() == widget.currentFood.getName()) {
+              widget.order = order;
+              print(order.getOrder()[widget.currentFood]);
+              return true;
+            }
+          }
+        }
+      }
+    }
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
-    bool isInBag() {
-      if (widget.customer.getShoppingCart().isNotEmpty) {
-        for (Order order in widget.customer.getShoppingCart()) {
-          if (order.getRestaurantId() == widget.currentRestaurant.getId()) {
-            for(Food food in order.getOrder().keys ){
-              if (food.getName()==widget.currentFood.getName()) {
-                widget.order=order;
-                widget.food =food;
-               break;
-              }
-            }
-            return true;
-          }
-        }
-      }
-      return false;
-    }
+
 
     addToBag() {
       return Row(
@@ -67,16 +59,8 @@ class _FoodPageState extends State<FoodPage> {
             onPressed: () {
               setState(() {
                 widget.customer.addShoppingCart(
-                    widget.currentFood,
-                    widget.currentRestaurant.getId(),
-                    1
-                );
-                _sendMessage();
-                widget.order=widget.customer.getShoppingCart().last;
-                widget.customer.getShoppingCart()[widget.customer.getShoppingCart().indexOf(widget.order)].setRestaurantName(widget.currentRestaurant.getName());
-                widget.customer.getShoppingCart()[widget.customer.getShoppingCart().indexOf(widget.order)].setRestaurantAddress(new Location(" Tehran Province, Tehran, District 7, Mir Emad St &, Shahid Motahari St",35.717676891099835, 51.331243399093914));
+                    widget.currentFood, widget.currentRestaurant.getId(), 1);
                 print('add to bag');
-
               });
             },
             child: Padding(
@@ -114,29 +98,28 @@ class _FoodPageState extends State<FoodPage> {
               onPressed: () {
                 print('mines');
                 setState(() {
-                  if (widget.order.getOrder()[widget.food]-1==0) {
-                    widget.order.remove(widget.food);
-                    widget.order=null;
-                  }
-                  else{
-                  widget.customer.addShoppingCart(
-                      widget.currentFood,
-                      widget.currentRestaurant.getId(), widget.order.getOrder()[widget.food]-1);
-                  widget.order=widget.customer.getShoppingCart().last;
+                  if (widget.order.getOrder()[widget.currentFood] - 1 == 0) {
+                    widget.order.remove(widget.currentFood);
+                    widget.order = null;
+                  } else {
+                    widget.customer.addShoppingCart(
+                        widget.currentFood,
+                        widget.currentRestaurant.getId(),
+                        widget.order.getOrder()[widget.currentFood] - 1);
+                    widget.order = widget.customer.getShoppingCart().last;
+
                   }
                 });
               }),
           Spacer(),
           TextButton(
             onPressed: () {
-              setState(() {
-
-              });
+              setState(() {});
             },
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Text(
-                widget.order.getOrder()[widget.food].toString(),
+                widget.order.getOrder()[widget.currentFood].toString(),
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
               ),
             ),
@@ -156,13 +139,12 @@ class _FoodPageState extends State<FoodPage> {
               onPressed: () {
                 print('add');
                 setState(() {
-                print(widget.order.getOrder()[widget.food]);
-                widget.customer.addShoppingCart(
-                    widget.currentFood,
-                    widget.currentRestaurant.getId(), widget.order.getOrder()[widget.food]+1);
-                widget.order=widget.customer.getShoppingCart().last;
+                  widget.customer.addShoppingCart(
+                      widget.currentFood,
+                      widget.currentRestaurant.getId(),
+                      widget.order.getOrder()[widget.currentFood] + 1);
+                  widget.order = widget.customer.getShoppingCart().last;
                 });
-
               }),
           Spacer(
             flex: 5,
@@ -188,8 +170,7 @@ class _FoodPageState extends State<FoodPage> {
                       offset: Offset(0, 0))
                 ]),
                 child: Text(
-                  widget.currentFood
-                      .getDescription(),
+                  widget.currentFood.getDescription(),
                   style: TextStyle(color: theme.black, fontSize: 15),
                 ),
               ),
@@ -209,9 +190,7 @@ class _FoodPageState extends State<FoodPage> {
                       blurRadius: 0.5,
                       offset: Offset(0, 0))
                 ]),
-                child: Text(widget.currentFood
-                    .getComment()
-                    .elementAt(0)),
+                child: Text(widget.currentFood.getComment().elementAt(0)),
               ),
             ));
       }
@@ -222,30 +201,12 @@ class _FoodPageState extends State<FoodPage> {
         child: ListView(
           children: [
             Container(
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(),
-                    child: IconButton(
-                        icon: Icon(
-                          like % 2 == 0
-                              ? Icons.favorite_border
-                              : Icons.favorite,
-                          color: Colors.red,
-                          size: 38,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            like++;
-                          });
-                        })),
-              ),
+
               height: MediaQuery.of(context).size.height / 3,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/images/food1.jpg'),
+                    image: AssetImage('assets/images/food/' + widget.currentFood.getName() + '.jpg'),
                     fit: BoxFit.cover),
               ),
             ),
@@ -259,8 +220,7 @@ class _FoodPageState extends State<FoodPage> {
                     Spacer(),
                     Text(
                       //name
-                      widget.currentFood
-                          .getName(),
+                      widget.currentFood.getName(),
 
                       style:
                           TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
@@ -269,10 +229,7 @@ class _FoodPageState extends State<FoodPage> {
                       flex: 10,
                     ),
                     Text(
-                      widget.currentFood
-                              .getPrice()
-                              .toString() +
-                          ' T',
+                      widget.currentFood.getPrice().toString() + ' T',
                       style: TextStyle(fontSize: 28),
                     ),
                     Spacer(),
@@ -365,7 +322,8 @@ class _FoodPageState extends State<FoodPage> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => RestaurantPageTabBar(Data.restaurants.indexOf(widget.currentRestaurant))));
+                    builder: (context) => RestaurantPageTabBar(
+                        Data.restaurants.indexOf(widget.currentRestaurant))));
           },
         ),
       ),

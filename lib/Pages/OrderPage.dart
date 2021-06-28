@@ -1,11 +1,13 @@
 import 'package:customer_app/Objects/Customer.dart';
+import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Pages/Nav.dart';
 import 'package:customer_app/data/Data.dart';
+import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
+import 'OrderPageOngoing.dart';
 
 class OrderPage extends StatefulWidget {
 
@@ -19,6 +21,24 @@ class OrderPage extends StatefulWidget {
 class _OrderPageState extends State<OrderPage> {
   Customer currentCustomer=Data.customer;
 
+
+  void _sendMessage() async {
+    await SocketConnect.socket.then((value) async {
+      //format: addToOrders::restaurantName::orderTime::restaurantAddress::restaurantAddress::restaurantAddress::restaurantId::id::food^num&food^num
+
+      String sendMessage="addToOrders::"+ widget.currentOrder.getRestaurantName()+"::"+widget.currentOrder.getOrderTime()+"::"+
+          widget.currentOrder.getRestaurantAddress().getAddress()+"::"+widget.currentOrder.getRestaurantAddress().getLatitude().toString()+"::"+
+          widget.currentOrder.getRestaurantAddress().getLongitude().toString()+"::"+widget.currentOrder.getRestaurantId().toString()+"::"+
+          widget.currentOrder.getId().toString()+"::";
+      for(Food food in widget.currentOrder.getOrder().keys)
+         sendMessage+=food.getName()+"^"+widget.currentOrder.getOrder()[food].toString()+"&";
+      sendMessage=sendMessage.substring(0,sendMessage.length-1);
+      print(sendMessage);
+      print(sendMessage);
+      value.writeln(sendMessage);
+    });
+  }
+
   payment(){
     return  Container(
       margin: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*1/3),
@@ -29,6 +49,7 @@ class _OrderPageState extends State<OrderPage> {
             showDialog<String>(
               context: context,
               builder: (BuildContext context) => AlertDialog(
+
                 title: Text('Inventory is insufficient'),
                 content: const Text('Wallet balance is not enough.\nCharge your wallet'),
                 actions: <Widget>[
@@ -42,10 +63,11 @@ class _OrderPageState extends State<OrderPage> {
             }
             else{
               widget.currentOrder.setOrderTime();
-              currentCustomer.setWallet(currentCustomer.getWallet()-       //
-                  widget.currentOrder.getPrice());                         //TODO:These changes must also be applied to the server
-              currentCustomer.removeShoppingCart(widget.currentOrder);     //
-              currentCustomer.addPreviousOrders(widget.currentOrder);      //
+              currentCustomer.setWallet(currentCustomer.getWallet()-
+                  widget.currentOrder.getPrice());
+              currentCustomer.removeShoppingCart(widget.currentOrder);
+              currentCustomer.addPreviousOrders(widget.currentOrder);
+              _sendMessage();
               showDialog<String>(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
@@ -54,7 +76,15 @@ class _OrderPageState extends State<OrderPage> {
                       '${widget.currentOrder.getOrderTime()}'),
                   actions: <Widget>[
                     TextButton(
-                      onPressed: () => Navigator.pop(context, 'Ok'),
+                      onPressed: () {
+                        setState(() {
+                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OrderPageOngoing(widget.currentOrder)));
+                        });
+                      },
                       child: const Text('Ok',style: TextStyle(color:Color(0xfffcb000)),),
                     ),
                   ],
@@ -93,14 +123,12 @@ class _OrderPageState extends State<OrderPage> {
               )
             ]),
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
           child: Column(
             children: [
               DataTable(
                 columns: const <DataColumn>[
-                  DataColumn(
-                    label: Text('Food name'),
-                  ),
+                  DataColumn(label: Text('Food name'),),
                   DataColumn(numeric: true, label: Text('Num')),
                   DataColumn(numeric: true, label: Text('Price')),
                 ],
@@ -128,9 +156,7 @@ class _OrderPageState extends State<OrderPage> {
   increaseOrDecrease(index) {
     return Row(
       children: [
-        Spacer(
-          flex: 5,
-        ),
+        Spacer(),
         IconButton(
             icon: Icon(
               FontAwesomeIcons.minus,
@@ -153,28 +179,17 @@ class _OrderPageState extends State<OrderPage> {
                 }
               });
             }),
-        // Spacer(),
-        TextButton(
-          onPressed: () {
-            setState(() {});
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(7),
-            child: Text(
-              widget.currentOrder
-                  .getOrder()[
-                      widget.currentOrder.getOrder().keys.elementAt(index)]
-                  .toString(),
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-            ),
-          ),
-          style: TextButton.styleFrom(
-            primary: Colors.black,
-            shadowColor: theme.black,
-            backgroundColor: theme.yellow,
+        Container(
+          padding: EdgeInsets.all(10),
+          color: theme.yellow,
+          child: Text(
+            widget.currentOrder
+                .getOrder()[
+                    widget.currentOrder.getOrder().keys.elementAt(index)]
+                .toString(),
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
           ),
         ),
-        // Spacer(),
         IconButton(
             icon: Icon(
               FontAwesomeIcons.plus,
@@ -236,60 +251,48 @@ class _OrderPageState extends State<OrderPage> {
   image(index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        width: 130,
-        height: 130,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          image: DecorationImage(
-              image: NetworkImage('assets/images/food/${index + 1}.jpg'),
-              fit: BoxFit.fill),
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Image.asset(
+            "assets/images/restaurant/" + widget.currentOrder.getRestaurantName() + ".jpg",
+            fit: BoxFit.fill,
+          ),
         ),
       ),
     );
   }
 
   food(index) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width / 25, 8,
-          MediaQuery.of(context).size.width / 25, 0),
-      child: Container(
-        height: MediaQuery.of(context).size.height / 7,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(15)),
-            color: theme.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey,
-                spreadRadius: 0.001,
-                blurRadius: 15,
-              )
-            ]),
-        child: Row(
-          children: [
-            image(index),
-            Container(
-              width: MediaQuery.of(context).size.width * 3 / 5,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Spacer(
-                    flex: 20,
-                  ),
-                  nameAndItem(index),
-                  Spacer(
-                    flex: 1,
-                  ),
-                  price(index),
-                  Spacer(
-                    flex: 15,
-                  ),
-                  increaseOrDecrease(index),
-                ],
-              ),
+    return Container(
+      margin: EdgeInsets.all(5),
+      height: MediaQuery.of(context).size.height * 0.20,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          color: theme.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              spreadRadius: 0.001,
+              blurRadius: 15,
             )
-          ],
-        ),
+          ]),
+      child: Row(
+        children: [
+          image(index),
+          Container(
+            width: MediaQuery.of(context).size.width * 3 / 5,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                nameAndItem(index),
+                price(index),
+                increaseOrDecrease(index),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
@@ -299,21 +302,21 @@ class _OrderPageState extends State<OrderPage> {
       alignment: Alignment.bottomCenter,
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: 1),
+          padding: const EdgeInsets.only(bottom: 50),
           child: Container(
             height: MediaQuery.of(context).size.height / 3,
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: NetworkImage('assets/images/restaurant/2.jpg'),
-                  fit: BoxFit.cover),
+                image: AssetImage("assets/images/restaurant/" + widget.currentOrder.getRestaurantName() + ".jpg"),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
         Container(
-          height: 100,
           decoration: BoxDecoration(
             color: theme.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(50)),
           ),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(40,20,0,0),
@@ -361,15 +364,12 @@ class _OrderPageState extends State<OrderPage> {
   }
 
   body() {
-    print(widget.currentOrder.getOrder().length);
     return ListView(
       children: [
         restaurant(),
         for (int i = 0; i < widget.currentOrder.getOrder().length; i++) food(i),
         SizedBox(height: 5),
-        Column(
-          children: [table()],
-        ),
+        table(),
         payment(),
         SizedBox(height: 20,)
       ],
@@ -387,7 +387,7 @@ class _OrderPageState extends State<OrderPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        Nav()));
+                        Nav(2)));
           },
         ),
         backgroundColor: Colors.white,

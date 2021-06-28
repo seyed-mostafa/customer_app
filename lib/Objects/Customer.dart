@@ -1,5 +1,8 @@
 
 import 'package:customer_app/Objects/Order.dart';
+import 'package:customer_app/Objects/Restaurant.dart';
+import 'package:customer_app/data/Data.dart';
+import 'package:intl/intl.dart';
 import 'Comment.dart';
 import 'package:customer_app/Objects/Location.dart';
 import 'Food.dart';
@@ -12,10 +15,10 @@ class Customer{
   num _wallet=0;
   List<Location> _address = List.empty(growable: true);
   List<Comment> _comments = List.empty(growable: true);
-  List<int> _favoriteRestaurant = List.empty(growable: true);
+  List<int> _favoriteRestaurant = List.empty(growable: true); //restaurant popular Ids
   List<Order> _shoppingCart =List.empty(growable: true);
   List<Order> _orders = List.empty(growable: true);
-
+  List<Restaurant> _nearByRestaurants = [];
 
 
   Customer(firstName,lastName,phoneNumber,password)
@@ -54,7 +57,12 @@ class Customer{
         return;
       }
     }
-    _shoppingCart.add(Order(food, restaurantId,i));
+    for(Restaurant restaurant in Data.restaurants)
+      if (restaurant.getId()==restaurantId){
+        Order order=new Order.full(restaurant.getName(), _firstName, DateFormat('\n d MMM kk:mm').format( DateTime.now()), _address[0], restaurant.getAddress(), restaurantId);
+        order.addFood(food, i);
+        _shoppingCart.add(order);
+      }
   }
 
   void addNewShoppingCart(String restaurantName,String customerName,String orderTime,Location customerAddress,Location restaurantAddress,int restaurantId){
@@ -72,6 +80,9 @@ class Customer{
   }
   void addFavoriteRestaurant(int favoriteRestaurant) {
     _favoriteRestaurant.add(favoriteRestaurant);
+  }
+  void removeFromFavoriteRestaurant(int id) {
+    _favoriteRestaurant.remove(id);
   }
 
 
@@ -107,4 +118,15 @@ class Customer{
   List<int> getFavoriteRestaurant() {
     return _favoriteRestaurant;
   }
+  List<Restaurant> getFavoriteRestaurants() {
+    List<Restaurant> restaurants = [];
+    for(int i = 0; i < restaurants.length; i++)
+      if (Data.customer.getFavoriteRestaurant().contains(restaurants[i].getId())) {
+        restaurants.add(restaurants[i]);
+        print(restaurants[i].getId());
+      }
+
+    return restaurants;
+  }
+
 }

@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Map extends StatefulWidget {
+  Function change;
+  Map(this.change);
   @override
   _MapState createState() => _MapState();
 }
 
 class _MapState extends State<Map> {
 
-  //TODO:set customer location
 
   Completer<GoogleMapController> _controller = Completer();
 
@@ -36,12 +37,10 @@ class _MapState extends State<Map> {
         alpha: 1,
         markerId: MarkerId(_lastMapPosition.toString()),
         position: _lastMapPosition,
-        infoWindow: InfoWindow(
-          title: 'Really cool place',
-          snippet: '5 Star Rating',
-        ),
         icon: BitmapDescriptor.defaultMarker,
       ));
+      widget.change(_lastMapPosition);
+      Navigator.pop(context,);
     });
 
   }
