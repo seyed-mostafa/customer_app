@@ -11,10 +11,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 class OrderPageHistory extends StatefulWidget {
-
   Order currentOrder;
 
-  OrderPageHistory( this.currentOrder);
+  OrderPageHistory(this.currentOrder);
 
   @override
   _OrderPageHistoryState createState() => _OrderPageHistoryState();
@@ -23,10 +22,11 @@ class OrderPageHistory extends StatefulWidget {
 class _OrderPageHistoryState extends State<OrderPageHistory> {
   Comment comment;
 
-  isComment(){
-    for(Comment commentt in Data.customer.getComments()){
-      if (commentt.getRestaurantName()==widget.currentOrder.getRestaurantName()) {
-        comment=commentt;
+  isComment() {
+    for (Comment commentt in Data.customer.getComments()) {
+      if (commentt.getRestaurantName() ==
+          widget.currentOrder.getRestaurantName()) {
+        comment = commentt;
         return true;
       }
     }
@@ -64,11 +64,12 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
                     .entries
                     .map(
                       (e) => DataRow(cells: [
-                    DataCell(Text(e.key.getName())),
-                    DataCell(Text(e.value.toString())),
-                    DataCell(Text((e.key.getPrice() * e.value).toString())),
-                  ]),
-                ).toList(),
+                        DataCell(Text(e.key.getName())),
+                        DataCell(Text(e.value.toString())),
+                        DataCell(Text((e.key.getPrice() * e.value).toString())),
+                      ]),
+                    )
+                    .toList(),
               ),
               Container(
                   child: Text('Total : ${widget.currentOrder.getPrice()}'))
@@ -78,7 +79,6 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
       ),
     );
   }
-
 
   restaurant() {
     return Stack(
@@ -90,7 +90,9 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
             height: MediaQuery.of(context).size.height / 3,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/restaurant/" + widget.currentOrder.getRestaurantName() + ".jpg"),
+                image: AssetImage("assets/images/restaurant/" +
+                    widget.currentOrder.getRestaurantName() +
+                    ".jpg"),
                 fit: BoxFit.cover,
               ),
             ),
@@ -102,7 +104,7 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(50)),
           ),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(40,20,0,0),
+            padding: const EdgeInsets.fromLTRB(40, 20, 0, 0),
             child: Column(
               children: [
                 Row(
@@ -114,7 +116,7 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
                     Text(
                       widget.currentOrder.getRestaurantName(),
                       style:
-                      TextStyle(fontSize: 23, fontWeight: FontWeight.w600),
+                          TextStyle(fontSize: 23, fontWeight: FontWeight.w600),
                     ),
                   ],
                 ),
@@ -126,14 +128,14 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
                         size: 20,
                         color: theme.yellow,
                       ),
-                      onPressed: (){},
+                      onPressed: () {},
                     ),
                     Container(
-                      width: MediaQuery.of(context).size.width /2,
+                      width: MediaQuery.of(context).size.width / 2,
                       child: Text(
                         widget.currentOrder.getRestaurantAddress().getAddress(),
-                        style:
-                        TextStyle(fontSize: 15),softWrap: true,
+                        style: TextStyle(fontSize: 15),
+                        softWrap: true,
                       ),
                     ),
                   ],
@@ -146,8 +148,6 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
     );
   }
 
-
-
   bool send = false;
   String str = '';
 
@@ -159,12 +159,14 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
         setState(() {
           send = false;
           str = '';
-          Data.customer.addComment(new Comment.noFull(value, Data.customer.getName(), widget.currentOrder.getRestaurantName(), DateFormat('d MMM kk:mm').format( DateTime.now())));
+          Data.customer.addComment(new Comment.noFull(
+              value,
+              Data.customer.getName(),
+              widget.currentOrder.getRestaurantName(),
+              DateFormat('d MMM kk:mm').format(DateTime.now())));
         });
       }
     }
-
-
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -177,7 +179,7 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
               width: MediaQuery.of(context).size.width / 2,
               height: 50,
               child: TextFormField(
-                //Food Name
+                  //Food Name
                   decoration: InputDecoration(hintText: 'Comment...'),
                   style: TextStyle(color: Colors.grey[600], fontSize: 10),
                   cursorColor: theme.black,
@@ -205,7 +207,8 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
       ),
     );
   }
-   comments(Comment comment){
+
+  comments(Comment comment) {
     return Column(
       children: [
         Row(
@@ -243,11 +246,8 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
                 child: Container(
                   height: 2,
                   decoration: BoxDecoration(
-                    gradient:
-                    LinearGradient(
-                        colors: [theme.yellow2, theme.white],
-                        stops:[0,0.8]
-                    ),
+                    gradient: LinearGradient(
+                        colors: [theme.yellow2, theme.white], stops: [0, 0.8]),
                   ),
                 ),
               ),
@@ -262,9 +262,8 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
                 child: Container(
                   height: 2,
                   decoration: BoxDecoration(
-                    gradient:
-                    LinearGradient( colors: [theme.yellow2, theme.white],
-                        stops:[0,0.8]),
+                    gradient: LinearGradient(
+                        colors: [theme.yellow2, theme.white], stops: [0, 0.8]),
                   ),
                 ),
               )
@@ -275,8 +274,6 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
     );
   }
 
-
-
   body() {
     return ListView(
       children: [
@@ -285,7 +282,9 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
         Column(
           children: [
             table(),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -311,9 +310,10 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
                 ),
               ],
             ),
-            SizedBox(height: 20,),
-            isComment() ?
-                 comments(comment) : replyWrite(),
+            SizedBox(
+              height: 20,
+            ),
+            isComment() ? comments(comment) : replyWrite(),
           ],
         ),
       ],
@@ -328,10 +328,7 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
           icon: Icon(Icons.keyboard_backspace),
           onPressed: () {
             Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                       Nav()));
+                context, MaterialPageRoute(builder: (context) => Nav(2)));
           },
         ),
         backgroundColor: Colors.white,

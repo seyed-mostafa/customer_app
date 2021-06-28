@@ -163,7 +163,7 @@ class _OrderPageOngoingState extends State<OrderPageOngoing> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        Nav()));
+                        Nav(2)));
           },
         ),
         backgroundColor: Colors.white,

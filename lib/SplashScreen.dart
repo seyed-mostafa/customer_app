@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
             () => Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder:  EnteredUser ?
-                    (BuildContext context) => Nav ():
+                    (BuildContext context) => Nav (0):
                     (BuildContext context) => EnteringPage()
               )
             )
