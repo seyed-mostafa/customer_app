@@ -190,7 +190,7 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        Nav()));
+                        Nav(2)));
           },
         ),
         backgroundColor: Colors.white,

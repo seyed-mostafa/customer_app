@@ -117,7 +117,7 @@ class _RestaurantPageTabBarState extends State<RestaurantPageTabBar> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Nav())
+                              builder: (context) => Nav(0))
                       );
                     }
                 ),

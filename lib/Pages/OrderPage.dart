@@ -387,7 +387,7 @@ class _OrderPageState extends State<OrderPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        Nav()));
+                        Nav(2)));
           },
         ),
         backgroundColor: Colors.white,

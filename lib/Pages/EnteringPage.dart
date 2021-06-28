@@ -163,7 +163,7 @@ class _EnteringPageState extends State<EnteringPage> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Nav(),
+                            builder: (context) => Nav(0),
                           ));
                     }
                       setState(() {flag = false; showWait = false;});
