@@ -13,6 +13,7 @@ class Order {
   Location _customerAddress, _restaurantAddress;
   int _restaurantId,_id,_price=0;
   bool _delivered=false;
+  double _rate=null;
   static int _count=99246000;
   Map <Food,int> _order=new Map();
 
@@ -33,6 +34,14 @@ class Order {
     _restaurantId=restaurantId;
   }
 
+
+  void setRate(double rate){
+    _rate=rate;
+  }
+
+  double getRate(){
+    return _rate;
+  }
 
   void setStatus(bool b){
     _delivered=b;

@@ -63,55 +63,30 @@ class _OrdersHistoryState extends State<OrdersHistory> {
           style: TextStyle(fontSize: 22, color: theme.black),
         ),
         Spacer(),
-        RatingBar.builder(
-          initialRating: 5,
+        if (currentCustomer.getPreviousOrders()[index].getRate()!=null)
+        RatingBarIndicator(
+          rating: currentCustomer.getPreviousOrders()[index].getRate(),
+          itemBuilder: (context, index) => Icon(
+            Icons.star,
+            color: Colors.amber,
+          ),
           itemCount: 5,
-          itemBuilder: (context, index) {
-            switch (index) {
-              case 0:
-                return Icon(
-                  Icons.sentiment_very_dissatisfied,
-                  color: Colors.red,
-                );
-              case 1:
-                return Icon(
-                  Icons.sentiment_dissatisfied,
-                  color: Colors.redAccent,
-                );
-              case 2:
-                return Icon(
-                  Icons.sentiment_neutral,
-                  color: Colors.amber,
-                );
-              case 3:
-                return Icon(
-                  Icons.sentiment_satisfied,
-                  color: Colors.lightGreen,
-                );
-              case 4:
-                return Icon(
-                  Icons.sentiment_very_satisfied,
-                  color: Colors.green,
-                );
-            }
-          },
-          itemSize: 25,
-        )
+          itemSize: 15,
+        ),
       ],
     );
   }
 
-  image() {
+  image(index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        width: 130,
-        height: 130,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          image: DecorationImage(
-              image: NetworkImage('assets/images/restaurant/Mashti.jpg'),
-              fit: BoxFit.fill),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(50),
+        child: Image.asset(
+          "assets/images/restaurant/${currentCustomer.getPreviousOrders()[index].getRestaurantName()}.jpg",
+          fit: BoxFit.fill,
+          height: 100,
+          width: 100,
         ),
       ),
     );
@@ -136,7 +111,7 @@ class _OrdersHistoryState extends State<OrdersHistory> {
             ]),
         child: Row(
           children: [
-            image(),
+            image(index),
             Container(
               width:  MediaQuery.of(context).size.width-200 ,
               child: Column(

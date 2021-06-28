@@ -1,10 +1,14 @@
+import 'package:customer_app/Objects/Comment.dart';
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Pages/Nav.dart';
+import 'package:customer_app/Pages/ShoppingCartPage.dart';
+import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 class OrderPageHistory extends StatefulWidget {
 
@@ -17,6 +21,17 @@ class OrderPageHistory extends StatefulWidget {
 }
 
 class _OrderPageHistoryState extends State<OrderPageHistory> {
+  Comment comment;
+
+  isComment(){
+    for(Comment commentt in Data.customer.getComments()){
+      if (commentt.getRestaurantName()==widget.currentOrder.getRestaurantName()) {
+        comment=commentt;
+        return true;
+      }
+    }
+    return false;
+  }
 
   table() {
     return Padding(
@@ -70,24 +85,24 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
       alignment: Alignment.bottomCenter,
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: 1),
+          padding: const EdgeInsets.only(bottom: 50),
           child: Container(
             height: MediaQuery.of(context).size.height / 3,
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: NetworkImage('assets/images/restaurant/Mashti.jpg'),
-                  fit: BoxFit.cover),
+                image: AssetImage("assets/images/restaurant/" + widget.currentOrder.getRestaurantName() + ".jpg"),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
         Container(
-          height: 100,
           decoration: BoxDecoration(
             color: theme.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(50)),
           ),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(40,20,40,0),
+            padding: const EdgeInsets.fromLTRB(40,20,0,0),
             child: Column(
               children: [
                 Row(
@@ -101,41 +116,6 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
                       style:
                       TextStyle(fontSize: 23, fontWeight: FontWeight.w600),
                     ),
-                    Spacer(),
-                    RatingBar.builder(
-                      initialRating: 5,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        switch (index) {
-                          case 0:
-                            return Icon(
-                              Icons.sentiment_very_dissatisfied,
-                              color: Colors.red,
-                            );
-                          case 1:
-                            return Icon(
-                              Icons.sentiment_dissatisfied,
-                              color: Colors.redAccent,
-                            );
-                          case 2:
-                            return Icon(
-                              Icons.sentiment_neutral,
-                              color: Colors.amber,
-                            );
-                          case 3:
-                            return Icon(
-                              Icons.sentiment_satisfied,
-                              color: Colors.lightGreen,
-                            );
-                          case 4:
-                            return Icon(
-                              Icons.sentiment_very_satisfied,
-                              color: Colors.green,
-                            );
-                        }
-                      },
-                      itemSize: 25,
-                    )
                   ],
                 ),
                 Row(
@@ -166,14 +146,175 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
     );
   }
 
+
+
+  bool send = false;
+  String str = '';
+
+  replyWrite() {
+    bool isSend(String value) {
+      print(send);
+      print('str : $str');
+      if (send && str != '' && str != 'Comment...') {
+        setState(() {
+          send = false;
+          str = '';
+          Data.customer.addComment(new Comment.noFull(value, Data.customer.getName(), widget.currentOrder.getRestaurantName(), DateFormat('d MMM kk:mm').format( DateTime.now())));
+        });
+      }
+    }
+
+
+
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 9),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Row(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width / 2,
+              height: 50,
+              child: TextFormField(
+                //Food Name
+                  decoration: InputDecoration(hintText: 'Comment...'),
+                  style: TextStyle(color: Colors.grey[600], fontSize: 10),
+                  cursorColor: theme.black,
+                  onChanged: (value) {
+                    setState(() {
+                      str = value;
+                      print('value : $value');
+                      isSend(value);
+                    });
+                  }),
+            ),
+            IconButton(
+                icon: Icon(
+                  Icons.send,
+                  color: theme.yellow,
+                ),
+                onPressed: () {
+                  setState(() {
+                    send = true;
+                    isSend(str);
+                  });
+                })
+          ],
+        ),
+      ),
+    );
+  }
+   comments(Comment comment){
+    return Column(
+      children: [
+        Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: Image.asset(
+                "assets/images/profile/${Data.customer.getName()}.jpg",
+                fit: BoxFit.fill,
+                height: 50,
+                width: 50,
+              ),
+            ),
+            SizedBox(
+              width: 15,
+            ),
+            Column(
+              children: [
+                Text(comment.getCustomerName(),
+                    style: TextStyle(fontSize: 18, color: theme.black)),
+                Text(comment.getTimeComment(),
+                    style: TextStyle(color: Colors.grey, fontSize: 10)),
+              ],
+            ),
+          ],
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width / 8,
+          ),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 5),
+                child: Container(
+                  height: 2,
+                  decoration: BoxDecoration(
+                    gradient:
+                    LinearGradient(
+                        colors: [theme.yellow2, theme.white],
+                        stops:[0,0.8]
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    comment.getComment(),
+                    style: TextStyle(color: theme.black, fontSize: 14),
+                  )),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 5),
+                child: Container(
+                  height: 2,
+                  decoration: BoxDecoration(
+                    gradient:
+                    LinearGradient( colors: [theme.yellow2, theme.white],
+                        stops:[0,0.8]),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+
+
   body() {
-    print(widget.currentOrder.getOrder().length);
     return ListView(
       children: [
         restaurant(),
         SizedBox(height: 5),
         Column(
-          children: [table()],
+          children: [
+            table(),
+            SizedBox(height: 20,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  width: 50,
+                  height: 50,
+                  child: TextFormField(
+                    initialValue: "Rate",
+                    onChanged: (value) {
+                      widget.currentOrder.setRate(double.parse(value));
+                    },
+                  ),
+                ),
+                RatingBarIndicator(
+                  rating: 0,
+                  itemBuilder: (context, index) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                    size: 50,
+                  ),
+                  itemCount: 5,
+                  itemSize: 35,
+                ),
+              ],
+            ),
+            SizedBox(height: 20,),
+            isComment() ?
+                 comments(comment) : replyWrite(),
+          ],
         ),
       ],
     );
@@ -190,7 +331,7 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        Nav()));
+                       Nav()));
           },
         ),
         backgroundColor: Colors.white,
