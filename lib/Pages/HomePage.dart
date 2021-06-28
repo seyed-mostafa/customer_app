@@ -76,7 +76,70 @@ class _HomeState extends State<Home> {
           margin: EdgeInsets.only(left: 5, right: 5),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: false ? Container():Banner(
+            child: food.getDiscount() == 0 ? Container(
+              width: _size.width * 0.5,
+              color: theme.yellow.withOpacity(1),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black45,
+                              spreadRadius: 3,
+                              blurRadius: 15,
+                              offset: Offset(0,0)
+                          )
+                        ]
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: AspectRatio(
+                        aspectRatio: 16/10,
+                        child: Container(
+                            child: Image.asset("assets/images/food/" + food.getName() + ".jpg", fit: BoxFit.fill,)
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 5,),
+                  Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 5, right: 5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              food.getName(),
+                              style: TextStyle(
+                                color: theme.black,
+                              ),
+                            ),
+                            SizedBox(height: 5,),
+                            Text(
+                              food.getPrice().toString() + " T",
+                              style: TextStyle(
+                                color: theme.black,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Spacer(),
+                      IconButton(
+                          splashRadius: 10,
+                          icon: Icon(FontAwesomeIcons.plusCircle, color: theme.white,),
+                          onPressed: (){
+
+                          }
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ):Banner(
               color: Colors.red,
               message: food.getDiscount().toString() + " %",
               location: BannerLocation.topStart,

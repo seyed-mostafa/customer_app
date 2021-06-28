@@ -86,7 +86,7 @@ class _RestaurantPageTabBarState extends State<RestaurantPageTabBar> {
                 flexibleSpace: FlexibleSpaceBar(
                   titlePadding: EdgeInsets.only(bottom: 50),
                   collapseMode: CollapseMode.parallax,
-                  background: Image.asset("assets/images/restaurant/mostafa va abbas.jpg"),
+                  background: Image.asset("assets/images/restaurant/" + currentRestaurant.getName() + ".jpg"),
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
