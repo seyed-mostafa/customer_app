@@ -53,7 +53,7 @@ class _EditProfileState extends State<EditProfile> {
 
     return Scaffold(
         backgroundColor: theme.yellow,
-        appBar: appBar(),
+        appBar: appBar(context),
         body: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(30),

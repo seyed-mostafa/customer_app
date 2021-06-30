@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'OrderPageOngoing.dart';
+import 'mapShowOnly.dart';
 
 class OrderPage extends StatefulWidget {
 
@@ -343,7 +344,13 @@ class _OrderPageState extends State<OrderPage> {
                         size: 20,
                         color: theme.yellow,
                       ),
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.pushReplacement(
+                            context, MaterialPageRoute(builder: (context) =>//TODO
+                        MapShowOnly(
+                            widget.currentOrder)
+                        ));
+                      },
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width /2,

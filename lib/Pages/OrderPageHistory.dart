@@ -4,11 +4,14 @@ import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Pages/Nav.dart';
 import 'package:customer_app/Pages/ShoppingCartPage.dart';
 import 'package:customer_app/data/Data.dart';
+import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+
+import 'mapShowOnly.dart';
 
 class OrderPageHistory extends StatefulWidget {
   Order currentOrder;
@@ -21,6 +24,22 @@ class OrderPageHistory extends StatefulWidget {
 
 class _OrderPageHistoryState extends State<OrderPageHistory> {
   Comment comment;
+
+  void _sendMessage() async {
+    await SocketConnect.socket.then((value) async {
+        // comment::comment(String)::restaurantName
+      String sendMessage="comment::"+ Data.customer.getComments().last.getComment()+"::"+widget.currentOrder.getRestaurantName();
+      value.writeln(sendMessage);
+    });
+  }
+
+  void _sendMessageRate() async {
+    await SocketConnect.socket.then((value) async {
+      // Rate::restaurantId::rate
+      String sendMessage="Rate::"+widget.currentOrder.getRestaurantId().toString()+"::"+widget.currentOrder.getRate().toString();
+      value.writeln(sendMessage);
+    });
+  }
 
   isComment() {
     for (Comment commentt in Data.customer.getComments()) {
@@ -128,7 +147,13 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
                         size: 20,
                         color: theme.yellow,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context, MaterialPageRoute(builder: (context) =>//TODO
+                        MapShowOnly(
+                            widget.currentOrder)
+                        ));
+                      },
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / 2,
@@ -164,6 +189,7 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
               Data.customer.getName(),
               widget.currentOrder.getRestaurantName(),
               DateFormat('d MMM kk:mm').format(DateTime.now())));
+          _sendMessage();
         });
       }
     }
@@ -213,6 +239,7 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
       children: [
         Row(
           children: [
+            SizedBox(width:MediaQuery.of(context).size.width / 13 ,),
             ClipRRect(
               borderRadius: BorderRadius.circular(30),
               child: Image.asset(
@@ -283,23 +310,28 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
           children: [
             table(),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
+                if (widget.currentOrder.getRate() == null ) Container(
                   width: 50,
                   height: 50,
                   child: TextFormField(
-                    initialValue: "Rate",
+                    decoration: InputDecoration(hintText: 'Rate...'),
+                    style: TextStyle(color: Colors.grey[600], fontSize: 10),
+                    cursorColor: theme.black,
                     onChanged: (value) {
+                      setState(() {
                       widget.currentOrder.setRate(double.parse(value));
+                      _sendMessageRate();
+                      });
                     },
                   ),
                 ),
                 RatingBarIndicator(
-                  rating: 0,
+                  rating:widget.currentOrder.getRate()!=null ? widget.currentOrder.getRate() : 0,
                   itemBuilder: (context, index) => Icon(
                     Icons.star,
                     color: Colors.amber,
@@ -314,6 +346,9 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
               height: 20,
             ),
             isComment() ? comments(comment) : replyWrite(),
+            SizedBox(
+              height: 50,
+            ),
           ],
         ),
       ],
