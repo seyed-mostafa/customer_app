@@ -51,7 +51,7 @@ class _WalletManagingState extends State<WalletManaging> {
   Widget build(BuildContext context) {
   int increaseAmount = Data.customer.getWallet();
     return Scaffold(
-      appBar: appBar(),
+      appBar: appBar(context),
       backgroundColor: theme.yellow2,
       body: Center(
         child: Form(

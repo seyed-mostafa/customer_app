@@ -226,7 +226,7 @@ class _CommentsPageState extends State<CommentsPage> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-        appBar: appBar(),
+        appBar: appBar(context),
        body: Container(
             padding: EdgeInsets.only(top: 20),
             child: ListView(

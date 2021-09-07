@@ -2,8 +2,7 @@ import 'dart:async';
 import 'package:customer_app/Pages/Nav.dart';
 import 'package:flutter/material.dart';
 import 'Pages/EnteringPage.dart';
-import 'package:customer_app/Objects/Customer.dart';
-import 'data/Customers.dart';
+
 
 class SplashScreen extends StatefulWidget {
   @override

@@ -53,7 +53,7 @@ class _NavState extends State<Nav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(),
+      appBar: appBar(context),
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: theme.black,
         items: const <BottomNavigationBarItem>[

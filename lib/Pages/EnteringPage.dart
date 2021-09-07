@@ -64,7 +64,7 @@ class _EnteringPageState extends State<EnteringPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appBar(),
+        appBar: appBar(context),
         body: SingleChildScrollView(
           child: Container(
             height: MediaQuery.of(context).size.height,
