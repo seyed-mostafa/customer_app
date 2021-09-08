@@ -1,5 +1,5 @@
 import 'package:customer_app/Objects/Restaurant.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:customer_app/Pages/base_page.dart';
 import 'package:customer_app/Pages/home_pages/restaurants_foods_list_page.dart';
 import 'package:customer_app/Pages/home_pages/restaurant_comments_list_page.dart';
@@ -34,7 +34,7 @@ class _RestaurantBasePageState extends State<RestaurantBasePage> {
 
   bool isInFavorite() {
     if (Data.customer
-        .getFavoriteRestaurant()
+        .getFavoriteRestaurantsId()
         .contains(Data.restaurants[widget.restaurant].getId())) return true;
     return false;
   }
@@ -60,11 +60,11 @@ class _RestaurantBasePageState extends State<RestaurantBasePage> {
                       ),
                       onPressed: () {
                         setState(() {
-                          if (Data.customer.getFavoriteRestaurant().contains(
+                          if (Data.customer.getFavoriteRestaurantsId().contains(
                               Data.restaurants[widget.restaurant].getId())) {
                             _sendMessageRemove(
                                 Data.restaurants[widget.restaurant].getId());
-                            Data.customer.removeFromFavoriteRestaurant(
+                            Data.customer.removeFavoriteRestaurantId(
                                 Data.restaurants[widget.restaurant].getId());
                           } else {
                             _sendMessageAdd(

@@ -3,7 +3,7 @@ import 'package:customer_app/constants/appbar.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 
 class CommentsListPage extends StatefulWidget {
   @override

@@ -1,5 +1,5 @@
 import 'package:customer_app/Objects/Customer.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:customer_app/Pages/profile_pages/comments_list_page.dart';
 import 'package:customer_app/Pages/profile_pages/wallet_detail_page.dart';
 import 'package:customer_app/data/Data.dart';
@@ -30,7 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("First Name : " + currentCustomer.getName()),
+              Text("First Name : " + currentCustomer.getFirstName()),
               Text("Last Name : " + currentCustomer.getLastName()),
               Text("Money of Wallet : " +
                   currentCustomer.getWallet().toString() +

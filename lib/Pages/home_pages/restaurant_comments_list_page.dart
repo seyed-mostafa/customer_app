@@ -1,5 +1,5 @@
 import 'package:customer_app/Objects/Comment.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:flutter/cupertino.dart';
@@ -206,7 +206,7 @@ class _RestaurantCommentsListPageState
           str = '';
           currentRestaurant.addComment(new Comment.noFull(
               value,
-              Data.customer.getName(),
+              Data.customer.getFirstName(),
               currentRestaurant.getName(),
               DateFormat('\n d MMM kk:mm').format(DateTime.now())));
         });

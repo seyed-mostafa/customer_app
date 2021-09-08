@@ -1,7 +1,24 @@
+enum TypeFood {
+  Pizza,
+  Sandwich,
+  Drinks,
+  PersianFood,
+  Dessert,
+  Appetizer,
+  Fried,
+  Steaks,
+  Breakfast,
+  International,
+  All,
+}
+
 class Food {
-  String _name, _description;
-  num _discount, _price;
-  bool _sizing, _available;
+  String _name;
+  String _description;
+  num _discount;
+  num _price;
+  bool _sizing;
+  bool _available;
   TypeFood _typeFood;
   List<String> _comments = List.empty(growable: true);
   var _score = {
@@ -12,14 +29,19 @@ class Food {
     "keifiat": null
   };
 
-  Food(String name, String description, num price, num discount, bool sizing,
-      bool available, TypeFood typeFood) {
+  Food(
+    String name,
+    String description,
+    num price,
+    num discount,
+    bool sizing,
+    bool available,
+    TypeFood typeFood,
+  ) {
     this._name = name;
-    if (discount != null) {
-      this._discount = discount;
-    }
     this._description = description;
     this._price = price;
+    if (discount != null) this._discount = discount;
     this._sizing = sizing;
     this._available = available;
     this._typeFood = typeFood;
@@ -55,12 +77,17 @@ class Food {
     this._typeFood = typeFood;
   }
 
-  void setComment(String comment) {
+  void addComment(String comment) {
     this._comments.add(comment);
   }
 
   void setScore(
-      int behdasht, int soratPeik, int garmiGhaza, int gheimat, int keifiat) {
+    int behdasht,
+    int soratPeik,
+    int garmiGhaza,
+    int gheimat,
+    int keifiat,
+  ) {
     if (_score["behdasht"] == null) {
       _score["behdasht"] = behdasht;
       _score["garmiGhaza"] = garmiGhaza;
@@ -104,7 +131,7 @@ class Food {
     return _typeFood;
   }
 
-  List<String> getComment() {
+  List<String> getComments() {
     return _comments;
   }
 
@@ -115,21 +142,4 @@ class Food {
     }
     return score / 5;
   }
-}
-
-enum TypeFood {
-  Pizza,
-  Sandwich,
-  Drinks,
-  PersianFood,
-  Dessert //دسر
-  ,
-  Appetizer //پیش غذا
-  ,
-  Fried //سوخاری
-  ,
-  Steaks,
-  Breakfast,
-  International,
-  all
 }

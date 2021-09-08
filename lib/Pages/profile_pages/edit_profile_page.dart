@@ -1,5 +1,5 @@
 import 'package:customer_app/Objects/Customer.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:customer_app/Pages/base_page.dart';
 import 'package:customer_app/constants/appbar.dart';
 import 'package:customer_app/data/Data.dart';
@@ -58,7 +58,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 children: [
                   //firs name
                   TextFormField(
-                    initialValue: currentCustomer.getName(),
+                    initialValue: currentCustomer.getFirstName(),
                     cursorColor: theme.black,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
@@ -126,7 +126,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
                   //Address
                   TextFormField(
-                    initialValue: currentCustomer.getAddress().toString(),
+                    initialValue: currentCustomer.getAddresses().toString(),
                     cursorColor: theme.black,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
@@ -169,7 +169,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     initialValue: currentCustomer.getPhoneNumber(),
                     cursorColor: theme.black,
                     style: TextStyle(color: Colors.white),
-                    autovalidate: true,
                     decoration: InputDecoration(
                         border: new OutlineInputBorder(
                           borderRadius: const BorderRadius.all(
@@ -262,7 +261,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         print(inputAddress);
                         print(inputPhoneNumber);
                         print(inputPassword);
-                        currentCustomer.setName(_inputFirstName);
+                        currentCustomer.setFirstName(_inputFirstName);
                         currentCustomer.setLastName(_inputLastName);
                         currentCustomer.setPassword(inputPassword);
                         currentCustomer.setPhoneNumber(inputPhoneNumber);

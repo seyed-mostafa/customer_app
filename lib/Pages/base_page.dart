@@ -1,10 +1,10 @@
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:customer_app/constants/appbar.dart';
 import 'package:flutter/material.dart';
 import 'favorite_pages/favorites_list_page.dart';
 import 'home_pages/home_page.dart';
 import 'profile_pages/profile_page.dart';
-import 'shoppingcart_pages/shoppinngcart_base_page.dart';
+import 'orders_pages/orders_base_page.dart';
 
 class BasePage extends StatefulWidget {
   final int index;

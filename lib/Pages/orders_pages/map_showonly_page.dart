@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:customer_app/constants/appbar.dart';
 import 'package:customer_app/Objects/Order.dart';
 
 class MapShowOnlyPage extends StatefulWidget {
-  Order order;
+  final Order order;
   MapShowOnlyPage(this.order);
   LatLng show;
   @override

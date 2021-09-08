@@ -1,7 +1,7 @@
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:customer_app/Pages/home_pages/restaurants_food_detail_page.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,7 +23,7 @@ class _RestaurantFoodsListPageState extends State<RestaurantFoodsListPage> {
   Restaurant currentRestaurant;
   List<ChartData> chartData;
   String searchingText = "";
-  TypeFood chosenType = TypeFood.all;
+  TypeFood chosenType = TypeFood.All;
 
   List<ChartData> chartData7() {
     List<ChartData> chartData = [
@@ -284,7 +284,7 @@ class _RestaurantFoodsListPageState extends State<RestaurantFoodsListPage> {
                       .getMenu()[i]
                       .getName()
                       .contains(searchingText))
-                if (chosenType == TypeFood.all ||
+                if (chosenType == TypeFood.All ||
                     currentRestaurant.getMenu()[i].getTypeFood() == chosenType)
                   showFood(currentRestaurant.getMenu()[i], i)
           ],
@@ -337,7 +337,7 @@ class _RestaurantFoodsListPageState extends State<RestaurantFoodsListPage> {
             child: Row(
               children: [
                 icon,
-                typeFood != TypeFood.all
+                typeFood != TypeFood.All
                     ? Text("  " + typeFood.toString().substring(9),
                         style: TextStyle(
                             fontSize: _size.width * 0.03, color: theme.yellow))
@@ -365,7 +365,7 @@ class _RestaurantFoodsListPageState extends State<RestaurantFoodsListPage> {
         child: ListView(scrollDirection: Axis.horizontal, children: [
           //here null means all type
           typeWidget(
-              TypeFood.all,
+              TypeFood.All,
               Icon(
                 Icons.assignment_turned_in_rounded,
                 color: theme.yellow,

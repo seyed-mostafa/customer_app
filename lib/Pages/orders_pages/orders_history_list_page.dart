@@ -1,8 +1,8 @@
 import 'package:customer_app/Objects/Customer.dart';
-import 'package:customer_app/Pages/shoppingcart_pages/order_history_detail_page.dart';
+import 'package:customer_app/Pages/orders_pages/order_history_detail_page.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class OrdersHistoryListPage extends StatefulWidget {

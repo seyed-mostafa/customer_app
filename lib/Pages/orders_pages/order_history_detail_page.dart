@@ -4,7 +4,7 @@ import 'package:customer_app/Pages/base_page.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/material.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -82,7 +82,7 @@ class _OrderHistoryDetailPageState extends State<OrderHistoryDetailPage> {
                   DataColumn(numeric: true, label: Text('Price')),
                 ],
                 rows: widget.currentOrder
-                    .getOrder()
+                    .getFoodsAndFoodsCount()
                     .entries
                     .map(
                       (e) => DataRow(cells: [
@@ -180,7 +180,7 @@ class _OrderHistoryDetailPageState extends State<OrderHistoryDetailPage> {
   String str = '';
 
   replyWrite() {
-    bool isSend(String value) {
+    isSend(String value) {
       print(send);
       print('str : $str');
       if (send && str != '' && str != 'Comment...') {
@@ -189,7 +189,7 @@ class _OrderHistoryDetailPageState extends State<OrderHistoryDetailPage> {
           str = '';
           Data.customer.addComment(new Comment.noFull(
               value,
-              Data.customer.getName(),
+              Data.customer.getFirstName(),
               widget.currentOrder.getRestaurantName(),
               DateFormat('d MMM kk:mm').format(DateTime.now())));
           _sendMessage();
@@ -248,7 +248,7 @@ class _OrderHistoryDetailPageState extends State<OrderHistoryDetailPage> {
             ClipRRect(
               borderRadius: BorderRadius.circular(30),
               child: Image.asset(
-                "assets/images/profile/${Data.customer.getName()}.jpg",
+                "assets/images/profile/${Data.customer.getFirstName()}.jpg",
                 fit: BoxFit.fill,
                 height: 50,
                 width: 50,

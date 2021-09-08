@@ -1,8 +1,8 @@
 import 'package:customer_app/Objects/Customer.dart';
-import 'package:customer_app/Pages/shoppingcart_pages/order_awaitingpayment_detail_page.dart';
+import 'package:customer_app/Pages/orders_pages/order_awaitingpayment_detail_page.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class OrdersAwaitingPaymentListPage extends StatefulWidget {
@@ -26,8 +26,9 @@ class _OrdersAwaitingPaymentListPageState
             ),
             onPressed: () {
               setState(() {
-                currentCustomer.removeShoppingCart(currentCustomer
-                    .getShoppingCart()[index]); //TODO:remove order from server
+                currentCustomer.removeAwaitingPaymentOrder(
+                    currentCustomer.getAwaitingPaymentOrders()[
+                        index]); //TODO:remove order from server
               });
             }),
         TextButton(
@@ -37,7 +38,7 @@ class _OrdersAwaitingPaymentListPageState
                   context,
                   MaterialPageRoute(
                       builder: (context) => OrderAwaitingPaymentDetailPage(
-                          currentCustomer.getShoppingCart()[index])));
+                          currentCustomer.getAwaitingPaymentOrders()[index])));
             });
           },
           child: Text('Details',
@@ -56,11 +57,11 @@ class _OrdersAwaitingPaymentListPageState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          currentCustomer.getShoppingCart()[index].getRestaurantName(),
+          currentCustomer.getAwaitingPaymentOrders()[index].getRestaurantName(),
           style: TextStyle(fontSize: 22, color: theme.black),
         ),
         Text(
-          "${currentCustomer.getShoppingCart()[index].getPrice().toString()} T",
+          "${currentCustomer.getAwaitingPaymentOrders()[index].getPrice().toString()} T",
           style: TextStyle(fontSize: 13, color: theme.black),
         ),
       ],
@@ -113,7 +114,7 @@ class _OrdersAwaitingPaymentListPageState
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children: List.generate(currentCustomer.getShoppingCart().length,
+      children: List.generate(currentCustomer.getAwaitingPaymentOrders().length,
           (index) => showShoppingCart(index)),
     );
   }

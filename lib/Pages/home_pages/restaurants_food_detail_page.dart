@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class RestaurantFoodDetailPage extends StatefulWidget {
@@ -28,13 +28,13 @@ class _RestaurantFoodDetailPageState extends State<RestaurantFoodDetailPage> {
   int like = 0;
 
   bool isInBag() {
-    if (widget.customer.getShoppingCart().isNotEmpty) {
-      for (Order order in widget.customer.getShoppingCart()) {
+    if (widget.customer.getAwaitingPaymentOrders().isNotEmpty) {
+      for (Order order in widget.customer.getAwaitingPaymentOrders()) {
         if (order.getRestaurantId() == widget.currentRestaurant.getId()) {
-          for (Food food in order.getOrder().keys) {
+          for (Food food in order.getFoodsAndFoodsCount().keys) {
             if (food.getName() == widget.currentFood.getName()) {
               widget.order = order;
-              print(order.getOrder()[widget.currentFood]);
+              print(order.getFoodsAndFoodsCount()[widget.currentFood]);
               return true;
             }
           }
@@ -55,7 +55,7 @@ class _RestaurantFoodDetailPageState extends State<RestaurantFoodDetailPage> {
           TextButton(
             onPressed: () {
               setState(() {
-                widget.customer.addShoppingCart(
+                widget.customer.addAwaitingPaymentOrder(
                     widget.currentFood, widget.currentRestaurant.getId(), 1);
                 print('add to bag');
               });
@@ -95,15 +95,20 @@ class _RestaurantFoodDetailPageState extends State<RestaurantFoodDetailPage> {
               onPressed: () {
                 print('mines');
                 setState(() {
-                  if (widget.order.getOrder()[widget.currentFood] - 1 == 0) {
-                    widget.order.remove(widget.currentFood);
+                  if (widget.order.getFoodsAndFoodsCount()[widget.currentFood] -
+                          1 ==
+                      0) {
+                    widget.order.removeFood(widget.currentFood);
                     widget.order = null;
                   } else {
-                    widget.customer.addShoppingCart(
+                    widget.customer.addAwaitingPaymentOrder(
                         widget.currentFood,
                         widget.currentRestaurant.getId(),
-                        widget.order.getOrder()[widget.currentFood] - 1);
-                    widget.order = widget.customer.getShoppingCart().last;
+                        widget.order
+                                .getFoodsAndFoodsCount()[widget.currentFood] -
+                            1);
+                    widget.order =
+                        widget.customer.getAwaitingPaymentOrders().last;
                   }
                 });
               }),
@@ -115,7 +120,9 @@ class _RestaurantFoodDetailPageState extends State<RestaurantFoodDetailPage> {
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Text(
-                widget.order.getOrder()[widget.currentFood].toString(),
+                widget.order
+                    .getFoodsAndFoodsCount()[widget.currentFood]
+                    .toString(),
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
               ),
             ),
@@ -135,11 +142,13 @@ class _RestaurantFoodDetailPageState extends State<RestaurantFoodDetailPage> {
               onPressed: () {
                 print('add');
                 setState(() {
-                  widget.customer.addShoppingCart(
+                  widget.customer.addAwaitingPaymentOrder(
                       widget.currentFood,
                       widget.currentRestaurant.getId(),
-                      widget.order.getOrder()[widget.currentFood] + 1);
-                  widget.order = widget.customer.getShoppingCart().last;
+                      widget.order.getFoodsAndFoodsCount()[widget.currentFood] +
+                          1);
+                  widget.order =
+                      widget.customer.getAwaitingPaymentOrders().last;
                 });
               }),
           Spacer(
@@ -186,7 +195,7 @@ class _RestaurantFoodDetailPageState extends State<RestaurantFoodDetailPage> {
                       blurRadius: 0.5,
                       offset: Offset(0, 0))
                 ]),
-                child: Text(widget.currentFood.getComment().elementAt(0)),
+                child: Text(widget.currentFood.getComments().elementAt(0)),
               ),
             ));
       }

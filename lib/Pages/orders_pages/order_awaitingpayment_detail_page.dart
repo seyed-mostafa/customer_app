@@ -5,7 +5,7 @@ import 'package:customer_app/Pages/base_page.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/material.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'order_ongoing_detail_page.dart';
 import 'map_showonly_page.dart';
@@ -42,10 +42,10 @@ class _OrderAwaitingPaymentDetailPageState
           "::" +
           widget.currentOrder.getId().toString() +
           "::";
-      for (Food food in widget.currentOrder.getOrder().keys)
+      for (Food food in widget.currentOrder.getFoodsAndFoodsCount().keys)
         sendMessage += food.getName() +
             "^" +
-            widget.currentOrder.getOrder()[food].toString() +
+            widget.currentOrder.getFoodsAndFoodsCount()[food].toString() +
             "&";
       sendMessage = sendMessage.substring(0, sendMessage.length - 1);
       print(sendMessage);
@@ -83,7 +83,7 @@ class _OrderAwaitingPaymentDetailPageState
               widget.currentOrder.setOrderTime();
               currentCustomer.setWallet(
                   currentCustomer.getWallet() - widget.currentOrder.getPrice());
-              currentCustomer.removeShoppingCart(widget.currentOrder);
+              currentCustomer.removeAwaitingPaymentOrder(widget.currentOrder);
               currentCustomer.addPreviousOrders(widget.currentOrder);
               _sendMessage();
               showDialog<String>(
@@ -159,7 +159,7 @@ class _OrderAwaitingPaymentDetailPageState
                   DataColumn(numeric: true, label: Text('Price')),
                 ],
                 rows: widget.currentOrder
-                    .getOrder()
+                    .getFoodsAndFoodsCount()
                     .entries
                     .map(
                       (e) => DataRow(cells: [
@@ -192,15 +192,26 @@ class _OrderAwaitingPaymentDetailPageState
             onPressed: () {
               print('mines');
               setState(() {
-                if (widget.currentOrder.getOrder().values.elementAt(index) -
+                if (widget.currentOrder
+                            .getFoodsAndFoodsCount()
+                            .values
+                            .elementAt(index) -
                         1 ==
                     0) {
-                  widget.currentOrder.remove(
-                      widget.currentOrder.getOrder().keys.elementAt(index));
+                  widget.currentOrder.removeFood(widget.currentOrder
+                      .getFoodsAndFoodsCount()
+                      .keys
+                      .elementAt(index));
                 } else {
                   widget.currentOrder.addFood(
-                      widget.currentOrder.getOrder().keys.elementAt(index),
-                      widget.currentOrder.getOrder().values.elementAt(index) -
+                      widget.currentOrder
+                          .getFoodsAndFoodsCount()
+                          .keys
+                          .elementAt(index),
+                      widget.currentOrder
+                              .getFoodsAndFoodsCount()
+                              .values
+                              .elementAt(index) -
                           1);
                 }
               });
@@ -210,8 +221,10 @@ class _OrderAwaitingPaymentDetailPageState
           color: theme.yellow,
           child: Text(
             widget.currentOrder
-                .getOrder()[
-                    widget.currentOrder.getOrder().keys.elementAt(index)]
+                .getFoodsAndFoodsCount()[widget.currentOrder
+                    .getFoodsAndFoodsCount()
+                    .keys
+                    .elementAt(index)]
                 .toString(),
             style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
           ),
@@ -226,8 +239,15 @@ class _OrderAwaitingPaymentDetailPageState
               print('add');
               setState(() {
                 widget.currentOrder.addFood(
-                    widget.currentOrder.getOrder().keys.elementAt(index),
-                    widget.currentOrder.getOrder().values.elementAt(index) + 1);
+                    widget.currentOrder
+                        .getFoodsAndFoodsCount()
+                        .keys
+                        .elementAt(index),
+                    widget.currentOrder
+                            .getFoodsAndFoodsCount()
+                            .values
+                            .elementAt(index) +
+                        1);
               });
             }),
       ],
@@ -239,7 +259,7 @@ class _OrderAwaitingPaymentDetailPageState
       children: [
         Text(
           widget.currentOrder
-              .getOrder()
+              .getFoodsAndFoodsCount()
               .keys
               .elementAt(index)
               .getPrice()
@@ -254,7 +274,11 @@ class _OrderAwaitingPaymentDetailPageState
     return Row(
       children: [
         Text(
-          widget.currentOrder.getOrder().keys.elementAt(index).getName(),
+          widget.currentOrder
+              .getFoodsAndFoodsCount()
+              .keys
+              .elementAt(index)
+              .getName(),
           style: TextStyle(fontSize: 22, color: theme.black),
         ),
         Spacer(),
@@ -266,8 +290,8 @@ class _OrderAwaitingPaymentDetailPageState
             ),
             onPressed: () {
               setState(() {
-                widget.currentOrder.remove(widget.currentOrder
-                    .getOrder()
+                widget.currentOrder.removeFood(widget.currentOrder
+                    .getFoodsAndFoodsCount()
                     .keys
                     .elementAt(index)); //TODO:send data to server
               });
@@ -405,7 +429,10 @@ class _OrderAwaitingPaymentDetailPageState
     return ListView(
       children: [
         restaurant(),
-        for (int i = 0; i < widget.currentOrder.getOrder().length; i++) food(i),
+        for (int i = 0;
+            i < widget.currentOrder.getFoodsAndFoodsCount().length;
+            i++)
+          food(i),
         SizedBox(height: 5),
         table(),
         payment(),

@@ -1,22 +1,23 @@
 import 'package:intl/intl.dart';
 
 class Comment {
-  String _comment,
-      _reply,
-      _customerName,
-      _restaurantName,
-      _timeComment,
-      _timeReply;
+  String _comment;
+  String _reply;
+  String _customerName;
+  String _restaurantName;
+  String _timeComment;
+  String _timeReply;
 
-  Comment.full(String comment, String customerName, String restaurantName,
-      String timeComment, String reply, String timeReply) {
+  Comment.full(String comment, String reply, String customerName,
+      String restaurantName, String timeComment, String timeReply) {
     _comment = comment;
+    _reply = reply;
     _customerName = customerName;
     _restaurantName = restaurantName;
     _timeComment = timeComment;
-    _reply = reply;
     _timeReply = timeReply;
   }
+
   Comment.noFull(String comment, String customerName, String restaurantName,
       String timeComment) {
     _comment = comment;
@@ -29,10 +30,6 @@ class Comment {
     this._comment = comment;
     _timeComment = DateFormat('d MMM kk:mm').format(DateTime.now());
   }
-  void setReply(String reply) {
-    this._reply = reply;
-    _timeReply = DateFormat('d MMM kk:mm').format(DateTime.now());
-  }
 
   void setRestaurantName(String restaurantName) {
     _restaurantName = restaurantName;
@@ -40,6 +37,11 @@ class Comment {
 
   void setCustomerName(String customerName) {
     _customerName = customerName;
+  }
+
+  void setReply(String reply) {
+    this._reply = reply;
+    _timeReply = DateFormat('d MMM kk:mm').format(DateTime.now());
   }
 
   String getComment() {
@@ -50,12 +52,12 @@ class Comment {
     return _reply;
   }
 
-  String getRestaurantName() {
-    return _restaurantName;
-  }
-
   String getCustomerName() {
     return _customerName;
+  }
+
+  String getRestaurantName() {
+    return _restaurantName;
   }
 
   String getTimeComment() {

@@ -9,16 +9,20 @@ class SplashScreenPage extends StatefulWidget {
 }
 
 class _SplashScreenPageState extends State<SplashScreenPage> {
-  bool EnteredUser = false;
+  bool enteredUser = false;
   @override
   void initState() {
     super.initState();
     Timer(
-        Duration(seconds: 2),
-        () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: EnteredUser
-                ? (BuildContext context) => BasePage(0)
-                : (BuildContext context) => SignInPage())));
+      Duration(seconds: 2),
+      () => Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: enteredUser
+              ? (BuildContext context) => BasePage(0)
+              : (BuildContext context) => SignInPage(),
+        ),
+      ),
+    );
   }
 
   @override

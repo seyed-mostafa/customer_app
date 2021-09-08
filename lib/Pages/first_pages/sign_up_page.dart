@@ -1,6 +1,6 @@
 import 'package:customer_app/Pages/first_pages/map_page.dart';
 import 'package:customer_app/Objects/Customer.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:customer_app/constants/appbar.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:customer_app/data/SocketConnect.dart';
@@ -27,9 +27,7 @@ class _SignUpPageState extends State<SignUpPage> {
       _inputPassword = '',
       _inputFirstName = '',
       _inputLastName = '',
-      _inputAddress = '',
-      _inputLongitude = '',
-      _inputLatitude = '';
+      _inputAddress = '';
   bool validUser = false;
   bool hidden = true;
   List<String> foodType = [];
@@ -197,7 +195,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   TextFormField(
                     cursorColor: theme.black,
                     style: TextStyle(color: Colors.white),
-                    autovalidate: true,
                     decoration: InputDecoration(
                         border: new OutlineInputBorder(
                           borderRadius: const BorderRadius.all(

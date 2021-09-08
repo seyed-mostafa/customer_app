@@ -1,118 +1,137 @@
-
 import 'package:intl/intl.dart';
 import 'Food.dart';
 import 'Location.dart';
 
-
-
 class Order {
+  static int _count = 99246000;
+  String _restaurantName;
+  String _customerName;
+  String _orderTime;
+  String _deliveryTime;
+  Location _customerAddress;
+  Location _restaurantAddress;
+  int _restaurantId;
+  int _id;
+  int _price = 0;
+  bool _delivered = false;
+  double _rate = null;
+  Map<Food, int> _foodsAndFoodsCount = new Map();
 
-
-
-  String _customerName, _restaurantName, _orderTime, _deliveryTime;
-  Location _customerAddress, _restaurantAddress;
-  int _restaurantId,_id,_price=0;
-  bool _delivered=false;
-  double _rate=null;
-  static int _count=99246000;
-  Map <Food,int> _order=new Map();
-
-
-  Order(Food food, int i,int restaurantId) {
-    _order[food]=i;
+  Order(Food food, int foodCount, int restaurantId) {
+    _foodsAndFoodsCount[food] = foodCount;
     _count++;
-    _id=_count;
-    _restaurantId=restaurantId;
+    _id = _count;
+    _restaurantId = restaurantId;
   }
 
-  Order.full(String restaurantName,String customerName,String orderTime,Location customerAddress,Location restaurantAddress,int restaurantId){
-    _restaurantName=restaurantName;
-    _customerName=customerName;
-    _orderTime=orderTime;
-    _customerAddress=customerAddress;
-    _restaurantAddress=restaurantAddress;
-    _restaurantId=restaurantId;
+  Order.full(
+    String restaurantName,
+    String customerName,
+    String orderTime,
+    Location customerAddress,
+    Location restaurantAddress,
+    int restaurantId,
+  ) {
+    _restaurantName = restaurantName;
+    _customerName = customerName;
+    _orderTime = orderTime;
+    _customerAddress = customerAddress;
+    _restaurantAddress = restaurantAddress;
+    _restaurantId = restaurantId;
   }
 
-
-  void setRate(double rate){
-    _rate=rate;
+  void addFood(Food food, int foodCount) {
+    _foodsAndFoodsCount[food] = foodCount;
   }
 
-  double getRate(){
-    return _rate;
-  }
-
-  void setStatus(bool b){
-    _delivered=b;
-  }
-
-  void setDelivered(){
-    _delivered=true;
-    _deliveryTime= DateFormat('d MMM kk:mm').format( DateTime.now());
-  }
-  void setRestaurantName(String name){
-    _restaurantName=name;
-  }
-  void setRestaurantAddress(Location location){
-    _restaurantAddress=location;
-  }
-  void setCustomerAddress(Location location){
-    _customerAddress=location;
-  }
-  void addFood(Food food,int i){
-    _order[food]=i;
-  }
-  void setOrderTime(){
-    _count++;
-    _id=_count;
-    _orderTime=  DateFormat('d MMM kk:mm').format( DateTime.now());
-  }
-  void remove(Food food){
-    _order.remove(food);
-    if (_order.isEmpty) {
-      _restaurantId=0;
+  void removeFood(Food food) {
+    _foodsAndFoodsCount.remove(food);
+    if (_foodsAndFoodsCount.isEmpty) {
+      _restaurantId = 0;
     }
   }
 
-
-
-  bool getDelivered(){
-    return _delivered;
+  void setRestaurantName(String name) {
+    _restaurantName = name;
   }
+
+  void setOrderTime() {
+    _count++;
+    _id = _count;
+    _orderTime = DateFormat('d MMM kk:mm').format(DateTime.now());
+  }
+
+  void setCustomerAddress(Location location) {
+    _customerAddress = location;
+  }
+
+  void setRestaurantAddress(Location location) {
+    _restaurantAddress = location;
+  }
+
+  void setStatus(bool b) {
+    _delivered = b;
+  }
+
+  void setDelivered() {
+    _delivered = true;
+    _deliveryTime = DateFormat('d MMM kk:mm').format(DateTime.now());
+  }
+
+  void setRate(double rate) {
+    _rate = rate;
+  }
+
+  String getRestaurantName() {
+    return _restaurantName;
+  }
+
   String getOrderTime() {
     return _orderTime;
   }
+
   String getDeliveryTime() {
     return _deliveryTime;
   }
-  int getPrice(){
-    _price=0;
-    for(Food food in _order.keys){
-      if(food.getDiscount()!=null)
-        _price+= ((food.getPrice()*(100-food.getDiscount()))/100*_order[food]).ceil();
-      else
-        _price+= (food.getPrice()*_order[food]);
 
+  Location getCustomerAddress() {
+    return _customerAddress;
+  }
+
+  Location getRestaurantAddress() {
+    return _restaurantAddress;
+  }
+
+  int getRestaurantId() {
+    return _restaurantId;
+  }
+
+  int getId() {
+    return _id;
+  }
+
+  int getPrice() {
+    _price = 0;
+    for (Food food in _foodsAndFoodsCount.keys) {
+      if (food.getDiscount() != null)
+        _price += food.getPrice() *
+            ((100 - food.getDiscount()) / 100) *
+            _foodsAndFoodsCount[food].ceil();
+      else
+        _price += (food.getPrice() * _foodsAndFoodsCount[food]);
     }
     return _price;
   }
-  int getRestaurantId(){
-    return _restaurantId;
+
+  bool getDelivered() {
+    return _delivered;
   }
-  String getRestaurantName(){
-    return _restaurantName;
+
+  double getRate() {
+    return _rate;
   }
-  Location getCustomerAddress(){
-    return _customerAddress;
-  }
-  Location getRestaurantAddress(){
-    return _restaurantAddress;
-  }
-  int getId(){
-    return _id;
-  }
-  Map <Food,int> getOrder(){
-    return _order;
+
+  Map<Food, int> getFoodsAndFoodsCount() {
+    return _foodsAndFoodsCount;
   }
 }

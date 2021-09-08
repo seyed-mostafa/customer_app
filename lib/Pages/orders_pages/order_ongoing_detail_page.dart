@@ -1,7 +1,7 @@
 import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Pages/base_page.dart';
 import 'package:flutter/material.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'map_showonly_page.dart';
 
@@ -56,7 +56,7 @@ class _OrderOngoingDetailPageState extends State<OrderOngoingDetailPage> {
                   DataColumn(numeric: true, label: Text('Price')),
                 ],
                 rows: widget.currentOrder
-                    .getOrder()
+                    .getFoodsAndFoodsCount()
                     .entries
                     .map(
                       (e) => DataRow(cells: [
@@ -151,7 +151,7 @@ class _OrderOngoingDetailPageState extends State<OrderOngoingDetailPage> {
   }
 
   body() {
-    print(widget.currentOrder.getOrder().length);
+    print(widget.currentOrder.getFoodsAndFoodsCount().length);
     return ListView(
       children: [
         restaurant(),

@@ -4,7 +4,7 @@ import 'package:customer_app/constants/appbar.dart';
 import 'package:customer_app/customerAndRestaurantMaker.dart';
 import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/material.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'sign_up_page.dart';
 
 class SignInPage extends StatefulWidget {

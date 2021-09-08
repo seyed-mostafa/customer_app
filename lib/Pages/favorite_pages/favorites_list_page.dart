@@ -1,5 +1,5 @@
 import 'package:customer_app/Objects/Restaurant.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:customer_app/Pages/home_pages/restaurant_base_page.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
@@ -106,7 +106,7 @@ class _FavoritesListPageState extends State<FavoritesListPage> {
       child: GridView.count(crossAxisCount: 2, children: [
         for (int i = 0; i < Data.restaurants.length; i++)
           if (Data.customer
-              .getFavoriteRestaurant()
+              .getFavoriteRestaurantsId()
               .contains(Data.restaurants[i].getId()))
             showRestaurant(Data.restaurants[i], Data.restaurants[i].getId())
       ]),

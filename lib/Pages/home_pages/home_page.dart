@@ -1,6 +1,6 @@
 import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:customer_app/Pages/home_pages/restaurants_food_detail_page.dart';
 import 'package:customer_app/Pages/home_pages/restaurant_base_page.dart';
 import 'package:customer_app/data/Data.dart';
@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   List<Restaurant> restaurants = Data.restaurants;
 
   String searchingText = "";
-  TypeFood chosenType = TypeFood.all;
+  TypeFood chosenType = TypeFood.All;
 
   @override
   Widget build(BuildContext context) {
@@ -415,7 +415,7 @@ class _HomePageState extends State<HomePage> {
         height: 50,
         child: ListView(scrollDirection: Axis.horizontal, children: [
           typeWidget(
-              TypeFood.all,
+              TypeFood.All,
               Icon(
                 Icons.assignment_turned_in,
                 color: theme.yellow,
@@ -496,13 +496,13 @@ class _HomePageState extends State<HomePage> {
         .calculateDistance(
             a.getAddress().getLatitude(),
             a.getAddress().getLongitude(),
-            Data.customer.getAddress()[0].getLatitude(),
-            Data.customer.getAddress()[0].getLongitude())
+            Data.customer.getAddresses()[0].getLatitude(),
+            Data.customer.getAddresses()[0].getLongitude())
         .compareTo(b.getAddress().calculateDistance(
             b.getAddress().getLatitude(),
             b.getAddress().getLongitude(),
-            Data.customer.getAddress()[0].getLatitude(),
-            Data.customer.getAddress()[0].getLongitude())));
+            Data.customer.getAddresses()[0].getLatitude(),
+            Data.customer.getAddresses()[0].getLongitude())));
 
     return SingleChildScrollView(
       child: Column(
@@ -518,7 +518,7 @@ class _HomePageState extends State<HomePage> {
 
           for (int i = 0; i < restaurants.length; i++)
             if (restaurants[i].getMenu().isNotEmpty)
-              if (chosenType == TypeFood.all ||
+              if (chosenType == TypeFood.All ||
                   restaurants[i].getMenu().contains(chosenType))
                 if (searchingText == '')
                   foodList(
