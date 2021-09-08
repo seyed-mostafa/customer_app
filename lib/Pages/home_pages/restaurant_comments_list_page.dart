@@ -6,16 +6,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class RestaurantPage2 extends StatefulWidget {
-  int currentRestaurant;
+class RestaurantCommentsListPage extends StatefulWidget {
+  final int currentRestaurant;
 
-  RestaurantPage2(this.currentRestaurant);
+  RestaurantCommentsListPage(this.currentRestaurant);
 
   @override
-  _RestaurantPage2State createState() => _RestaurantPage2State();
+  _RestaurantCommentsListPageState createState() =>
+      _RestaurantCommentsListPageState();
 }
 
-class _RestaurantPage2State extends State<RestaurantPage2> {
+class _RestaurantCommentsListPageState
+    extends State<RestaurantCommentsListPage> {
   Restaurant currentRestaurant;
 
   comment(index) {
@@ -140,13 +142,12 @@ class _RestaurantPage2State extends State<RestaurantPage2> {
                 ),
                 Column(
                   children: [
-                    Text(currentRestaurant
-                        .getComments()[index]
-                        .getRestaurantName(),
+                    Text(
+                        currentRestaurant
+                            .getComments()[index]
+                            .getRestaurantName(),
                         style: TextStyle(fontSize: 18, color: theme.black)),
-                    Text(currentRestaurant
-                        .getComments()[index]
-                        .getTimeReply(),
+                    Text(currentRestaurant.getComments()[index].getTimeReply(),
                         style: TextStyle(color: Colors.grey, fontSize: 10)),
                   ],
                 ),
@@ -196,16 +197,18 @@ class _RestaurantPage2State extends State<RestaurantPage2> {
   }
 
   writeComment() {
-    bool isSend(String value) {
+    void isSend(String value) {
       print(send);
       print('str : $str');
       if (send && str != '' && str != 'Reply...') {
         setState(() {
           send = false;
           str = '';
-          currentRestaurant.addComment(new Comment.noFull(value,Data.customer.getName(),
-              currentRestaurant.getName(), DateFormat('\n d MMM kk:mm').format( DateTime.now())));
-
+          currentRestaurant.addComment(new Comment.noFull(
+              value,
+              Data.customer.getName(),
+              currentRestaurant.getName(),
+              DateFormat('\n d MMM kk:mm').format(DateTime.now())));
         });
       }
     }
@@ -271,19 +274,14 @@ class _RestaurantPage2State extends State<RestaurantPage2> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     currentRestaurant = Data.restaurants.elementAt(widget.currentRestaurant);
-    return  Container(
+    return Container(
         padding: EdgeInsets.only(top: 20),
         child: ListView(
-          children: List.generate(currentRestaurant
-              .getComments()
-              .length,
-                  (index) => showComment(index)),
-        )
-    );
-
+          children: List.generate(currentRestaurant.getComments().length,
+              (index) => showComment(index)),
+        ));
   }
 }

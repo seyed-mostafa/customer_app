@@ -1,31 +1,27 @@
-
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/theme.dart';
-import 'package:customer_app/Pages/Nav.dart';
-import 'package:customer_app/appBar.dart';
+import 'package:customer_app/Pages/base_page.dart';
+import 'package:customer_app/constants/appbar.dart';
+import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
 
-import 'data/Data.dart';
-
-class EditProfile extends StatefulWidget {
-
-
-
+class EditProfilePage extends StatefulWidget {
   @override
-  _EditProfileState createState() => _EditProfileState();
+  _EditProfilePageState createState() => _EditProfilePageState();
 }
 
-class _EditProfileState extends State<EditProfile> {
-
-  Customer currentCustomer=Data.customer;
+class _EditProfilePageState extends State<EditProfilePage> {
+  Customer currentCustomer = Data.customer;
 
   final _formKey = GlobalKey<FormState>();
 
   String password = "123";
   String phoneNumber = "456";
-  String inputPhoneNumber = '', inputPassword = '',
-      _inputFirstName = '', _inputLastName = '', inputAddress = '';
+  String inputPhoneNumber = '',
+      inputPassword = '',
+      _inputFirstName = '',
+      _inputLastName = '',
+      inputAddress = '';
   bool validUser = false;
   bool hidden = true;
 
@@ -50,7 +46,6 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         backgroundColor: theme.yellow,
         appBar: appBar(context),
@@ -61,7 +56,6 @@ class _EditProfileState extends State<EditProfile> {
               key: _formKey,
               child: Column(
                 children: [
-
                   //firs name
                   TextFormField(
                     initialValue: currentCustomer.getName(),
@@ -81,17 +75,20 @@ class _EditProfileState extends State<EditProfile> {
                         filled: true,
                         icon: Icon(Icons.account_circle),
                         labelText: "First Name",
-                        labelStyle: TextStyle(fontSize: 18,)
-                    ),
-                    validator: (String value){
-                      if(value.isEmpty){
+                        labelStyle: TextStyle(
+                          fontSize: 18,
+                        )),
+                    validator: (String value) {
+                      if (value.isEmpty) {
                         return "First Name cannot be empty";
                       }
                       return null;
                     },
                     onSaved: (String value) => _inputFirstName = value,
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
 
                   //last name
                   TextFormField(
@@ -112,17 +109,20 @@ class _EditProfileState extends State<EditProfile> {
                         filled: true,
                         icon: Icon(Icons.account_circle),
                         labelText: "Last Name",
-                        labelStyle: TextStyle(fontSize: 18,)
-                    ),
-                    validator: (String value){
-                      if(value.isEmpty){
+                        labelStyle: TextStyle(
+                          fontSize: 18,
+                        )),
+                    validator: (String value) {
+                      if (value.isEmpty) {
                         return "Last Name cannot be empty";
                       }
                       return null;
                     },
                     onSaved: (String value) => _inputLastName = value,
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
 
                   //Address
                   TextFormField(
@@ -132,7 +132,7 @@ class _EditProfileState extends State<EditProfile> {
                     decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: Icon(Icons.map),
-                          onPressed: (){
+                          onPressed: () {
                             //Navigator.push(context, MaterialPageRoute(builder: (context) => Map()));
                           },
                         ),
@@ -149,17 +149,20 @@ class _EditProfileState extends State<EditProfile> {
                         filled: true,
                         icon: Icon(Icons.home_work),
                         labelText: "Address",
-                        labelStyle: TextStyle(fontSize: 18,)
-                    ),
-                    validator: (String value){
-                      if(value.isEmpty){
+                        labelStyle: TextStyle(
+                          fontSize: 18,
+                        )),
+                    validator: (String value) {
+                      if (value.isEmpty) {
                         return "Address cannot be empty";
                       }
                       return null;
                     },
                     onSaved: (String value) => inputAddress = value,
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
 
                   //Phone number
                   TextFormField(
@@ -181,19 +184,22 @@ class _EditProfileState extends State<EditProfile> {
                         filled: true,
                         icon: Icon(Icons.phone),
                         labelText: "Phone Number",
-                        labelStyle: TextStyle(fontSize: 18,)
-                    ),
-                    validator: (String value){
-                      if(value.length != 8 ||
+                        labelStyle: TextStyle(
+                          fontSize: 18,
+                        )),
+                    validator: (String value) {
+                      if (value.length != 8 ||
                           !isInteger(value) ||
-                          value.contains(' ')){
+                          value.contains(' ')) {
                         return "Phone number should be 8 digit";
                       }
                       return null;
                     },
                     onSaved: (String value) => inputPhoneNumber = value,
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
 
                   //Password
                   TextFormField(
@@ -203,10 +209,10 @@ class _EditProfileState extends State<EditProfile> {
                     obscureText: hidden,
                     decoration: InputDecoration(
                         suffixIcon: IconButton(
-                          icon: Icon(
-                              !hidden?Icons.visibility:Icons.visibility_off
-                          ),
-                          onPressed: (){
+                          icon: Icon(!hidden
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                          onPressed: () {
                             hidden = !hidden;
                             setState(() {});
                           },
@@ -224,32 +230,32 @@ class _EditProfileState extends State<EditProfile> {
                         filled: true,
                         icon: Icon(Icons.vpn_key),
                         labelText: "Password",
-                        labelStyle: TextStyle(fontSize: 18,)
-                    ),
-                    onChanged: (String value){
+                        labelStyle: TextStyle(
+                          fontSize: 18,
+                        )),
+                    onChanged: (String value) {
                       password = value;
-                      setState(() {
-
-                      });
+                      setState(() {});
                     },
-                    validator: (String value){
-                      if(value.length < 6 || value.contains('a')){
+                    validator: (String value) {
+                      if (value.length < 6 || value.contains('a')) {
                         return "password at least contains 6 letter and number";
                       }
                       return null;
                     },
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
 
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         onPrimary: theme.yellow,
                         primary: theme.black,
-                        padding: EdgeInsets.all(20)
-                    ),
+                        padding: EdgeInsets.all(20)),
                     child: Text("Edit"),
                     onPressed: () async {
-                      if(_formKey.currentState.validate()) {
+                      if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
                         print(_inputFirstName);
                         print(_inputLastName);
@@ -260,9 +266,10 @@ class _EditProfileState extends State<EditProfile> {
                         currentCustomer.setLastName(_inputLastName);
                         currentCustomer.setPassword(inputPassword);
                         currentCustomer.setPhoneNumber(inputPhoneNumber);
-                        Navigator.pushReplacement(context, MaterialPageRoute(
-                            builder: (context) => Nav(3)
-                        ));
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => BasePage(3)));
                       }
                       setState(() {});
                     },
@@ -271,9 +278,6 @@ class _EditProfileState extends State<EditProfile> {
               ),
             ),
           ),
-        )
-    );
+        ));
   }
 }
-
-

@@ -1,23 +1,15 @@
-
-
-import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/theme.dart';
-import 'package:customer_app/appBar.dart';
-import 'package:customer_app/data/Data.dart';
+import 'package:customer_app/constants/appbar.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/material.dart';
 
-class WalletManaging extends StatefulWidget {
-
-
-
+class WalletDetailPage extends StatefulWidget {
   @override
-  _WalletManagingState createState() => _WalletManagingState();
+  _WalletDetailPageState createState() => _WalletDetailPageState();
 }
 
-class _WalletManagingState extends State<WalletManaging> {
-
+class _WalletDetailPageState extends State<WalletDetailPage> {
   var _formKey = GlobalKey<FormState>();
   bool isInteger(String string) {
     // Null or empty string is not a number
@@ -43,13 +35,12 @@ class _WalletManagingState extends State<WalletManaging> {
       print('Connected to Server in WalletManaging');
 
       value.writeln("wallet::${Data.customer.getWallet()}");
-
     });
   }
 
   @override
   Widget build(BuildContext context) {
-  int increaseAmount = Data.customer.getWallet();
+    int increaseAmount = Data.customer.getWallet();
     return Scaffold(
       appBar: appBar(context),
       backgroundColor: theme.yellow2,
@@ -60,7 +51,7 @@ class _WalletManagingState extends State<WalletManaging> {
             padding: EdgeInsets.only(left: 20, right: 20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children:[
+              children: [
                 Text("Current Wallet: $increaseAmount"),
                 TextFormField(
                   cursorColor: theme.black,
@@ -79,25 +70,27 @@ class _WalletManagingState extends State<WalletManaging> {
                       filled: true,
                       icon: Icon(Icons.attach_money),
                       labelText: "Increase Amount",
-                      labelStyle: TextStyle(fontSize: 18,)
-                  ),
+                      labelStyle: TextStyle(
+                        fontSize: 18,
+                      )),
                   validator: (String value) {
-                    if(!isInteger(value) ||
-                        value.contains(' ')){
+                    if (!isInteger(value) || value.contains(' ')) {
                       return "Increase amount should be a digit";
                     }
                     return null;
                   },
-                  onSaved: (String value) => increaseAmount += int.tryParse(value),
+                  onSaved: (String value) =>
+                      increaseAmount += int.tryParse(value),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 ElevatedButton(
                   child: Text("Increase"),
                   style: ElevatedButton.styleFrom(
                       onPrimary: theme.yellow,
                       primary: theme.black,
-                      padding: EdgeInsets.all(20)
-                  ),
+                      padding: EdgeInsets.all(20)),
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       _formKey.currentState.save();

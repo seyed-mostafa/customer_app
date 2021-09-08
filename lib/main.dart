@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
-import 'SplashScreen.dart';
+import 'Pages/first_pages/splashscreen_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,14 +14,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        backgroundColor: theme.yellow,
-        primaryColor: Colors.black
-      ),
-      home: SplashScreen(),
+      theme:
+          ThemeData(backgroundColor: theme.yellow, primaryColor: Colors.black),
+      home: SplashScreenPage(),
     );
   }
 }

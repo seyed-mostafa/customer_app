@@ -1,8 +1,6 @@
 import 'package:customer_app/Objects/Comment.dart';
-import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Order.dart';
-import 'package:customer_app/Pages/Nav.dart';
-import 'package:customer_app/Pages/ShoppingCartPage.dart';
+import 'package:customer_app/Pages/base_page.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/material.dart';
@@ -10,25 +8,27 @@ import 'package:customer_app/Objects/theme.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'map_showonly_page.dart';
 
-import 'mapShowOnly.dart';
+class OrderHistoryDetailPage extends StatefulWidget {
+  final Order currentOrder;
 
-class OrderPageHistory extends StatefulWidget {
-  Order currentOrder;
-
-  OrderPageHistory(this.currentOrder);
+  OrderHistoryDetailPage(this.currentOrder);
 
   @override
-  _OrderPageHistoryState createState() => _OrderPageHistoryState();
+  _OrderHistoryDetailPageState createState() => _OrderHistoryDetailPageState();
 }
 
-class _OrderPageHistoryState extends State<OrderPageHistory> {
+class _OrderHistoryDetailPageState extends State<OrderHistoryDetailPage> {
   Comment comment;
 
   void _sendMessage() async {
     await SocketConnect.socket.then((value) async {
-        // comment::comment(String)::restaurantName
-      String sendMessage="comment::"+ Data.customer.getComments().last.getComment()+"::"+widget.currentOrder.getRestaurantName();
+      // comment::comment(String)::restaurantName
+      String sendMessage = "comment::" +
+          Data.customer.getComments().last.getComment() +
+          "::" +
+          widget.currentOrder.getRestaurantName();
       value.writeln(sendMessage);
     });
   }
@@ -36,7 +36,10 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
   void _sendMessageRate() async {
     await SocketConnect.socket.then((value) async {
       // Rate::restaurantId::rate
-      String sendMessage="Rate::"+widget.currentOrder.getRestaurantId().toString()+"::"+widget.currentOrder.getRate().toString();
+      String sendMessage = "Rate::" +
+          widget.currentOrder.getRestaurantId().toString() +
+          "::" +
+          widget.currentOrder.getRate().toString();
       value.writeln(sendMessage);
     });
   }
@@ -149,10 +152,10 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
                       ),
                       onPressed: () {
                         Navigator.pushReplacement(
-                            context, MaterialPageRoute(builder: (context) =>//TODO
-                        MapShowOnly(
-                            widget.currentOrder)
-                        ));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => //TODO
+                                    MapShowOnlyPage(widget.currentOrder)));
                       },
                     ),
                     Container(
@@ -239,7 +242,9 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
       children: [
         Row(
           children: [
-            SizedBox(width:MediaQuery.of(context).size.width / 13 ,),
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 13,
+            ),
             ClipRRect(
               borderRadius: BorderRadius.circular(30),
               child: Image.asset(
@@ -315,23 +320,26 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                if (widget.currentOrder.getRate() == null ) Container(
-                  width: 50,
-                  height: 50,
-                  child: TextFormField(
-                    decoration: InputDecoration(hintText: 'Rate...'),
-                    style: TextStyle(color: Colors.grey[600], fontSize: 10),
-                    cursorColor: theme.black,
-                    onChanged: (value) {
-                      setState(() {
-                      widget.currentOrder.setRate(double.parse(value));
-                      _sendMessageRate();
-                      });
-                    },
+                if (widget.currentOrder.getRate() == null)
+                  Container(
+                    width: 50,
+                    height: 50,
+                    child: TextFormField(
+                      decoration: InputDecoration(hintText: 'Rate...'),
+                      style: TextStyle(color: Colors.grey[600], fontSize: 10),
+                      cursorColor: theme.black,
+                      onChanged: (value) {
+                        setState(() {
+                          widget.currentOrder.setRate(double.parse(value));
+                          _sendMessageRate();
+                        });
+                      },
+                    ),
                   ),
-                ),
                 RatingBarIndicator(
-                  rating:widget.currentOrder.getRate()!=null ? widget.currentOrder.getRate() : 0,
+                  rating: widget.currentOrder.getRate() != null
+                      ? widget.currentOrder.getRate()
+                      : 0,
                   itemBuilder: (context, index) => Icon(
                     Icons.star,
                     color: Colors.amber,
@@ -363,7 +371,7 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
           icon: Icon(Icons.keyboard_backspace),
           onPressed: () {
             Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => Nav(2)));
+                context, MaterialPageRoute(builder: (context) => BasePage(2)));
           },
         ),
         backgroundColor: Colors.white,

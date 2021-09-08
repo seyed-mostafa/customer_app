@@ -1,9 +1,8 @@
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Objects/Order.dart';
-import 'package:customer_app/Pages/RestaurantPageTabBar.dart';
+import 'package:customer_app/Pages/home_pages/restaurant_base_page.dart';
 import 'package:customer_app/data/Data.dart';
-import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -11,22 +10,22 @@ import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class FoodPage extends StatefulWidget {
+class RestaurantFoodDetailPage extends StatefulWidget {
   Order order;
   Customer customer = Data.customer;
 
   Food currentFood;
   Restaurant currentRestaurant;
-  FoodPage(this.currentRestaurant, this.currentFood);
+  RestaurantFoodDetailPage(this.currentRestaurant, this.currentFood);
 
   @override
-  _FoodPageState createState() => _FoodPageState();
+  _RestaurantFoodDetailPageState createState() =>
+      _RestaurantFoodDetailPageState();
 }
 
-class _FoodPageState extends State<FoodPage> {
+class _RestaurantFoodDetailPageState extends State<RestaurantFoodDetailPage> {
   int state = 1;
   int like = 0;
-
 
   bool isInBag() {
     if (widget.customer.getShoppingCart().isNotEmpty) {
@@ -47,8 +46,6 @@ class _FoodPageState extends State<FoodPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     addToBag() {
       return Row(
         children: [
@@ -107,7 +104,6 @@ class _FoodPageState extends State<FoodPage> {
                         widget.currentRestaurant.getId(),
                         widget.order.getOrder()[widget.currentFood] - 1);
                     widget.order = widget.customer.getShoppingCart().last;
-
                   }
                 });
               }),
@@ -153,7 +149,7 @@ class _FoodPageState extends State<FoodPage> {
       );
     }
 
-    DetailesOrReview() {
+    detailesOrReview() {
       if (state == 1) {
         return Container(
             alignment: Alignment.centerLeft,
@@ -201,12 +197,13 @@ class _FoodPageState extends State<FoodPage> {
         child: ListView(
           children: [
             Container(
-
               height: MediaQuery.of(context).size.height / 3,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/images/food/' + widget.currentFood.getName() + '.jpg'),
+                    image: AssetImage('assets/images/food/' +
+                        widget.currentFood.getName() +
+                        '.jpg'),
                     fit: BoxFit.cover),
               ),
             ),
@@ -297,7 +294,7 @@ class _FoodPageState extends State<FoodPage> {
                 Spacer(),
               ],
             ),
-            DetailesOrReview(),
+            detailesOrReview(),
             Spacer(),
           ],
         ),
@@ -322,7 +319,7 @@ class _FoodPageState extends State<FoodPage> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => RestaurantPageTabBar(
+                    builder: (context) => RestaurantBasePage(
                         Data.restaurants.indexOf(widget.currentRestaurant))));
           },
         ),

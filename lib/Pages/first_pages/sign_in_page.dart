@@ -1,35 +1,23 @@
-import 'dart:io';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:customer_app/Objects/Food.dart';
-import 'package:customer_app/Objects/Location.dart';
-import 'package:customer_app/Objects/Restaurant.dart';
-import 'package:customer_app/Pages/Nav.dart';
-import 'package:customer_app/appBar.dart';
-import 'package:customer_app/Objects/Comment.dart';
-import 'package:customer_app/Objects/Customer.dart';
+import 'package:customer_app/Pages/base_page.dart';
+import 'package:customer_app/constants/appbar.dart';
 import 'package:customer_app/customerAndRestaurantMaker.dart';
-import 'package:customer_app/data/Data.dart';
-
 import 'package:customer_app/data/SocketConnect.dart';
-import 'package:customer_app/test.dart';
-
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
-import 'RegisteringPage.dart';
+import 'sign_up_page.dart';
 
-class EnteringPage extends StatefulWidget {
+class SignInPage extends StatefulWidget {
   @override
-  _EnteringPageState createState() => _EnteringPageState();
+  _SignInPageState createState() => _SignInPageState();
 }
 
-class _EnteringPageState extends State<EnteringPage> {
+class _SignInPageState extends State<SignInPage> {
   //fake Dates
   String password = "123";
   String phoneNumber = "456";
 
   String str;
-
-  Socket _Socket;
 
   bool showWait = false;
 
@@ -40,7 +28,7 @@ class _EnteringPageState extends State<EnteringPage> {
   bool validUser = false;
 
   //for first time don't show error of input (red container in top)
-    bool flag = true;
+  bool flag = true;
 
   //for hide entering password
   bool hidden = true;
@@ -75,7 +63,11 @@ class _EnteringPageState extends State<EnteringPage> {
                 SizedBox(
                   height: 20,
                 ),
-                validUser || flag ? Container(height: 40,) : Container(
+                validUser || flag
+                    ? Container(
+                        height: 40,
+                      )
+                    : Container(
                         decoration: BoxDecoration(
                           color: Colors.red,
                           borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -163,10 +155,13 @@ class _EnteringPageState extends State<EnteringPage> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Nav(0),
+                            builder: (context) => BasePage(0),
                           ));
                     }
-                      setState(() {flag = false; showWait = false;});
+                    setState(() {
+                      flag = false;
+                      showWait = false;
+                    });
                   },
                   child: Text(
                     "Sign in",
@@ -181,8 +176,7 @@ class _EnteringPageState extends State<EnteringPage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => RegisteringPage()),
+                        MaterialPageRoute(builder: (context) => SignUpPage()),
                       );
                     },
                     child: Text(
@@ -192,24 +186,25 @@ class _EnteringPageState extends State<EnteringPage> {
                 SizedBox(
                   width: 30,
                 ),
-                SizedBox(height: 20,),
-                if(showWait) animationWait(),
+                SizedBox(
+                  height: 20,
+                ),
+                if (showWait) animationWait(),
               ],
             ),
           ),
         ));
   }
 
-  _sendMessage() async { //format: Entering::phone::password
+  _sendMessage() async {
+    //format: Entering::phone::password
     String messageServer = "";
     SocketConnect.socket.then((serverSocket) async {
       print('Connected to Server in Entering Page');
       serverSocket.writeln("Customer");
 
-      serverSocket.writeln("Entering::" +
-          inputPhoneNumberEnter +
-          "::" +
-          inputPasswordEnter);
+      serverSocket.writeln(
+          "Entering::" + inputPhoneNumberEnter + "::" + inputPasswordEnter);
       serverSocket.listen((socket) {
         messageServer += String.fromCharCodes(socket).trim();
       });
@@ -219,7 +214,7 @@ class _EnteringPageState extends State<EnteringPage> {
     if (messageServer.contains("true")) {
       print("here");
       setState(() {
-      validUser = true;
+        validUser = true;
       });
       messageServer =
           messageServer.substring(4); // remove true in start message

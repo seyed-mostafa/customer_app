@@ -1,22 +1,17 @@
 import 'package:customer_app/Objects/Customer.dart';
-import 'package:customer_app/appBar.dart';
+import 'package:customer_app/constants/appbar.dart';
 import 'package:customer_app/data/Data.dart';
-import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:customer_app/Objects/theme.dart';
 
-
-class CommentsPage extends StatefulWidget {
-
-
+class CommentsListPage extends StatefulWidget {
   @override
-  _CommentsPageState createState() => _CommentsPageState();
+  _CommentsListPageState createState() => _CommentsListPageState();
 }
 
-class _CommentsPageState extends State<CommentsPage> {
-
-  Customer currentCustomer=Data.customer;
+class _CommentsListPageState extends State<CommentsListPage> {
+  Customer currentCustomer = Data.customer;
 
   comment(index) {
     return Column(
@@ -56,11 +51,8 @@ class _CommentsPageState extends State<CommentsPage> {
                 child: Container(
                   height: 2,
                   decoration: BoxDecoration(
-                    gradient:
-                    LinearGradient(
-                        colors: [theme.yellow2, theme.white],
-                        stops:[0,0.8]
-                    ),
+                    gradient: LinearGradient(
+                        colors: [theme.yellow2, theme.white], stops: [0, 0.8]),
                   ),
                 ),
               ),
@@ -75,9 +67,8 @@ class _CommentsPageState extends State<CommentsPage> {
                 child: Container(
                   height: 2,
                   decoration: BoxDecoration(
-                    gradient:
-                    LinearGradient( colors: [theme.yellow2, theme.white],
-                        stops:[0,0.8]),
+                    gradient: LinearGradient(
+                        colors: [theme.yellow2, theme.white], stops: [0, 0.8]),
                   ),
                 ),
               )
@@ -100,11 +91,12 @@ class _CommentsPageState extends State<CommentsPage> {
         child: Row(
           children: [
             Container(
-              width: MediaQuery.of(context).size.width / 2,
-              height: 50,
-              child: Text("${currentCustomer.getComments()[index].getRestaurantName()} not yet reply...",
-              style: TextStyle(color: Colors.grey[600], fontSize: 12),)
-            ),
+                width: MediaQuery.of(context).size.width / 2,
+                height: 50,
+                child: Text(
+                  "${currentCustomer.getComments()[index].getRestaurantName()} not yet reply...",
+                  style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                )),
           ],
         ),
       ),
@@ -143,13 +135,12 @@ class _CommentsPageState extends State<CommentsPage> {
                 ),
                 Column(
                   children: [
-                    Text(currentCustomer
-                        .getComments()[index]
-                        .getRestaurantName(),
+                    Text(
+                        currentCustomer
+                            .getComments()[index]
+                            .getRestaurantName(),
                         style: TextStyle(fontSize: 18, color: theme.black)),
-                    Text(currentCustomer
-                        .getComments()[index]
-                        .getTimeReply(),
+                    Text(currentCustomer.getComments()[index].getTimeReply(),
                         style: TextStyle(color: Colors.grey, fontSize: 10)),
                   ],
                 ),
@@ -166,18 +157,16 @@ class _CommentsPageState extends State<CommentsPage> {
                     child: Container(
                       height: 2,
                       decoration: BoxDecoration(
-                        gradient:
-                        LinearGradient( colors: [theme.yellow2, theme.white],
-                            stops:[0,0.8]),
+                        gradient: LinearGradient(
+                            colors: [theme.yellow2, theme.white],
+                            stops: [0, 0.8]),
                       ),
                     ),
                   ),
                   Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                       currentCustomer
-                            .getComments()[index]
-                            .getReply(),
+                        currentCustomer.getComments()[index].getReply(),
                         style: TextStyle(color: theme.black, fontSize: 14),
                       )),
                   Padding(
@@ -185,9 +174,9 @@ class _CommentsPageState extends State<CommentsPage> {
                     child: Container(
                       height: 2,
                       decoration: BoxDecoration(
-                        gradient:
-                        LinearGradient( colors: [theme.yellow2, theme.white],
-                            stops:[0,0.8]),
+                        gradient: LinearGradient(
+                            colors: [theme.yellow2, theme.white],
+                            stops: [0, 0.8]),
                       ),
                     ),
                   )
@@ -225,14 +214,14 @@ class _CommentsPageState extends State<CommentsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-        appBar: appBar(context),
-       body: Container(
-            padding: EdgeInsets.only(top: 20),
-            child: ListView(
-              children: List.generate(currentCustomer.getComments().length,
-                      (index) => showComment(index)),
-            )),
+    return Scaffold(
+      appBar: appBar(context),
+      body: Container(
+          padding: EdgeInsets.only(top: 20),
+          child: ListView(
+            children: List.generate(currentCustomer.getComments().length,
+                (index) => showComment(index)),
+          )),
     );
   }
 }

@@ -3,10 +3,8 @@ import 'dart:io';
 import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
-
-import 'Pages/Nav.dart';
-import 'customerAndRestaurantMaker.dart';
-import 'data/SocketConnect.dart';
+import '../customerAndRestaurantMaker.dart';
+import '../data/SocketConnect.dart';
 
 show(context) {
   return showDialog(
@@ -64,7 +62,9 @@ AppBar appBar(context) {
               customerAndRestaurantMaker(messageServer);
               SocketConnect.socket = socket;
             }
-            Navigator.pop(context, );
+            Navigator.pop(
+              context,
+            );
           })
     ],
     backgroundColor: Colors.white,

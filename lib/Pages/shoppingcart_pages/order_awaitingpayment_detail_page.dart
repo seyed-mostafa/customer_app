@@ -1,71 +1,88 @@
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Objects/Order.dart';
-import 'package:customer_app/Pages/Nav.dart';
+import 'package:customer_app/Pages/base_page.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/Objects/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'OrderPageOngoing.dart';
-import 'mapShowOnly.dart';
+import 'order_ongoing_detail_page.dart';
+import 'map_showonly_page.dart';
 
-class OrderPage extends StatefulWidget {
-
-  Order currentOrder;
-  OrderPage(this.currentOrder);
+class OrderAwaitingPaymentDetailPage extends StatefulWidget {
+  final Order currentOrder;
+  OrderAwaitingPaymentDetailPage(this.currentOrder);
 
   @override
-  _OrderPageState createState() => _OrderPageState();
+  _OrderAwaitingPaymentDetailPageState createState() =>
+      _OrderAwaitingPaymentDetailPageState();
 }
 
-class _OrderPageState extends State<OrderPage> {
-  Customer currentCustomer=Data.customer;
-
+class _OrderAwaitingPaymentDetailPageState
+    extends State<OrderAwaitingPaymentDetailPage> {
+  Customer currentCustomer = Data.customer;
 
   void _sendMessage() async {
     await SocketConnect.socket.then((value) async {
       //format: addToOrders::restaurantName::orderTime::restaurantAddress::restaurantAddress::restaurantAddress::restaurantId::id::food^num&food^num
 
-      String sendMessage="addToOrders::"+ widget.currentOrder.getRestaurantName()+"::"+widget.currentOrder.getOrderTime()+"::"+
-          widget.currentOrder.getRestaurantAddress().getAddress()+"::"+widget.currentOrder.getRestaurantAddress().getLatitude().toString()+"::"+
-          widget.currentOrder.getRestaurantAddress().getLongitude().toString()+"::"+widget.currentOrder.getRestaurantId().toString()+"::"+
-          widget.currentOrder.getId().toString()+"::";
-      for(Food food in widget.currentOrder.getOrder().keys)
-         sendMessage+=food.getName()+"^"+widget.currentOrder.getOrder()[food].toString()+"&";
-      sendMessage=sendMessage.substring(0,sendMessage.length-1);
+      String sendMessage = "addToOrders::" +
+          widget.currentOrder.getRestaurantName() +
+          "::" +
+          widget.currentOrder.getOrderTime() +
+          "::" +
+          widget.currentOrder.getRestaurantAddress().getAddress() +
+          "::" +
+          widget.currentOrder.getRestaurantAddress().getLatitude().toString() +
+          "::" +
+          widget.currentOrder.getRestaurantAddress().getLongitude().toString() +
+          "::" +
+          widget.currentOrder.getRestaurantId().toString() +
+          "::" +
+          widget.currentOrder.getId().toString() +
+          "::";
+      for (Food food in widget.currentOrder.getOrder().keys)
+        sendMessage += food.getName() +
+            "^" +
+            widget.currentOrder.getOrder()[food].toString() +
+            "&";
+      sendMessage = sendMessage.substring(0, sendMessage.length - 1);
       print(sendMessage);
       print(sendMessage);
       value.writeln(sendMessage);
     });
   }
 
-  payment(){
-    return  Container(
-      margin: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*1/3),
+  payment() {
+    return Container(
+      margin: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 1 / 3),
       child: TextButton(
         onPressed: () {
           setState(() {
-            if (currentCustomer.getWallet()<widget.currentOrder.getPrice()) {
-            showDialog<String>(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-
-                title: Text('Inventory is insufficient'),
-                content: const Text('Wallet balance is not enough.\nCharge your wallet'),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () => Navigator.pop(context, 'Ok'),
-                    child: const Text('Ok',style: TextStyle(color:Color(0xfffcb000)),),
-                  ),
-                ],
-              ),
-            );
-            }
-            else{
+            if (currentCustomer.getWallet() < widget.currentOrder.getPrice()) {
+              showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: Text('Inventory is insufficient'),
+                  content: const Text(
+                      'Wallet balance is not enough.\nCharge your wallet'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Ok'),
+                      child: const Text(
+                        'Ok',
+                        style: TextStyle(color: Color(0xfffcb000)),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            } else {
               widget.currentOrder.setOrderTime();
-              currentCustomer.setWallet(currentCustomer.getWallet()-
-                  widget.currentOrder.getPrice());
+              currentCustomer.setWallet(
+                  currentCustomer.getWallet() - widget.currentOrder.getPrice());
               currentCustomer.removeShoppingCart(widget.currentOrder);
               currentCustomer.addPreviousOrders(widget.currentOrder);
               _sendMessage();
@@ -73,8 +90,9 @@ class _OrderPageState extends State<OrderPage> {
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
                   title: const Text('Payment was successful'),
-                  content: Text('Tracking Code : ${widget.currentOrder.getId()}\n'
-                      '${widget.currentOrder.getOrderTime()}'),
+                  content:
+                      Text('Tracking Code : ${widget.currentOrder.getId()}\n'
+                          '${widget.currentOrder.getOrderTime()}'),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () {
@@ -83,10 +101,14 @@ class _OrderPageState extends State<OrderPage> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => OrderPageOngoing(widget.currentOrder)));
+                                  builder: (context) => OrderOngoingDetailPage(
+                                      widget.currentOrder)));
                         });
                       },
-                      child: const Text('Ok',style: TextStyle(color:Color(0xfffcb000)),),
+                      child: const Text(
+                        'Ok',
+                        style: TextStyle(color: Color(0xfffcb000)),
+                      ),
                     ),
                   ],
                 ),
@@ -96,7 +118,8 @@ class _OrderPageState extends State<OrderPage> {
         },
         child: Padding(
           padding: const EdgeInsets.all(10),
-          child: Text("Payment",
+          child: Text(
+            "Payment",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
           ),
         ),
@@ -129,7 +152,9 @@ class _OrderPageState extends State<OrderPage> {
             children: [
               DataTable(
                 columns: const <DataColumn>[
-                  DataColumn(label: Text('Food name'),),
+                  DataColumn(
+                    label: Text('Food name'),
+                  ),
                   DataColumn(numeric: true, label: Text('Num')),
                   DataColumn(numeric: true, label: Text('Price')),
                 ],
@@ -241,8 +266,10 @@ class _OrderPageState extends State<OrderPage> {
             ),
             onPressed: () {
               setState(() {
-                widget.currentOrder.remove(
-                    widget.currentOrder.getOrder().keys.elementAt(index));  //TODO:send data to server
+                widget.currentOrder.remove(widget.currentOrder
+                    .getOrder()
+                    .keys
+                    .elementAt(index)); //TODO:send data to server
               });
             })
       ],
@@ -257,7 +284,9 @@ class _OrderPageState extends State<OrderPage> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Image.asset(
-            "assets/images/restaurant/" + widget.currentOrder.getRestaurantName() + ".jpg",
+            "assets/images/restaurant/" +
+                widget.currentOrder.getRestaurantName() +
+                ".jpg",
             fit: BoxFit.fill,
           ),
         ),
@@ -308,7 +337,9 @@ class _OrderPageState extends State<OrderPage> {
             height: MediaQuery.of(context).size.height / 3,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/restaurant/" + widget.currentOrder.getRestaurantName() + ".jpg"),
+                image: AssetImage("assets/images/restaurant/" +
+                    widget.currentOrder.getRestaurantName() +
+                    ".jpg"),
                 fit: BoxFit.cover,
               ),
             ),
@@ -320,7 +351,7 @@ class _OrderPageState extends State<OrderPage> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(50)),
           ),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(40,20,0,0),
+            padding: const EdgeInsets.fromLTRB(40, 20, 0, 0),
             child: Column(
               children: [
                 Row(
@@ -344,20 +375,20 @@ class _OrderPageState extends State<OrderPage> {
                         size: 20,
                         color: theme.yellow,
                       ),
-                      onPressed: (){
+                      onPressed: () {
                         Navigator.pushReplacement(
-                            context, MaterialPageRoute(builder: (context) =>//TODO
-                        MapShowOnly(
-                            widget.currentOrder)
-                        ));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => //TODO
+                                    MapShowOnlyPage(widget.currentOrder)));
                       },
                     ),
                     Container(
-                      width: MediaQuery.of(context).size.width /2,
+                      width: MediaQuery.of(context).size.width / 2,
                       child: Text(
                         widget.currentOrder.getRestaurantAddress().getAddress(),
-                        style:
-                        TextStyle(fontSize: 15),softWrap: true,
+                        style: TextStyle(fontSize: 15),
+                        softWrap: true,
                       ),
                     ),
                   ],
@@ -378,7 +409,9 @@ class _OrderPageState extends State<OrderPage> {
         SizedBox(height: 5),
         table(),
         payment(),
-        SizedBox(height: 20,)
+        SizedBox(
+          height: 20,
+        )
       ],
     );
   }
@@ -391,10 +424,7 @@ class _OrderPageState extends State<OrderPage> {
           icon: Icon(Icons.keyboard_backspace),
           onPressed: () {
             Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        Nav(2)));
+                context, MaterialPageRoute(builder: (context) => BasePage(2)));
           },
         ),
         backgroundColor: Colors.white,

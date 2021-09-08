@@ -1,8 +1,6 @@
 import 'package:customer_app/Objects/Location.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:customer_app/Objects/Comment.dart';
 import 'Food.dart';
-
 
 //  _name  =>                                                      نام رستوران
 // _phoneNumber =>                                          شماره تماس رستوران
@@ -13,37 +11,33 @@ import 'Food.dart';
 // _address =>                                   آدرس رستوران (به صورت مختصات )
 // List<Food> _menu =>                    منو رستوران به صورت لیستی از جنس غذا
 
-class Restaurant  {
-
-  static int _count=99243000;
-  String _name, _phoneNumber, _password, _days, _hour,_addressString;
-  num _sendingRangeRadius,_id;
+class Restaurant {
+  static int _count = 99243000;
+  String _name, _phoneNumber, _password, _days, _hour, _addressString;
+  num _sendingRangeRadius, _id;
   Location _address;
   List<Food> _menu = List.empty(growable: true);
-  List<TypeFood> _type= List.empty(growable: true);
-  List<Comment> _comments= List.empty(growable: true);
-  List<double> _rate= List.empty(growable: true);
+  List<TypeFood> _type = List.empty(growable: true);
+  List<Comment> _comments = List.empty(growable: true);
+  List<double> _rate = List.empty(growable: true);
 
-
-
-
-  Restaurant(String name, Location address, String phoneNumber, String password)  {
+  Restaurant(
+      String name, Location address, String phoneNumber, String password) {
     _count++;
-    _id=_count;
+    _id = _count;
     this._name = name;
     this._address = address;
     this._password = password;
     this._phoneNumber = phoneNumber;
   }
 
-  double getRate(){
-    double sum=0;
-    for(double i in _rate)
-      sum+=i;
-    return sum/_rate.length;
+  double getRate() {
+    double sum = 0;
+    for (double i in _rate) sum += i;
+    return sum / _rate.length;
   }
 
-  void addRate(double rate){
+  void addRate(double rate) {
     _rate.add(rate);
   }
 
@@ -51,40 +45,41 @@ class Restaurant  {
     return _menu;
   }
 
-  void setId(int id){
-    _id=id;
+  void setId(int id) {
+    _id = id;
   }
 
-  void addMenu(Food food){
+  void addMenu(Food food) {
     _menu.add(food);
   }
 
-  int getId(){
+  int getId() {
     return _id;
   }
 
-  void addTypeFood(TypeFood typeFood){
+  void addTypeFood(TypeFood typeFood) {
     _type.add(typeFood);
   }
 
-  List<TypeFood> getTypeFoods(){
+  List<TypeFood> getTypeFoods() {
     return _type;
   }
-  void setAddressString(String addressString){
-    this._addressString=addressString;
+
+  void setAddressString(String addressString) {
+    this._addressString = addressString;
   }
-  String getAddressString(){
+
+  String getAddressString() {
     return _addressString;
   }
 
-  void addComment(Comment comment){
+  void addComment(Comment comment) {
     _comments.add(comment);
   }
 
-  List<Comment> getComments(){
+  List<Comment> getComments() {
     return _comments;
   }
-
 
   void setName(String name) {
     this._name = name;
@@ -114,12 +109,7 @@ class Restaurant  {
     this._sendingRangeRadius = sendingRangeRadius;
   }
 
-  void addOrder() {
-
-  }
-
-
-
+  void addOrder() {}
 
   String getName() {
     return _name;
@@ -148,6 +138,4 @@ class Restaurant  {
   String getHour() {
     return _hour;
   }
-
-
 }
