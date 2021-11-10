@@ -1,5 +1,3 @@
-
-
 import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Objects/Location.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
@@ -8,8 +6,6 @@ import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/data/Data.dart';
 
 import 'Objects/Order.dart';
-
-
 
 customerAndRestaurantMaker(String messageServer) async {
   List<String> data = messageServer.split("&");
@@ -27,27 +23,26 @@ customerAndRestaurantMaker(String messageServer) async {
   // print("and here");
 
   ////////////////////         comment         ///////////////////
-if (!(data[8].startsWith("null"))) {
+  if (!(data[8].startsWith("null"))) {
+    List<String> comments = data[8].split("^^"); //comments
 
-  List<String> comments = data[8].split("^^"); //comments
+    for (int i = 0; i < comments.length; i++) {
+      List<String> comment = comments[i].split("^");
+      // comment          0
+      //restaurantName    1
+      //commentTime       2
+      //reply             3
+      //replyTime         4
 
-  for (int i = 0; i < comments.length; i++) {
-    List<String> comment = comments[i].split("^");
-    // comment          0
-    //restaurantName    1
-    //commentTime       2
-    //reply             3
-    //replyTime         4
-
-    if (comment.contains("null")) {
-      Data.customer.addComment(
-          new Comment.noFull(comment[0], data[0], comment[1], comment[2]));
-    } else {
-      Data.customer.addComment(new Comment.full(comment[0], data[0],
-          comment[1], comment[2], comment[3], comment[4]));
+      if (comment.contains("null")) {
+        Data.customer.addComment(
+            new Comment.noFull(comment[0], data[0], comment[1], comment[2]));
+      } else {
+        Data.customer.addComment(new Comment.full(comment[0], data[0],
+            comment[1], comment[2], comment[3], comment[4]));
+      }
     }
   }
-}
 
   ////////////////////////             favoriteRestaurant          ///////////////
   if (!(data[9].startsWith("null"))) {
@@ -62,11 +57,11 @@ if (!(data[8].startsWith("null"))) {
     List<String> shoppingCarts = data[10].split("^^");
     for (String str in shoppingCarts) {
       List<String> shoppingCart = str.split("^");
-      Data.customer.addNewShoppingCart(
+      Data.customer.addNewAwaitingPaymentOrder(
           shoppingCart[0].substring(5),
-          Data.customer.getName(),
+          Data.customer.getFirstName(),
           shoppingCart[2],
-          Data.customer.getAddress()[0],
+          Data.customer.getAddresses()[0],
           new Location(shoppingCart[3], double.parse(shoppingCart[5]),
               double.parse(shoppingCart[4])),
           int.parse(shoppingCart[1]));
@@ -74,7 +69,7 @@ if (!(data[8].startsWith("null"))) {
       foods.removeLast();
       for (String food in foods) {
         List<String> f = food.split("::");
-        Data.customer.addShoppingCart(
+        Data.customer.addAwaitingPaymentOrder(
             new Food(
                 f[0],
                 f[1],
@@ -89,10 +84,7 @@ if (!(data[8].startsWith("null"))) {
       }
       if (str.startsWith("true")) {
         //check status of order
-        Data.customer
-            .getShoppingCart()
-            .last
-            .setDelivered();
+        Data.customer.getAwaitingPaymentOrders().last.setDelivered();
       }
     }
   }
@@ -104,9 +96,9 @@ if (!(data[8].startsWith("null"))) {
       List<String> order = str.split("^");
       Order orderToAdd = new Order.full(
           order[1],
-          Data.customer.getName(),
+          Data.customer.getFirstName(),
           order[3],
-          Data.customer.getAddress()[0].getLocation(),
+          Data.customer.getAddresses()[0].getLocation(),
           new Location(
               order[4], double.parse(order[5]), double.parse(order[6])),
           int.parse(order[2]));
@@ -122,8 +114,8 @@ if (!(data[8].startsWith("null"))) {
                 int.parse(f[3]),
                 null,
                 f[4] == "true" ? true : false,
-                TypeFood.values.firstWhere((e) =>
-                e.toString() == "TypeFood." + f[5])),
+                TypeFood.values
+                    .firstWhere((e) => e.toString() == "TypeFood." + f[5])),
             int.parse(f[6]));
       }
       orderToAdd.setDelivered();
@@ -135,59 +127,59 @@ if (!(data[8].startsWith("null"))) {
 
   //print(data[11]);
   List<String> string = data[12].split("##");
-    for (String s in string) print(s);
-  for(String str in string) {
-    List<String> data1=str.split("#");
-  Restaurant restaurant = new Restaurant(
-      data1[0],
-      new Location(data1[1], double.parse(data1[3]), double.parse(data1[2])),
-      data1[4],
-      data1[5]);
-  restaurant.addRate((double.parse(data1[6]))/1000);
-  restaurant.setSendingRangeRadius(int.parse(data1[6]));
-  restaurant.setId(int.parse(data1[7]));
-  restaurant.setDays(data1[8]);
-  restaurant.setHour(data1[9]);
+  for (String s in string) print(s);
+  for (String str in string) {
+    List<String> data1 = str.split("#");
+    Restaurant restaurant = new Restaurant(
+        data1[0],
+        new Location(data1[1], double.parse(data1[3]), double.parse(data1[2])),
+        data1[4],
+        data1[5]);
+    restaurant.addRate((double.parse(data1[6])) / 1000);
+    restaurant.setSendingRangeRadius(int.parse(data1[6]));
+    restaurant.setId(int.parse(data1[7]));
+    restaurant.setDays(data1[8]);
+    restaurant.setHour(data1[9]);
 
-  /////////////////////////////////                       type food            /////////////////////
+    /////////////////////////////////                       type food            /////////////////////
 
-  List<String> type = data1[10].split("::");
-  for (String string in type) {
-    restaurant.addTypeFood(TypeFood.values
-        .firstWhere((e) => e.toString() == "TypeFood." + string));
+    List<String> type = data1[10].split("::");
+    for (String string in type) {
+      restaurant.addTypeFood(TypeFood.values
+          .firstWhere((e) => e.toString() == "TypeFood." + string));
+    }
+
+    /////////////////////////////////                       menu            /////////////////////
+
+    List<String> foods = data1[11].split(":::");
+    for (String food in foods) {
+      List<String> menu = food.split("::");
+      restaurant.addMenu(new Food(
+          menu[0],
+          menu[1],
+          int.parse(menu[2]),
+          int.parse(menu[3]),
+          null,
+          menu[4] == "true" ? true : false,
+          TypeFood.values
+              .firstWhere((e) => e.toString() == "TypeFood." + menu[5])));
+    }
+
+    /////////////////////////////////                   comments           /////////////////////
+
+    List<String> comments1 = data1[12].split(":::");
+    for (String com in comments1) {
+      List<String> comment = com.split("::");
+      if (comment.length == 6)
+        restaurant.addComment(new Comment.full(comment[0], comment[1],
+            comment[2], comment[3], comment[4], comment[5]));
+      else
+        restaurant.addComment(
+            new Comment.noFull(comment[0], comment[1], comment[2], comment[3]));
+    }
+    Data.restaurants.add(restaurant);
   }
-
-  /////////////////////////////////                       menu            /////////////////////
-
-  List<String> foods = data1[11].split(":::");
-  for (String food in foods) {
-    List<String> menu = food.split("::");
-    restaurant.addMenu(new Food(
-        menu[0],
-        menu[1],
-        int.parse(menu[2]),
-        int.parse(menu[3]),
-        null,
-        menu[4] == "true" ? true : false,
-        TypeFood.values
-            .firstWhere((e) => e.toString() == "TypeFood." + menu[5])));
-  }
-
-  /////////////////////////////////                   comments           /////////////////////
-
-  List<String> comments1 = data1[12].split(":::");
-  for (String com in comments1) {
-    List<String> comment = com.split("::");
-    if (comment.length == 6)
-      restaurant.addComment(new Comment.full(comment[0], comment[1],
-          comment[2], comment[3], comment[4], comment[5]));
-    else
-      restaurant.addComment(
-          new Comment.noFull(comment[0], comment[1], comment[2], comment[3]));
-  }
-  Data.restaurants.add(restaurant);
-}
-print(Data.restaurants.length);
+  print(Data.restaurants.length);
 
   /////////////////////////////////                   orders           /////////////////////
 

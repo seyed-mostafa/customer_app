@@ -1,27 +1,21 @@
-
-
-import 'dart:io';
-
-import 'package:customer_app/Objects/theme.dart';
-import 'package:customer_app/appBar.dart';
+import 'package:customer_app/constants/theme.dart';
+import 'package:customer_app/constants/appbar.dart';
 import 'package:flutter/material.dart';
-import 'FavoritePage.dart';
-import 'HomePage.dart';
-import 'ProfilePage.dart';
-import 'ShoppingCartPage.dart';
+import 'favorite_pages/favorites_list_page.dart';
+import 'home_pages/home_page.dart';
+import 'profile_pages/profile_page.dart';
+import 'orders_pages/orders_base_page.dart';
 
-class Nav extends StatefulWidget {
+class BasePage extends StatefulWidget {
+  final int index;
 
-  int index = 0;
-
-  Nav(this.index);
+  BasePage(this.index);
 
   @override
-  _NavState createState() => _NavState();
+  _BasePageState createState() => _BasePageState();
 }
 
-class _NavState extends State<Nav> {
-
+class _BasePageState extends State<BasePage> {
   int _selectedIndex = 0;
 
   @override
@@ -31,19 +25,23 @@ class _NavState extends State<Nav> {
   }
 
   showScreen() {
-      print("here");
-      if(_selectedIndex == 0){//home
-        return Home();
-      }else if(_selectedIndex == 1){//fav
-        return Favorite();
-      }else if(_selectedIndex == 2){//shop
-        return ShoppingCart();
-      }else {//(_selectedIndex == 3)(profile)
-        return Profile();
-      }
+    print("here");
+    if (_selectedIndex == 0) {
+      //home
+      return HomePage();
+    } else if (_selectedIndex == 1) {
+      //fav
+      return FavoritesListPage();
+    } else if (_selectedIndex == 2) {
+      //shop
+      return ShoppingCartBasePage();
+    } else {
+      //(_selectedIndex == 3)(profile)
+      return ProfilePage();
+    }
   }
 
-  void _onItemTapped(int index){
+  void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
       print(index);
@@ -53,7 +51,7 @@ class _NavState extends State<Nav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(),
+      appBar: appBar(context),
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: theme.black,
         items: const <BottomNavigationBarItem>[

@@ -1,27 +1,30 @@
-
 import 'package:customer_app/Objects/Order.dart';
-import 'package:customer_app/Pages/Nav.dart';
-import 'package:customer_app/test.dart';
+import 'package:customer_app/Pages/base_page.dart';
 import 'package:flutter/material.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'map_showonly_page.dart';
 
-class OrderPageOngoing extends StatefulWidget {
+class OrderOngoingDetailPage extends StatefulWidget {
+  final Order currentOrder;
 
-  Order currentOrder;
-
-  OrderPageOngoing( this.currentOrder);
+  OrderOngoingDetailPage(this.currentOrder);
 
   @override
-  _OrderPageOngoingState createState() => _OrderPageOngoingState();
+  _OrderOngoingDetailPageState createState() => _OrderOngoingDetailPageState();
 }
 
-class _OrderPageOngoingState extends State<OrderPageOngoing> {
-  payment(){
-    return  Container(
-      alignment:Alignment.center ,
-      child:  Text("Order is on the way....",
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400,fontStyle: FontStyle.italic,color: theme.red1),
+class _OrderOngoingDetailPageState extends State<OrderOngoingDetailPage> {
+  payment() {
+    return Container(
+      alignment: Alignment.center,
+      child: Text(
+        "Order is on the way....",
+        style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+            fontStyle: FontStyle.italic,
+            color: theme.red1),
       ),
     );
   }
@@ -46,20 +49,23 @@ class _OrderPageOngoingState extends State<OrderPageOngoing> {
             children: [
               DataTable(
                 columns: const <DataColumn>[
-                  DataColumn(label: Text('Food name'),),
+                  DataColumn(
+                    label: Text('Food name'),
+                  ),
                   DataColumn(numeric: true, label: Text('Num')),
                   DataColumn(numeric: true, label: Text('Price')),
                 ],
                 rows: widget.currentOrder
-                    .getOrder()
+                    .getFoodsAndFoodsCount()
                     .entries
                     .map(
                       (e) => DataRow(cells: [
-                    DataCell(Text(e.key.getName())),
-                    DataCell(Text(e.value.toString())),
-                    DataCell(Text((e.key.getPrice() * e.value).toString())),
-                  ]),
-                ).toList(),
+                        DataCell(Text(e.key.getName())),
+                        DataCell(Text(e.value.toString())),
+                        DataCell(Text((e.key.getPrice() * e.value).toString())),
+                      ]),
+                    )
+                    .toList(),
               ),
               Container(
                   child: Text('Total : ${widget.currentOrder.getPrice()}'))
@@ -69,7 +75,6 @@ class _OrderPageOngoingState extends State<OrderPageOngoing> {
       ),
     );
   }
-
 
   restaurant() {
     return Stack(
@@ -81,7 +86,9 @@ class _OrderPageOngoingState extends State<OrderPageOngoing> {
             height: MediaQuery.of(context).size.height / 3,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/restaurant/" + widget.currentOrder.getRestaurantName() + ".jpg"),
+                image: AssetImage("assets/images/restaurant/" +
+                    widget.currentOrder.getRestaurantName() +
+                    ".jpg"),
                 fit: BoxFit.cover,
               ),
             ),
@@ -93,7 +100,7 @@ class _OrderPageOngoingState extends State<OrderPageOngoing> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
           ),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(40,20,0,0),
+            padding: const EdgeInsets.fromLTRB(40, 20, 0, 0),
             child: Column(
               children: [
                 Row(
@@ -105,7 +112,7 @@ class _OrderPageOngoingState extends State<OrderPageOngoing> {
                     Text(
                       widget.currentOrder.getRestaurantName(),
                       style:
-                      TextStyle(fontSize: 23, fontWeight: FontWeight.w600),
+                          TextStyle(fontSize: 23, fontWeight: FontWeight.w600),
                     ),
                   ],
                 ),
@@ -117,14 +124,20 @@ class _OrderPageOngoingState extends State<OrderPageOngoing> {
                         size: 20,
                         color: theme.yellow,
                       ),
-                      onPressed: (){},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => //TODO
+                                    MapShowOnlyPage(widget.currentOrder)));
+                      },
                     ),
                     Container(
-                      width: MediaQuery.of(context).size.width /2,
+                      width: MediaQuery.of(context).size.width / 2,
                       child: Text(
                         widget.currentOrder.getRestaurantAddress().getAddress(),
-                        style:
-                        TextStyle(fontSize: 15),softWrap: true,
+                        style: TextStyle(fontSize: 15),
+                        softWrap: true,
                       ),
                     ),
                   ],
@@ -138,7 +151,7 @@ class _OrderPageOngoingState extends State<OrderPageOngoing> {
   }
 
   body() {
-    print(widget.currentOrder.getOrder().length);
+    print(widget.currentOrder.getFoodsAndFoodsCount().length);
     return ListView(
       children: [
         restaurant(),
@@ -147,7 +160,9 @@ class _OrderPageOngoingState extends State<OrderPageOngoing> {
           children: [table()],
         ),
         payment(),
-        SizedBox(height: 20,)
+        SizedBox(
+          height: 20,
+        )
       ],
     );
   }
@@ -160,10 +175,7 @@ class _OrderPageOngoingState extends State<OrderPageOngoing> {
           icon: Icon(Icons.keyboard_backspace),
           onPressed: () {
             Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        Nav(2)));
+                context, MaterialPageRoute(builder: (context) => BasePage(2)));
           },
         ),
         backgroundColor: Colors.white,

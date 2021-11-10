@@ -1,22 +1,24 @@
-import 'package:customer_app/Objects/Customer.dart';
-import 'package:customer_app/appBar.dart';
+import 'package:customer_app/Objects/Comment.dart';
+import 'package:customer_app/constants/theme.dart';
+import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/data/Data.dart';
-import 'package:customer_app/data/SocketConnect.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:intl/intl.dart';
 
+class RestaurantCommentsListPage extends StatefulWidget {
+  final int currentRestaurant;
 
-class CommentsPage extends StatefulWidget {
-
+  RestaurantCommentsListPage(this.currentRestaurant);
 
   @override
-  _CommentsPageState createState() => _CommentsPageState();
+  _RestaurantCommentsListPageState createState() =>
+      _RestaurantCommentsListPageState();
 }
 
-class _CommentsPageState extends State<CommentsPage> {
-
-  Customer currentCustomer=Data.customer;
+class _RestaurantCommentsListPageState
+    extends State<RestaurantCommentsListPage> {
+  Restaurant currentRestaurant;
 
   comment(index) {
     return Column(
@@ -26,7 +28,7 @@ class _CommentsPageState extends State<CommentsPage> {
             ClipRRect(
               borderRadius: BorderRadius.circular(30),
               child: Image.asset(
-                "assets/images/profile/Ali.jpg",
+                "assets/images/profile/${currentRestaurant.getComments()[index].getCustomerName()}.jpg",
                 fit: BoxFit.fill,
                 height: 50,
                 width: 50,
@@ -37,9 +39,9 @@ class _CommentsPageState extends State<CommentsPage> {
             ),
             Column(
               children: [
-                Text(currentCustomer.getComments()[index].getCustomerName(),
+                Text(currentRestaurant.getComments()[index].getCustomerName(),
                     style: TextStyle(fontSize: 18, color: theme.black)),
-                Text(currentCustomer.getComments()[index].getTimeComment(),
+                Text(currentRestaurant.getComments()[index].getTimeComment(),
                     style: TextStyle(color: Colors.grey, fontSize: 10)),
               ],
             ),
@@ -56,18 +58,15 @@ class _CommentsPageState extends State<CommentsPage> {
                 child: Container(
                   height: 2,
                   decoration: BoxDecoration(
-                    gradient:
-                    LinearGradient(
-                        colors: [theme.yellow2, theme.white],
-                        stops:[0,0.8]
-                    ),
+                    gradient: LinearGradient(
+                        colors: [theme.yellow2, theme.white], stops: [0, 0.8]),
                   ),
                 ),
               ),
               Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    currentCustomer.getComments()[index].getComment(),
+                    currentRestaurant.getComments()[index].getComment(),
                     style: TextStyle(color: theme.black, fontSize: 14),
                   )),
               Padding(
@@ -75,9 +74,8 @@ class _CommentsPageState extends State<CommentsPage> {
                 child: Container(
                   height: 2,
                   decoration: BoxDecoration(
-                    gradient:
-                    LinearGradient( colors: [theme.yellow2, theme.white],
-                        stops:[0,0.8]),
+                    gradient: LinearGradient(
+                        colors: [theme.yellow2, theme.white], stops: [0, 0.8]),
                   ),
                 ),
               )
@@ -100,11 +98,12 @@ class _CommentsPageState extends State<CommentsPage> {
         child: Row(
           children: [
             Container(
-              width: MediaQuery.of(context).size.width / 2,
-              height: 50,
-              child: Text("${currentCustomer.getComments()[index].getRestaurantName()} not yet reply...",
-              style: TextStyle(color: Colors.grey[600], fontSize: 12),)
-            ),
+                width: MediaQuery.of(context).size.width / 2,
+                height: 50,
+                child: Text(
+                  "${currentRestaurant.getComments()[index].getRestaurantName()} not yet reply...",
+                  style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                )),
           ],
         ),
       ),
@@ -139,17 +138,16 @@ class _CommentsPageState extends State<CommentsPage> {
                   ),
                 ),
                 SizedBox(
-                  width: 15,
+                  width: 10,
                 ),
                 Column(
                   children: [
-                    Text(currentCustomer
-                        .getComments()[index]
-                        .getRestaurantName(),
+                    Text(
+                        currentRestaurant
+                            .getComments()[index]
+                            .getRestaurantName(),
                         style: TextStyle(fontSize: 18, color: theme.black)),
-                    Text(currentCustomer
-                        .getComments()[index]
-                        .getTimeReply(),
+                    Text(currentRestaurant.getComments()[index].getTimeReply(),
                         style: TextStyle(color: Colors.grey, fontSize: 10)),
                   ],
                 ),
@@ -166,18 +164,16 @@ class _CommentsPageState extends State<CommentsPage> {
                     child: Container(
                       height: 2,
                       decoration: BoxDecoration(
-                        gradient:
-                        LinearGradient( colors: [theme.yellow2, theme.white],
-                            stops:[0,0.8]),
+                        gradient: LinearGradient(
+                            colors: [theme.yellow2, theme.white],
+                            stops: [0, 0.8]),
                       ),
                     ),
                   ),
                   Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                       currentCustomer
-                            .getComments()[index]
-                            .getReply(),
+                        currentRestaurant.getComments()[index].getReply(),
                         style: TextStyle(color: theme.black, fontSize: 14),
                       )),
                   Padding(
@@ -185,15 +181,70 @@ class _CommentsPageState extends State<CommentsPage> {
                     child: Container(
                       height: 2,
                       decoration: BoxDecoration(
-                        gradient:
-                        LinearGradient( colors: [theme.yellow2, theme.white],
-                            stops:[0,0.8]),
+                        gradient: LinearGradient(
+                            colors: [theme.yellow2, theme.white],
+                            stops: [0, 0.8]),
                       ),
                     ),
                   )
                 ],
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  writeComment() {
+    void isSend(String value) {
+      print(send);
+      print('str : $str');
+      if (send && str != '' && str != 'Reply...') {
+        setState(() {
+          send = false;
+          str = '';
+          currentRestaurant.addComment(new Comment.noFull(
+              value,
+              Data.customer.getFirstName(),
+              currentRestaurant.getName(),
+              DateFormat('\n d MMM kk:mm').format(DateTime.now())));
+        });
+      }
+    }
+
+    return Container(
+      height: 60,
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Row(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width / 2,
+              height: 50,
+              child: TextFormField(
+                  decoration: InputDecoration(hintText: 'Comment....'),
+                  style: TextStyle(color: Colors.grey[600], fontSize: 10),
+                  cursorColor: theme.black,
+                  onChanged: (value) {
+                    setState(() {
+                      str = value;
+                      print('value : $value');
+                      isSend(value);
+                    });
+                  }),
+            ),
+            IconButton(
+                icon: Icon(
+                  Icons.send,
+                  color: theme.yellow,
+                ),
+                onPressed: () {
+                  setState(() {
+                    send = true;
+                    isSend(str);
+                  });
+                })
           ],
         ),
       ),
@@ -209,7 +260,7 @@ class _CommentsPageState extends State<CommentsPage> {
         child: Column(
           children: [
             comment(index),
-            currentCustomer.getComments()[index].getReply() == null
+            currentRestaurant.getComments()[index].getReply() == null
                 ? noReply(index)
                 : replyShow(index),
             Divider(
@@ -225,14 +276,12 @@ class _CommentsPageState extends State<CommentsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-        appBar: appBar(),
-       body: Container(
-            padding: EdgeInsets.only(top: 20),
-            child: ListView(
-              children: List.generate(currentCustomer.getComments().length,
-                      (index) => showComment(index)),
-            )),
-    );
+    currentRestaurant = Data.restaurants.elementAt(widget.currentRestaurant);
+    return Container(
+        padding: EdgeInsets.only(top: 20),
+        child: ListView(
+          children: List.generate(currentRestaurant.getComments().length,
+              (index) => showComment(index)),
+        ));
   }
 }

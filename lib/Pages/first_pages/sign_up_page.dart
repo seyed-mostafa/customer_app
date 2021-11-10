@@ -1,33 +1,36 @@
-
+import 'package:customer_app/Pages/first_pages/map_page.dart';
 import 'package:customer_app/Objects/Customer.dart';
-import 'package:customer_app/Objects/theme.dart';
-import 'package:customer_app/Pages/Nav.dart';
-import 'package:customer_app/appBar.dart';
+import 'package:customer_app/constants/theme.dart';
+import 'package:customer_app/constants/appbar.dart';
+import 'package:customer_app/data/Data.dart';
+import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'data/Data.dart';
-
-class EditProfile extends StatefulWidget {
-
-
+class SignUpPage extends StatefulWidget {
+  LatLng latLng;
 
   @override
-  _EditProfileState createState() => _EditProfileState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _EditProfileState extends State<EditProfile> {
-
-  Customer currentCustomer=Data.customer;
+class _SignUpPageState extends State<SignUpPage> {
+  change(LatLng latLng) {
+    setState(() {
+      widget.latLng = latLng;
+    });
+  }
 
   final _formKey = GlobalKey<FormState>();
 
-  String password = "123";
-  String phoneNumber = "456";
-  String inputPhoneNumber = '', inputPassword = '',
-      _inputFirstName = '', _inputLastName = '', inputAddress = '';
+  String _inputPhoneNumber = '',
+      _inputPassword = '',
+      _inputFirstName = '',
+      _inputLastName = '',
+      _inputAddress = '';
   bool validUser = false;
   bool hidden = true;
+  List<String> foodType = [];
 
   bool isInteger(String string) {
     // Null or empty string is not a number
@@ -48,12 +51,33 @@ class _EditProfileState extends State<EditProfile> {
     return true;
   }
 
+  void _sendMessage() async {
+    //format: Registering::firstName::lastName::phoneNumber::password::address(String)::longitude::latitude
+    print("Connected to Server in Registering");
+    await SocketConnect.socket.then((value) {
+      value.writeln("Customer");
+      value.writeln("Registering::" +
+          _inputFirstName +
+          "::" +
+          _inputLastName +
+          "::" +
+          _inputPhoneNumber +
+          "::" +
+          _inputPassword +
+          "::" +
+          _inputAddress +
+          "::" +
+          widget.latLng.longitude.toString() +
+          "::" +
+          widget.latLng.latitude.toString());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         backgroundColor: theme.yellow,
-        appBar: appBar(),
+        appBar: appBar(context),
         body: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(30),
@@ -61,10 +85,8 @@ class _EditProfileState extends State<EditProfile> {
               key: _formKey,
               child: Column(
                 children: [
-
                   //firs name
                   TextFormField(
-                    initialValue: currentCustomer.getName(),
                     cursorColor: theme.black,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
@@ -81,21 +103,22 @@ class _EditProfileState extends State<EditProfile> {
                         filled: true,
                         icon: Icon(Icons.account_circle),
                         labelText: "First Name",
-                        labelStyle: TextStyle(fontSize: 18,)
-                    ),
-                    validator: (String value){
-                      if(value.isEmpty){
+                        labelStyle: TextStyle(
+                          fontSize: 18,
+                        )),
+                    validator: (String value) {
+                      if (value.isEmpty) {
                         return "First Name cannot be empty";
                       }
                       return null;
                     },
                     onSaved: (String value) => _inputFirstName = value,
                   ),
-                  SizedBox(height: 10,),
-
+                  SizedBox(
+                    height: 10,
+                  ),
                   //last name
                   TextFormField(
-                    initialValue: currentCustomer.getLastName(),
                     cursorColor: theme.black,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
@@ -112,28 +135,32 @@ class _EditProfileState extends State<EditProfile> {
                         filled: true,
                         icon: Icon(Icons.account_circle),
                         labelText: "Last Name",
-                        labelStyle: TextStyle(fontSize: 18,)
-                    ),
-                    validator: (String value){
-                      if(value.isEmpty){
+                        labelStyle: TextStyle(
+                          fontSize: 18,
+                        )),
+                    validator: (String value) {
+                      if (value.isEmpty) {
                         return "Last Name cannot be empty";
                       }
                       return null;
                     },
                     onSaved: (String value) => _inputLastName = value,
                   ),
-                  SizedBox(height: 10,),
-
+                  SizedBox(
+                    height: 10,
+                  ),
                   //Address
                   TextFormField(
-                    initialValue: currentCustomer.getAddress().toString(),
                     cursorColor: theme.black,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: Icon(Icons.map),
-                          onPressed: (){
-                            //Navigator.push(context, MaterialPageRoute(builder: (context) => Map()));
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MapPage(change)));
                           },
                         ),
                         border: new OutlineInputBorder(
@@ -149,24 +176,25 @@ class _EditProfileState extends State<EditProfile> {
                         filled: true,
                         icon: Icon(Icons.home_work),
                         labelText: "Address",
-                        labelStyle: TextStyle(fontSize: 18,)
-                    ),
-                    validator: (String value){
-                      if(value.isEmpty){
+                        labelStyle: TextStyle(
+                          fontSize: 18,
+                        )),
+                    validator: (String value) {
+                      if (value.isEmpty) {
                         return "Address cannot be empty";
                       }
                       return null;
                     },
-                    onSaved: (String value) => inputAddress = value,
+                    onSaved: (String value) => _inputAddress = value,
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
 
                   //Phone number
                   TextFormField(
-                    initialValue: currentCustomer.getPhoneNumber(),
                     cursorColor: theme.black,
                     style: TextStyle(color: Colors.white),
-                    autovalidate: true,
                     decoration: InputDecoration(
                         border: new OutlineInputBorder(
                           borderRadius: const BorderRadius.all(
@@ -181,32 +209,34 @@ class _EditProfileState extends State<EditProfile> {
                         filled: true,
                         icon: Icon(Icons.phone),
                         labelText: "Phone Number",
-                        labelStyle: TextStyle(fontSize: 18,)
-                    ),
-                    validator: (String value){
-                      if(value.length != 8 ||
+                        labelStyle: TextStyle(
+                          fontSize: 18,
+                        )),
+                    validator: (String value) {
+                      if (value.length != 8 ||
                           !isInteger(value) ||
-                          value.contains(' ')){
+                          value.contains(' ')) {
                         return "Phone number should be 8 digit";
                       }
                       return null;
                     },
-                    onSaved: (String value) => inputPhoneNumber = value,
+                    onSaved: (String value) => _inputPhoneNumber = value,
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
 
                   //Password
                   TextFormField(
-                    initialValue: currentCustomer.getPassword(),
                     cursorColor: theme.black,
                     style: TextStyle(color: Colors.white),
                     obscureText: hidden,
                     decoration: InputDecoration(
                         suffixIcon: IconButton(
-                          icon: Icon(
-                              !hidden?Icons.visibility:Icons.visibility_off
-                          ),
-                          onPressed: (){
+                          icon: Icon(!hidden
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                          onPressed: () {
                             hidden = !hidden;
                             setState(() {});
                           },
@@ -224,56 +254,54 @@ class _EditProfileState extends State<EditProfile> {
                         filled: true,
                         icon: Icon(Icons.vpn_key),
                         labelText: "Password",
-                        labelStyle: TextStyle(fontSize: 18,)
-                    ),
-                    onChanged: (String value){
-                      password = value;
-                      setState(() {
-
-                      });
+                        labelStyle: TextStyle(
+                          fontSize: 18,
+                        )),
+                    onChanged: (String value) {
+                      _inputPassword = value;
+                      setState(() {});
                     },
-                    validator: (String value){
-                      if(value.length < 6 || value.contains('a')){
+                    validator: (String value) {
+                      if (value.length < 6 ||
+                          !value.contains(RegExp(r'[a-zA-Z]')) ||
+                          !value.contains(RegExp(r'[0-9]'))) {
                         return "password at least contains 6 letter and number";
                       }
                       return null;
                     },
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
 
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         onPrimary: theme.yellow,
                         primary: theme.black,
-                        padding: EdgeInsets.all(20)
-                    ),
-                    child: Text("Edit"),
+                        padding: EdgeInsets.all(20)),
                     onPressed: () async {
-                      if(_formKey.currentState.validate()) {
+                      if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
                         print(_inputFirstName);
                         print(_inputLastName);
-                        print(inputAddress);
-                        print(inputPhoneNumber);
-                        print(inputPassword);
-                        currentCustomer.setName(_inputFirstName);
-                        currentCustomer.setLastName(_inputLastName);
-                        currentCustomer.setPassword(inputPassword);
-                        currentCustomer.setPhoneNumber(inputPhoneNumber);
-                        Navigator.pushReplacement(context, MaterialPageRoute(
-                            builder: (context) => Nav(3)
-                        ));
+                        print(_inputAddress);
+                        print(_inputPhoneNumber);
+                        print(_inputPassword);
+                        _sendMessage();
+                        Data.customer = new Customer(_inputFirstName,
+                            _inputLastName, _inputPhoneNumber, _inputPassword);
+                        Navigator.pop(
+                          context,
+                        );
                       }
                       setState(() {});
                     },
+                    child: Text("Register"),
                   ),
                 ],
               ),
             ),
           ),
-        )
-    );
+        ));
   }
 }
-
-

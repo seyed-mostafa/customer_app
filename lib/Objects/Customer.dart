@@ -1,4 +1,3 @@
-
 import 'package:customer_app/Objects/Order.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
 import 'package:customer_app/data/Data.dart';
@@ -7,126 +6,155 @@ import 'Comment.dart';
 import 'package:customer_app/Objects/Location.dart';
 import 'Food.dart';
 
-
-
-class Customer{
-
-  String _firstName,_lastName,_phoneNumber,_password;
-  num _wallet=0;
-  List<Location> _address = List.empty(growable: true);
+class Customer {
+  String _firstName;
+  String _lastName;
+  String _phoneNumber;
+  String _password;
+  num _wallet = 0;
+  List<Location> _addresses = List.empty(growable: true);
   List<Comment> _comments = List.empty(growable: true);
-  List<int> _favoriteRestaurant = List.empty(growable: true); //restaurant popular Ids
-  List<Order> _shoppingCart =List.empty(growable: true);
-  List<Order> _orders = List.empty(growable: true);
-  List<Restaurant> _nearByRestaurants = [];
+  List<int> _favoriteRestaurantsId = List.empty(growable: true);
+  List<Order> _awaitingPaymentOrders = List.empty(growable: true);
+  List<Order> _previousOrders = List.empty(growable: true);
 
-
-  Customer(firstName,lastName,phoneNumber,password)
-  {
+  Customer(firstName, lastName, phoneNumber, password) {
     _firstName = firstName;
-    _lastName=lastName;
-    _phoneNumber=phoneNumber;
-    _password=password;
+    _lastName = lastName;
+    _phoneNumber = phoneNumber;
+    _password = password;
   }
 
-  void setName(String name) {
-    _firstName = name;
+  void setFirstName(String firstName) {
+    _firstName = firstName;
   }
-  void setLastName(String name) {
-    _lastName = name;
+
+  void setLastName(String lastName) {
+    _lastName = lastName;
   }
+
   void setPhoneNumber(String phoneNumber) {
     _phoneNumber = phoneNumber;
   }
+
   void setPassword(String password) {
     _password = password;
   }
+
   void setWallet(num wallet) {
     _wallet = wallet;
   }
+
   void addAddress(Location address) {
-    _address.add(address);
-  }
-  void removeShoppingCart(Order order){
-    _shoppingCart.remove(order);
-  }
-  void addShoppingCart(Food food,int restaurantId,int i) {
-    for(Order order in _shoppingCart){
-      if (order.getRestaurantId()==restaurantId) {
-        order.addFood(food, i);
-        return;
-      }
-    }
-    for(Restaurant restaurant in Data.restaurants)
-      if (restaurant.getId()==restaurantId){
-        Order order=new Order.full(restaurant.getName(), _firstName, DateFormat('\n d MMM kk:mm').format( DateTime.now()), _address[0], restaurant.getAddress(), restaurantId);
-        order.addFood(food, i);
-        _shoppingCart.add(order);
-      }
+    _addresses.add(address);
   }
 
-  void addNewShoppingCart(String restaurantName,String customerName,String orderTime,Location customerAddress,Location restaurantAddress,int restaurantId){
-    _shoppingCart.add(new Order.full(restaurantName, customerName, orderTime, customerAddress, restaurantAddress, restaurantId));
-  }
-  void removeFromShoppingCart(int index){
-    addPreviousOrders(_shoppingCart[index]);
-    _shoppingCart.removeAt(index);
-  }
-  void addPreviousOrders(Order order) {
-    _orders.add(order);
-  }
   void addComment(Comment comment) {
     _comments.add(comment);
   }
+
   void addFavoriteRestaurant(int favoriteRestaurant) {
-    _favoriteRestaurant.add(favoriteRestaurant);
-  }
-  void removeFromFavoriteRestaurant(int id) {
-    _favoriteRestaurant.remove(id);
+    _favoriteRestaurantsId.add(favoriteRestaurant);
   }
 
+  void addAwaitingPaymentOrder(Food food, int restaurantId, int foodCount) {
+    for (Order order in _awaitingPaymentOrders) {
+      if (order.getRestaurantId() == restaurantId) {
+        order.addFood(food, foodCount);
+        return;
+      }
+    }
 
+    for (Restaurant restaurant in Data.restaurants)
+      if (restaurant.getId() == restaurantId) {
+        Order order = new Order.full(
+          restaurant.getName(),
+          _firstName,
+          DateFormat('\n d MMM kk:mm').format(DateTime.now()),
+          _addresses[0],
+          restaurant.getAddress(),
+          restaurantId,
+        );
 
-
-  String getName() {
-    return _firstName ;
+        order.addFood(food, foodCount);
+        _awaitingPaymentOrders.add(order);
+      }
   }
+
+  void addNewAwaitingPaymentOrder(
+    String restaurantName,
+    String customerName,
+    String orderTime,
+    Location customerAddress,
+    Location restaurantAddress,
+    int restaurantId,
+  ) {
+    _awaitingPaymentOrders.add(
+      new Order.full(
+        restaurantName,
+        customerName,
+        orderTime,
+        customerAddress,
+        restaurantAddress,
+        restaurantId,
+      ),
+    );
+  }
+
+  void addPreviousOrders(Order order) {
+    _previousOrders.add(order);
+  }
+
+  void removeFavoriteRestaurantId(int id) {
+    _favoriteRestaurantsId.remove(id);
+  }
+
+  void removeAwaitingPaymentOrderIndex(int index) {
+    addPreviousOrders(_awaitingPaymentOrders[index]);
+    _awaitingPaymentOrders.removeAt(index);
+  }
+
+  void removeAwaitingPaymentOrder(Order order) {
+    _awaitingPaymentOrders.remove(order);
+  }
+
+  String getFirstName() {
+    return _firstName;
+  }
+
   String getLastName() {
-    return _lastName ;
+    return _lastName;
   }
+
   String getPhoneNumber() {
-    return _phoneNumber ;
+    return _phoneNumber;
   }
+
   String getPassword() {
-    return _password ;
+    return _password;
   }
+
   num getWallet() {
-    return _wallet ;
+    return _wallet;
   }
-  List<Location> getAddress() {
-    return _address;
+
+  List<Location> getAddresses() {
+    return _addresses;
   }
-  List<Order> getShoppingCart() {
-    return _shoppingCart;
-  }
-  List<Order> getPreviousOrders() {
-    return _orders;
-  }
+
   List<Comment> getComments() {
     return _comments;
   }
-  List<int> getFavoriteRestaurant() {
-    return _favoriteRestaurant;
-  }
-  List<Restaurant> getFavoriteRestaurants() {
-    List<Restaurant> restaurants = [];
-    for(int i = 0; i < restaurants.length; i++)
-      if (Data.customer.getFavoriteRestaurant().contains(restaurants[i].getId())) {
-        restaurants.add(restaurants[i]);
-        print(restaurants[i].getId());
-      }
 
-    return restaurants;
+  List<int> getFavoriteRestaurantsId() {
+    return _favoriteRestaurantsId;
   }
 
+  List<Order> getAwaitingPaymentOrders() {
+    return _awaitingPaymentOrders;
+  }
+
+  List<Order> getPreviousOrders() {
+    return _previousOrders;
+  }
 }

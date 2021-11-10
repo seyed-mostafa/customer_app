@@ -1,22 +1,17 @@
-import 'package:customer_app/Objects/Comment.dart';
-import 'package:customer_app/Objects/theme.dart';
-import 'package:customer_app/Objects/Restaurant.dart';
+import 'package:customer_app/Objects/Customer.dart';
+import 'package:customer_app/constants/appbar.dart';
 import 'package:customer_app/data/Data.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter/widgets.dart';
+import 'package:customer_app/constants/theme.dart';
 
-class RestaurantPage2 extends StatefulWidget {
-  int currentRestaurant;
-
-  RestaurantPage2(this.currentRestaurant);
-
+class CommentsListPage extends StatefulWidget {
   @override
-  _RestaurantPage2State createState() => _RestaurantPage2State();
+  _CommentsListPageState createState() => _CommentsListPageState();
 }
 
-class _RestaurantPage2State extends State<RestaurantPage2> {
-  Restaurant currentRestaurant;
+class _CommentsListPageState extends State<CommentsListPage> {
+  Customer currentCustomer = Data.customer;
 
   comment(index) {
     return Column(
@@ -26,7 +21,7 @@ class _RestaurantPage2State extends State<RestaurantPage2> {
             ClipRRect(
               borderRadius: BorderRadius.circular(30),
               child: Image.asset(
-                "assets/images/profile/${currentRestaurant.getComments()[index].getCustomerName()}.jpg",
+                "assets/images/profile/Ali.jpg",
                 fit: BoxFit.fill,
                 height: 50,
                 width: 50,
@@ -37,9 +32,9 @@ class _RestaurantPage2State extends State<RestaurantPage2> {
             ),
             Column(
               children: [
-                Text(currentRestaurant.getComments()[index].getCustomerName(),
+                Text(currentCustomer.getComments()[index].getCustomerName(),
                     style: TextStyle(fontSize: 18, color: theme.black)),
-                Text(currentRestaurant.getComments()[index].getTimeComment(),
+                Text(currentCustomer.getComments()[index].getTimeComment(),
                     style: TextStyle(color: Colors.grey, fontSize: 10)),
               ],
             ),
@@ -64,7 +59,7 @@ class _RestaurantPage2State extends State<RestaurantPage2> {
               Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    currentRestaurant.getComments()[index].getComment(),
+                    currentCustomer.getComments()[index].getComment(),
                     style: TextStyle(color: theme.black, fontSize: 14),
                   )),
               Padding(
@@ -99,7 +94,7 @@ class _RestaurantPage2State extends State<RestaurantPage2> {
                 width: MediaQuery.of(context).size.width / 2,
                 height: 50,
                 child: Text(
-                  "${currentRestaurant.getComments()[index].getRestaurantName()} not yet reply...",
+                  "${currentCustomer.getComments()[index].getRestaurantName()} not yet reply...",
                   style: TextStyle(color: Colors.grey[600], fontSize: 12),
                 )),
           ],
@@ -136,17 +131,16 @@ class _RestaurantPage2State extends State<RestaurantPage2> {
                   ),
                 ),
                 SizedBox(
-                  width: 10,
+                  width: 15,
                 ),
                 Column(
                   children: [
-                    Text(currentRestaurant
-                        .getComments()[index]
-                        .getRestaurantName(),
+                    Text(
+                        currentCustomer
+                            .getComments()[index]
+                            .getRestaurantName(),
                         style: TextStyle(fontSize: 18, color: theme.black)),
-                    Text(currentRestaurant
-                        .getComments()[index]
-                        .getTimeReply(),
+                    Text(currentCustomer.getComments()[index].getTimeReply(),
                         style: TextStyle(color: Colors.grey, fontSize: 10)),
                   ],
                 ),
@@ -172,7 +166,7 @@ class _RestaurantPage2State extends State<RestaurantPage2> {
                   Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        currentRestaurant.getComments()[index].getReply(),
+                        currentCustomer.getComments()[index].getReply(),
                         style: TextStyle(color: theme.black, fontSize: 14),
                       )),
                   Padding(
@@ -195,59 +189,6 @@ class _RestaurantPage2State extends State<RestaurantPage2> {
     );
   }
 
-  writeComment() {
-    bool isSend(String value) {
-      print(send);
-      print('str : $str');
-      if (send && str != '' && str != 'Reply...') {
-        setState(() {
-          send = false;
-          str = '';
-          currentRestaurant.addComment(new Comment.noFull(value,Data.customer.getName(),
-              currentRestaurant.getName(), DateFormat('\n d MMM kk:mm').format( DateTime.now())));
-
-        });
-      }
-    }
-
-    return Container(
-      height: 60,
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Row(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width / 2,
-              height: 50,
-              child: TextFormField(
-                  decoration: InputDecoration(hintText: 'Comment....'),
-                  style: TextStyle(color: Colors.grey[600], fontSize: 10),
-                  cursorColor: theme.black,
-                  onChanged: (value) {
-                    setState(() {
-                      str = value;
-                      print('value : $value');
-                      isSend(value);
-                    });
-                  }),
-            ),
-            IconButton(
-                icon: Icon(
-                  Icons.send,
-                  color: theme.yellow,
-                ),
-                onPressed: () {
-                  setState(() {
-                    send = true;
-                    isSend(str);
-                  });
-                })
-          ],
-        ),
-      ),
-    );
-  }
-
   showComment(index) {
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -257,7 +198,7 @@ class _RestaurantPage2State extends State<RestaurantPage2> {
         child: Column(
           children: [
             comment(index),
-            currentRestaurant.getComments()[index].getReply() == null
+            currentCustomer.getComments()[index].getReply() == null
                 ? noReply(index)
                 : replyShow(index),
             Divider(
@@ -271,19 +212,16 @@ class _RestaurantPage2State extends State<RestaurantPage2> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
-    currentRestaurant = Data.restaurants.elementAt(widget.currentRestaurant);
-    return  Container(
-        padding: EdgeInsets.only(top: 20),
-        child: ListView(
-          children: List.generate(currentRestaurant
-              .getComments()
-              .length,
-                  (index) => showComment(index)),
-        )
+    return Scaffold(
+      appBar: appBar(context),
+      body: Container(
+          padding: EdgeInsets.only(top: 20),
+          child: ListView(
+            children: List.generate(currentCustomer.getComments().length,
+                (index) => showComment(index)),
+          )),
     );
-
   }
 }

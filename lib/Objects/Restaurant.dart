@@ -1,8 +1,6 @@
 import 'package:customer_app/Objects/Location.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:customer_app/Objects/Comment.dart';
 import 'Food.dart';
-
 
 //  _name  =>                                                      نام رستوران
 // _phoneNumber =>                                          شماره تماس رستوران
@@ -13,93 +11,56 @@ import 'Food.dart';
 // _address =>                                   آدرس رستوران (به صورت مختصات )
 // List<Food> _menu =>                    منو رستوران به صورت لیستی از جنس غذا
 
-class Restaurant  {
-
-  static int _count=99243000;
-  String _name, _phoneNumber, _password, _days, _hour,_addressString;
-  num _sendingRangeRadius,_id;
+class Restaurant {
+  static int _count = 99243000;
+  String _name;
+  String _phoneNumber;
+  String _password;
+  String _days;
+  String _hour;
+  String _addressString;
+  num _sendingRangeRadius;
+  num _id;
   Location _address;
   List<Food> _menu = List.empty(growable: true);
-  List<TypeFood> _type= List.empty(growable: true);
-  List<Comment> _comments= List.empty(growable: true);
-  List<double> _rate= List.empty(growable: true);
+  List<TypeFood> _type = List.empty(growable: true);
+  List<Comment> _comments = List.empty(growable: true);
+  List<double> _rate = List.empty(growable: true);
 
-
-
-
-  Restaurant(String name, Location address, String phoneNumber, String password)  {
+  Restaurant(
+    String name,
+    Location address,
+    String phoneNumber,
+    String password,
+  ) {
     _count++;
-    _id=_count;
+    _id = _count;
     this._name = name;
-    this._address = address;
-    this._password = password;
     this._phoneNumber = phoneNumber;
+    this._password = password;
+    this._address = address;
   }
 
-  double getRate(){
-    double sum=0;
-    for(double i in _rate)
-      sum+=i;
-    return sum/_rate.length;
-  }
-
-  void addRate(double rate){
-    _rate.add(rate);
-  }
-
-  List<Food> getMenu() {
-    return _menu;
-  }
-
-  void setId(int id){
-    _id=id;
-  }
-
-  void addMenu(Food food){
+  void addMenu(Food food) {
     _menu.add(food);
   }
 
-  int getId(){
-    return _id;
-  }
-
-  void addTypeFood(TypeFood typeFood){
+  void addTypeFood(TypeFood typeFood) {
     _type.add(typeFood);
   }
 
-  List<TypeFood> getTypeFoods(){
-    return _type;
-  }
-  void setAddressString(String addressString){
-    this._addressString=addressString;
-  }
-  String getAddressString(){
-    return _addressString;
-  }
-
-  void addComment(Comment comment){
+  void addComment(Comment comment) {
     _comments.add(comment);
   }
 
-  List<Comment> getComments(){
-    return _comments;
+  void addRate(double rate) {
+    _rate.add(rate);
   }
 
+  void addOrder() {}
 
   void setName(String name) {
     this._name = name;
-  }
-
-  void setDays(String days) {
-    this._days = days;
-  }
-
-  void setHour(String hour) {
-    this._hour = hour;
-  }
-
-  void setAddress(Location address) {
-    this._address = address;
   }
 
   void setPhoneNumber(String phoneNumber) {
@@ -110,23 +71,32 @@ class Restaurant  {
     this._password = password;
   }
 
+  void setDays(String days) {
+    this._days = days;
+  }
+
+  void setHour(String hour) {
+    this._hour = hour;
+  }
+
+  void setAddressString(String addressString) {
+    this._addressString = addressString;
+  }
+
   void setSendingRangeRadius(num sendingRangeRadius) {
     this._sendingRangeRadius = sendingRangeRadius;
   }
 
-  void addOrder() {
-
+  void setId(int id) {
+    _id = id;
   }
 
-
-
+  void setAddress(Location address) {
+    this._address = address;
+  }
 
   String getName() {
     return _name;
-  }
-
-  Location getAddress() {
-    return _address;
   }
 
   String getPhoneNumber() {
@@ -137,17 +107,37 @@ class Restaurant  {
     return _password;
   }
 
+  String getAddressString() {
+    return _addressString;
+  }
+
+  int getId() {
+    return _id;
+  }
+
   num getSendingRangeRadius() {
     return _sendingRangeRadius;
   }
 
-  String getDays() {
-    return _days;
+  Location getAddress() {
+    return _address;
   }
 
-  String getHour() {
-    return _hour;
+  List<Food> getMenu() {
+    return _menu;
   }
 
+  List<TypeFood> getTypeFoods() {
+    return _type;
+  }
 
+  List<Comment> getComments() {
+    return _comments;
+  }
+
+  double getRate() {
+    double sum = 0;
+    for (double i in _rate) sum += i;
+    return sum / _rate.length;
+  }
 }

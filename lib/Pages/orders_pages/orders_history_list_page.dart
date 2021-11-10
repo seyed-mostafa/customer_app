@@ -1,20 +1,17 @@
 import 'package:customer_app/Objects/Customer.dart';
-import 'package:customer_app/Pages/OrderPageHistory.dart';
+import 'package:customer_app/Pages/orders_pages/order_history_detail_page.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class OrdersHistory extends StatefulWidget {
-
-
+class OrdersHistoryListPage extends StatefulWidget {
   @override
-  _OrdersHistoryState createState() => _OrdersHistoryState();
+  _OrdersHistoryListPageState createState() => _OrdersHistoryListPageState();
 }
 
-class _OrdersHistoryState extends State<OrdersHistory> {
-
-  Customer currentCustomer=Data.customer;
+class _OrdersHistoryListPageState extends State<OrdersHistoryListPage> {
+  Customer currentCustomer = Data.customer;
 
   detail(index) {
     return Row(
@@ -26,7 +23,7 @@ class _OrdersHistoryState extends State<OrdersHistory> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => OrderPageHistory(
+                      builder: (context) => OrderHistoryDetailPage(
                           currentCustomer.getPreviousOrders()[index])));
             });
           },
@@ -44,10 +41,7 @@ class _OrdersHistoryState extends State<OrdersHistory> {
     return Row(
       children: [
         Text(
-          currentCustomer
-              .getPreviousOrders()[index]
-              .getPrice()
-              .toString(),
+          currentCustomer.getPreviousOrders()[index].getPrice().toString(),
           style: TextStyle(fontSize: 13, color: theme.black),
         ),
       ],
@@ -63,16 +57,16 @@ class _OrdersHistoryState extends State<OrdersHistory> {
           style: TextStyle(fontSize: 22, color: theme.black),
         ),
         Spacer(),
-        if (currentCustomer.getPreviousOrders()[index].getRate()!=null)
-        RatingBarIndicator(
-          rating: currentCustomer.getPreviousOrders()[index].getRate(),
-          itemBuilder: (context, index) => Icon(
-            Icons.star,
-            color: Colors.amber,
+        if (currentCustomer.getPreviousOrders()[index].getRate() != null)
+          RatingBarIndicator(
+            rating: currentCustomer.getPreviousOrders()[index].getRate(),
+            itemBuilder: (context, index) => Icon(
+              Icons.star,
+              color: Colors.amber,
+            ),
+            itemCount: 5,
+            itemSize: 15,
           ),
-          itemCount: 5,
-          itemSize: 15,
-        ),
       ],
     );
   }
@@ -113,7 +107,7 @@ class _OrdersHistoryState extends State<OrdersHistory> {
           children: [
             image(index),
             Container(
-              width:  MediaQuery.of(context).size.width-200 ,
+              width: MediaQuery.of(context).size.width - 200,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -139,8 +133,7 @@ class _OrdersHistoryState extends State<OrdersHistory> {
       children: [
         SizedBox(height: 5),
         for (int i = 0; i < currentCustomer.getPreviousOrders().length; i++)
-          if (currentCustomer.getPreviousOrders()[i].getDelivered())
-            show(i)
+          if (currentCustomer.getPreviousOrders()[i].getDelivered()) show(i)
       ],
     );
   }

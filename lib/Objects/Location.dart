@@ -1,43 +1,38 @@
-
-
 import 'dart:core';
 import 'dart:math';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class Location{
-
+class Location {
   String _address;
-  double _longitude,_latitude;
+  double _longitude;
+  double _latitude;
 
-  Location(String address, double latitude,double  longitude){
-    this._address=address;
-    this._longitude=longitude;
-    this._latitude=latitude;
+  Location(String address, double latitude, double longitude) {
+    this._address = address;
+    this._longitude = longitude;
+    this._latitude = latitude;
   }
 
-   String getAddress() {
-    return _address;
-  }
-
-   Location getLocation(){
+  Location getLocation() {
     return this;
   }
 
-   double getLatitude() {
-    return _latitude;
+  String getAddress() {
+    return _address;
   }
 
-   double getLongitude() {
+  double getLongitude() {
     return _longitude;
   }
 
-  double calculateDistance(lat1, lon1, lat2, lon2){
-    var p = 0.017453292519943295;
-    var c = cos;
-    var a = 0.5 - c((lat2 - lat1) * p)/2 +
-        c(lat1 * p) * c(lat2 * p) *
-            (1 - c((lon2 - lon1) * p))/2;
-    return 12742000 * asin(sqrt(a));
+  double getLatitude() {
+    return _latitude;
   }
 
+  double calculateDistance(lat1, lon1, lat2, lon2) {
+    var p = 0.017453292519943295;
+    var a = 0.5 -
+        cos((lat2 - lat1) * p) / 2 +
+        cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2;
+    return 12742000 * asin(sqrt(a));
+  }
 }

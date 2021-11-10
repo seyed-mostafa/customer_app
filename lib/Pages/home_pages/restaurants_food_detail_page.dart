@@ -1,41 +1,40 @@
 import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Food.dart';
 import 'package:customer_app/Objects/Order.dart';
-import 'package:customer_app/Pages/RestaurantPageTabBar.dart';
+import 'package:customer_app/Pages/home_pages/restaurant_base_page.dart';
 import 'package:customer_app/data/Data.dart';
-import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:customer_app/Objects/Restaurant.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class FoodPage extends StatefulWidget {
+class RestaurantFoodDetailPage extends StatefulWidget {
   Order order;
   Customer customer = Data.customer;
 
   Food currentFood;
   Restaurant currentRestaurant;
-  FoodPage(this.currentRestaurant, this.currentFood);
+  RestaurantFoodDetailPage(this.currentRestaurant, this.currentFood);
 
   @override
-  _FoodPageState createState() => _FoodPageState();
+  _RestaurantFoodDetailPageState createState() =>
+      _RestaurantFoodDetailPageState();
 }
 
-class _FoodPageState extends State<FoodPage> {
+class _RestaurantFoodDetailPageState extends State<RestaurantFoodDetailPage> {
   int state = 1;
   int like = 0;
 
-
   bool isInBag() {
-    if (widget.customer.getShoppingCart().isNotEmpty) {
-      for (Order order in widget.customer.getShoppingCart()) {
+    if (widget.customer.getAwaitingPaymentOrders().isNotEmpty) {
+      for (Order order in widget.customer.getAwaitingPaymentOrders()) {
         if (order.getRestaurantId() == widget.currentRestaurant.getId()) {
-          for (Food food in order.getOrder().keys) {
+          for (Food food in order.getFoodsAndFoodsCount().keys) {
             if (food.getName() == widget.currentFood.getName()) {
               widget.order = order;
-              print(order.getOrder()[widget.currentFood]);
+              print(order.getFoodsAndFoodsCount()[widget.currentFood]);
               return true;
             }
           }
@@ -47,8 +46,6 @@ class _FoodPageState extends State<FoodPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     addToBag() {
       return Row(
         children: [
@@ -58,7 +55,7 @@ class _FoodPageState extends State<FoodPage> {
           TextButton(
             onPressed: () {
               setState(() {
-                widget.customer.addShoppingCart(
+                widget.customer.addAwaitingPaymentOrder(
                     widget.currentFood, widget.currentRestaurant.getId(), 1);
                 print('add to bag');
               });
@@ -98,16 +95,20 @@ class _FoodPageState extends State<FoodPage> {
               onPressed: () {
                 print('mines');
                 setState(() {
-                  if (widget.order.getOrder()[widget.currentFood] - 1 == 0) {
-                    widget.order.remove(widget.currentFood);
+                  if (widget.order.getFoodsAndFoodsCount()[widget.currentFood] -
+                          1 ==
+                      0) {
+                    widget.order.removeFood(widget.currentFood);
                     widget.order = null;
                   } else {
-                    widget.customer.addShoppingCart(
+                    widget.customer.addAwaitingPaymentOrder(
                         widget.currentFood,
                         widget.currentRestaurant.getId(),
-                        widget.order.getOrder()[widget.currentFood] - 1);
-                    widget.order = widget.customer.getShoppingCart().last;
-
+                        widget.order
+                                .getFoodsAndFoodsCount()[widget.currentFood] -
+                            1);
+                    widget.order =
+                        widget.customer.getAwaitingPaymentOrders().last;
                   }
                 });
               }),
@@ -119,7 +120,9 @@ class _FoodPageState extends State<FoodPage> {
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Text(
-                widget.order.getOrder()[widget.currentFood].toString(),
+                widget.order
+                    .getFoodsAndFoodsCount()[widget.currentFood]
+                    .toString(),
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
               ),
             ),
@@ -139,11 +142,13 @@ class _FoodPageState extends State<FoodPage> {
               onPressed: () {
                 print('add');
                 setState(() {
-                  widget.customer.addShoppingCart(
+                  widget.customer.addAwaitingPaymentOrder(
                       widget.currentFood,
                       widget.currentRestaurant.getId(),
-                      widget.order.getOrder()[widget.currentFood] + 1);
-                  widget.order = widget.customer.getShoppingCart().last;
+                      widget.order.getFoodsAndFoodsCount()[widget.currentFood] +
+                          1);
+                  widget.order =
+                      widget.customer.getAwaitingPaymentOrders().last;
                 });
               }),
           Spacer(
@@ -153,7 +158,7 @@ class _FoodPageState extends State<FoodPage> {
       );
     }
 
-    DetailesOrReview() {
+    detailesOrReview() {
       if (state == 1) {
         return Container(
             alignment: Alignment.centerLeft,
@@ -190,7 +195,7 @@ class _FoodPageState extends State<FoodPage> {
                       blurRadius: 0.5,
                       offset: Offset(0, 0))
                 ]),
-                child: Text(widget.currentFood.getComment().elementAt(0)),
+                child: Text(widget.currentFood.getComments().elementAt(0)),
               ),
             ));
       }
@@ -201,12 +206,13 @@ class _FoodPageState extends State<FoodPage> {
         child: ListView(
           children: [
             Container(
-
               height: MediaQuery.of(context).size.height / 3,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/images/food/' + widget.currentFood.getName() + '.jpg'),
+                    image: AssetImage('assets/images/food/' +
+                        widget.currentFood.getName() +
+                        '.jpg'),
                     fit: BoxFit.cover),
               ),
             ),
@@ -297,7 +303,7 @@ class _FoodPageState extends State<FoodPage> {
                 Spacer(),
               ],
             ),
-            DetailesOrReview(),
+            detailesOrReview(),
             Spacer(),
           ],
         ),
@@ -322,7 +328,7 @@ class _FoodPageState extends State<FoodPage> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => RestaurantPageTabBar(
+                    builder: (context) => RestaurantBasePage(
                         Data.restaurants.indexOf(widget.currentRestaurant))));
           },
         ),

@@ -1,48 +1,47 @@
-
-
 import 'package:customer_app/Objects/Customer.dart';
-import 'package:customer_app/Objects/theme.dart';
-import 'package:customer_app/Pages/CommentsPage.dart';
-import 'package:customer_app/Pages/WalletManaging.dart';
+import 'package:customer_app/constants/theme.dart';
+import 'package:customer_app/Pages/profile_pages/comments_list_page.dart';
+import 'package:customer_app/Pages/profile_pages/wallet_detail_page.dart';
 import 'package:customer_app/data/Data.dart';
 import 'package:flutter/material.dart';
-import '../EditProfile.dart';
+import 'edit_profile_page.dart';
 
-class Profile extends StatefulWidget {
-
+class ProfilePage extends StatefulWidget {
   @override
-  _ProfileState createState() => _ProfileState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _ProfileState extends State<Profile> {
-
-  Customer currentCustomer=Data.customer;
+class _ProfilePageState extends State<ProfilePage> {
+  Customer currentCustomer = Data.customer;
 
   @override
   Widget build(BuildContext context) {
-
-    Widget informationWidget(){
+    Widget informationWidget() {
       return Row(
         children: [
           Container(
               child: Icon(
-                Icons.account_circle, size: 150,
-              )
+            Icons.account_circle,
+            size: 150,
+          )),
+          SizedBox(
+            width: 10,
           ),
-          SizedBox(width: 10,),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("First Name : " + currentCustomer.getName()),
+              Text("First Name : " + currentCustomer.getFirstName()),
               Text("Last Name : " + currentCustomer.getLastName()),
-              Text("Money of Wallet : " + currentCustomer.getWallet().toString() + " T")
+              Text("Money of Wallet : " +
+                  currentCustomer.getWallet().toString() +
+                  " T")
             ],
           )
         ],
       );
     }
 
-    Widget choicesWidget(String title, Widget page){
+    Widget choicesWidget(String title, Widget page) {
       return Card(
         shadowColor: theme.black,
         elevation: 4,
@@ -51,11 +50,14 @@ class _ProfileState extends State<Profile> {
         ),
         color: theme.yellow,
         child: TextButton(
-            onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => page));
             },
-            child: Text(title, style: TextStyle(fontSize: 24, color: theme.black),)
-        ),
+            child: Text(
+              title,
+              style: TextStyle(fontSize: 24, color: theme.black),
+            )),
       );
     }
 
@@ -63,11 +65,13 @@ class _ProfileState extends State<Profile> {
       padding: EdgeInsets.only(left: 10, right: 10),
       child: ListView(
         children: [
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           informationWidget(),
-          choicesWidget("Edit Information of Profile", EditProfile()),
-          choicesWidget("Wallet Managing", WalletManaging()),
-          choicesWidget("My Comments", CommentsPage()),
+          choicesWidget("Edit Information of Profile", EditProfilePage()),
+          choicesWidget("Wallet Managing", WalletDetailPage()),
+          choicesWidget("My Comments", CommentsListPage()),
         ],
       ),
     );

@@ -1,26 +1,48 @@
 import 'package:customer_app/Objects/Comment.dart';
-import 'package:customer_app/Objects/Customer.dart';
 import 'package:customer_app/Objects/Order.dart';
-import 'package:customer_app/Pages/Nav.dart';
-import 'package:customer_app/Pages/ShoppingCartPage.dart';
+import 'package:customer_app/Pages/base_page.dart';
 import 'package:customer_app/data/Data.dart';
+import 'package:customer_app/data/SocketConnect.dart';
 import 'package:flutter/material.dart';
-import 'package:customer_app/Objects/theme.dart';
+import 'package:customer_app/constants/theme.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'map_showonly_page.dart';
 
-class OrderPageHistory extends StatefulWidget {
-  Order currentOrder;
+class OrderHistoryDetailPage extends StatefulWidget {
+  final Order currentOrder;
 
-  OrderPageHistory(this.currentOrder);
+  OrderHistoryDetailPage(this.currentOrder);
 
   @override
-  _OrderPageHistoryState createState() => _OrderPageHistoryState();
+  _OrderHistoryDetailPageState createState() => _OrderHistoryDetailPageState();
 }
 
-class _OrderPageHistoryState extends State<OrderPageHistory> {
+class _OrderHistoryDetailPageState extends State<OrderHistoryDetailPage> {
   Comment comment;
+
+  void _sendMessage() async {
+    await SocketConnect.socket.then((value) async {
+      // comment::comment(String)::restaurantName
+      String sendMessage = "comment::" +
+          Data.customer.getComments().last.getComment() +
+          "::" +
+          widget.currentOrder.getRestaurantName();
+      value.writeln(sendMessage);
+    });
+  }
+
+  void _sendMessageRate() async {
+    await SocketConnect.socket.then((value) async {
+      // Rate::restaurantId::rate
+      String sendMessage = "Rate::" +
+          widget.currentOrder.getRestaurantId().toString() +
+          "::" +
+          widget.currentOrder.getRate().toString();
+      value.writeln(sendMessage);
+    });
+  }
 
   isComment() {
     for (Comment commentt in Data.customer.getComments()) {
@@ -60,7 +82,7 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
                   DataColumn(numeric: true, label: Text('Price')),
                 ],
                 rows: widget.currentOrder
-                    .getOrder()
+                    .getFoodsAndFoodsCount()
                     .entries
                     .map(
                       (e) => DataRow(cells: [
@@ -128,7 +150,13 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
                         size: 20,
                         color: theme.yellow,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => //TODO
+                                    MapShowOnlyPage(widget.currentOrder)));
+                      },
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / 2,
@@ -152,7 +180,7 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
   String str = '';
 
   replyWrite() {
-    bool isSend(String value) {
+    isSend(String value) {
       print(send);
       print('str : $str');
       if (send && str != '' && str != 'Comment...') {
@@ -161,9 +189,10 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
           str = '';
           Data.customer.addComment(new Comment.noFull(
               value,
-              Data.customer.getName(),
+              Data.customer.getFirstName(),
               widget.currentOrder.getRestaurantName(),
               DateFormat('d MMM kk:mm').format(DateTime.now())));
+          _sendMessage();
         });
       }
     }
@@ -213,10 +242,13 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
       children: [
         Row(
           children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 13,
+            ),
             ClipRRect(
               borderRadius: BorderRadius.circular(30),
               child: Image.asset(
-                "assets/images/profile/${Data.customer.getName()}.jpg",
+                "assets/images/profile/${Data.customer.getFirstName()}.jpg",
                 fit: BoxFit.fill,
                 height: 50,
                 width: 50,
@@ -283,23 +315,31 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
           children: [
             table(),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
-                  width: 50,
-                  height: 50,
-                  child: TextFormField(
-                    initialValue: "Rate",
-                    onChanged: (value) {
-                      widget.currentOrder.setRate(double.parse(value));
-                    },
+                if (widget.currentOrder.getRate() == null)
+                  Container(
+                    width: 50,
+                    height: 50,
+                    child: TextFormField(
+                      decoration: InputDecoration(hintText: 'Rate...'),
+                      style: TextStyle(color: Colors.grey[600], fontSize: 10),
+                      cursorColor: theme.black,
+                      onChanged: (value) {
+                        setState(() {
+                          widget.currentOrder.setRate(double.parse(value));
+                          _sendMessageRate();
+                        });
+                      },
+                    ),
                   ),
-                ),
                 RatingBarIndicator(
-                  rating: 0,
+                  rating: widget.currentOrder.getRate() != null
+                      ? widget.currentOrder.getRate()
+                      : 0,
                   itemBuilder: (context, index) => Icon(
                     Icons.star,
                     color: Colors.amber,
@@ -314,6 +354,9 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
               height: 20,
             ),
             isComment() ? comments(comment) : replyWrite(),
+            SizedBox(
+              height: 50,
+            ),
           ],
         ),
       ],
@@ -328,7 +371,7 @@ class _OrderPageHistoryState extends State<OrderPageHistory> {
           icon: Icon(Icons.keyboard_backspace),
           onPressed: () {
             Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => Nav(2)));
+                context, MaterialPageRoute(builder: (context) => BasePage(2)));
           },
         ),
         backgroundColor: Colors.white,
